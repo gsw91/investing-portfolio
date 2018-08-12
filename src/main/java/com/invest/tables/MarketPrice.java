@@ -1,7 +1,7 @@
 package com.invest.tables;
 
 import javax.persistence.*;
-import java.sql.Time;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,31 +11,36 @@ import java.util.List;
 public class MarketPrice {
 
     private Long id;
-    private Instrument instrument;
+    private String index;
+    private List<Instrument> instruments = new ArrayList<>();
     private List<User> users = new ArrayList<>();
     private Double price;
-    private Time actualization;
+    private LocalDateTime actualization;
 
     public MarketPrice() {
     }
 
-    public MarketPrice(Instrument instrument, Double price, Time actualization) {
-        this.instrument = instrument;
+    public MarketPrice(String index, Double price, LocalDateTime actualization) {
+        this.index = index;
         this.price = price;
         this.actualization = actualization;
     }
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "MARKET_ID", nullable = false, unique = true)
     public Long getId() {
         return id;
     }
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "INSTR_ID", nullable = false)
-    public Instrument getInstrument() {
-        return instrument;
+    @OneToMany(targetEntity = Instrument.class, mappedBy = "marketPrice", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    public List<Instrument> getInstruments() {
+        return instruments;
+    }
+
+    @Column(name = "INSTR_NAME", nullable = false)
+    public String getIndex() {
+        return index;
     }
 
     @ManyToMany(cascade = CascadeType.ALL)
@@ -56,16 +61,12 @@ public class MarketPrice {
     }
 
     @Column(name = "UPDATED", nullable = false)
-    public Time getActualization() {
+    public LocalDateTime getActualization() {
         return actualization;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public void setInstrument(Instrument instrument) {
-        this.instrument = instrument;
     }
 
     public void setUsers(List<User> users) {
@@ -76,7 +77,16 @@ public class MarketPrice {
         this.price = price;
     }
 
-    public void setActualization(Time actualization) {
+    public void setActualization(LocalDateTime actualization) {
         this.actualization = actualization;
     }
+
+    public void setIndex(String index) {
+        this.index = index;
+    }
+
+    public void setInstruments(List<Instrument> instruments) {
+        this.instruments = instruments;
+    }
+
 }

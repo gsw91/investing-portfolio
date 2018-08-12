@@ -1,7 +1,8 @@
 package com.invest.tables;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "STATISTICS")
@@ -11,31 +12,33 @@ public class Statistics {
     private Long id;
     private User user;
     private String instrumentName;
-    private Double buyingPrice;
-    private Date buyingDate;
-    private Double sellingPrice;
-    private Date sellingDate;
-    private Double result;
-    private Double returnRate;
+    private BigDecimal buyingPrice;
+    private LocalDate buyingDate;
+    private Long quantity;
+    private BigDecimal sellingPrice;
+    private LocalDate sellingDate;
+    private BigDecimal result;
+    private BigDecimal returnRate;
     private Long duration;
 
     public Statistics() {
     }
 
-    public Statistics(User user, String instrumentName, Double buyingPrice, Date buyingDate, Double sellingPrice, Date sellingDate) {
+    public Statistics(User user, String instrumentName, BigDecimal buyingPrice, LocalDate buyingDate, BigDecimal sellingPrice, LocalDate sellingDate, Long quantity) {
         this.user = user;
         this.instrumentName = instrumentName;
         this.buyingPrice = buyingPrice;
         this.buyingDate = buyingDate;
         this.sellingPrice = sellingPrice;
         this.sellingDate = sellingDate;
-        this.result = sellingPrice-buyingPrice;
-        this.returnRate = result/buyingPrice;
-        this.duration = sellingDate.getTime()-buyingDate.getTime();
+        this.quantity = quantity;
+        this.result = (sellingPrice.subtract(buyingPrice)).setScale(2, BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.valueOf(quantity));
+        this.returnRate = (sellingPrice.subtract(buyingPrice)).setScale(2, BigDecimal.ROUND_HALF_UP).divide(buyingPrice, 4, BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.valueOf(100L));
+        this.duration = sellingDate.toEpochDay()-buyingDate.toEpochDay();
     }
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "STAT_ID", nullable = false, unique = true)
     public Long getId() {
         return id;
@@ -53,32 +56,37 @@ public class Statistics {
     }
 
     @Column(name = "BUYING_PRICE", nullable = false)
-    public Double getBuyingPrice() {
+    public BigDecimal getBuyingPrice() {
         return buyingPrice;
     }
 
     @Column(name = "BUYING_DATE", nullable = false)
-    public Date getBuyingDate() {
+    public LocalDate getBuyingDate() {
         return buyingDate;
     }
 
     @Column(name = "SELLING_PRICE", nullable = false)
-    public Double getSellingPrice() {
+    public BigDecimal getSellingPrice() {
         return sellingPrice;
     }
 
     @Column(name = "SELLING_DATE", nullable = false)
-    public Date getSellingDate() {
+    public LocalDate getSellingDate() {
         return sellingDate;
     }
 
+    @Column(name = "QUANTITY", nullable = false)
+    public Long getQuantity() {
+        return quantity;
+    }
+
     @Column(name = "INVEST_RETURN", nullable = false)
-    public Double getResult() {
+    public BigDecimal getResult() {
         return result;
     }
 
     @Column(name = "RETURN_RATE", nullable = false)
-    public Double getReturnRate() {
+    public BigDecimal getReturnRate() {
         return returnRate;
     }
 
@@ -99,31 +107,36 @@ public class Statistics {
         this.instrumentName = instrumentName;
     }
 
-    public void setBuyingPrice(Double buyingPrice) {
+    public void setBuyingPrice(BigDecimal buyingPrice) {
         this.buyingPrice = buyingPrice;
     }
 
-    public void setBuyingDate(Date buyingDate) {
+    public void setBuyingDate(LocalDate buyingDate) {
         this.buyingDate = buyingDate;
     }
 
-    public void setSellingPrice(Double sellingPrice) {
+    public void setSellingPrice(BigDecimal sellingPrice) {
         this.sellingPrice = sellingPrice;
     }
 
-    public void setSellingDate(Date sellingDate) {
+    public void setSellingDate(LocalDate sellingDate) {
         this.sellingDate = sellingDate;
     }
 
-    public void setResult(Double result) {
+    public void setResult(BigDecimal result) {
         this.result = result;
     }
 
-    public void setReturnRate(Double returnRate) {
+    public void setReturnRate(BigDecimal returnRate) {
         this.returnRate = returnRate;
     }
 
     public void setDuration(Long duration) {
         this.duration = duration;
     }
+
+    public void setQuantity(Long quantity) {
+        this.quantity = quantity;
+    }
+
 }

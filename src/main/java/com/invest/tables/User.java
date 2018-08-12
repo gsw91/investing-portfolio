@@ -26,7 +26,7 @@ public class User {
     }
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "USER_ID", nullable = false, unique = true)
     public Long getId() {
         return id;
@@ -81,7 +81,7 @@ public class User {
         this.statistics = statistics;
     }
 
-    @ManyToMany(targetEntity = MarketPrice.class, mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(targetEntity = MarketPrice.class, mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     public List<MarketPrice> getMarketPrices() {
         return marketPrices;
     }
