@@ -2,15 +2,15 @@ package com.invest.services;
 
 import com.invest.repositories.UserDao;
 import com.invest.tables.User;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(UserService.class);
+    private final static Logger LOGGER = Logger.getLogger(UserService.class);
 
     @Autowired
     private UserDao userDao;

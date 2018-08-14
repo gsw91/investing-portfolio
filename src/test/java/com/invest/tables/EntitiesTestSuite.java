@@ -38,12 +38,12 @@ public class EntitiesTestSuite {
     private long marketId = 0;
 
     @Before
-    public void shouldGetUsersId() {
+    public void shouldGetIds() {
         //create data testing
         User testingUser1 = new User("test1", "test1", "test1@test.com");
         User testingUser2 = new User("test2", "test2", "test2@test.com");
         User testingUser3 = new User("test3", "test3", "test3@test.com");
-        MarketPrice testingInstrument = new MarketPrice("Cognor", 1.94, LocalDateTime.now());
+        MarketPrice testingInstrument = new MarketPrice(999999999L, "Cognor", 1.94, LocalDateTime.now());
         //saving data testing into db
         userDao.save(testingUser1);
         userDao.save(testingUser2);

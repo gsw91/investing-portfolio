@@ -26,9 +26,15 @@ public class MarketPrice {
         this.actualization = actualization;
     }
 
+    public MarketPrice(Long id, String index, Double price, LocalDateTime actualization) {
+        this.id = id;
+        this.index = index;
+        this.price = price;
+        this.actualization = actualization;
+    }
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "MARKET_ID", nullable = false, unique = true)
+    @Column(name = "MARKET_ID", nullable = false)
     public Long getId() {
         return id;
     }
@@ -87,6 +93,16 @@ public class MarketPrice {
 
     public void setInstruments(List<Instrument> instruments) {
         this.instruments = instruments;
+    }
+
+    @Override
+    public String toString() {
+        return "MarketPrice{" +
+                "id=" + id +
+                ", index='" + index + '\'' +
+                ", price=" + price +
+                ", actualization=" + actualization +
+                '}';
     }
 
 }

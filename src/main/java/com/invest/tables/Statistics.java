@@ -39,7 +39,7 @@ public class Statistics {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "STAT_ID", nullable = false, unique = true)
+    @Column(name = "STAT_ID", nullable = false)
     public Long getId() {
         return id;
     }

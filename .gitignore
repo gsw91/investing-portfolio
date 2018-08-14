@@ -1,3 +1,5 @@
+dtos/
+mappers/
 .gradle
 .idea
 build
