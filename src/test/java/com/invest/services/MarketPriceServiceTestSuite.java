@@ -1,6 +1,6 @@
 package com.invest.services;
 
-import com.invest.tables.MarketPrice;
+import com.invest.dtos.MarketPriceDto;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,28 +20,32 @@ public class MarketPriceServiceTestSuite {
     @Test
     public void shouldUpdateAllSharesPrices() {
         //given
-        int size = 355;
-        String name0 = "11BIT";
-        String name99 = "ESSYSTEM";
-        String name200 = "MERCOR";
-        String name354 = "ZUE";
+        marketPriceService.updatePrices();
+        List<MarketPriceDto> currentQuotations = marketPriceService.findMarketPrices();
+        int size = currentQuotations.size();
         //when
-        List<MarketPrice> currentQuotations = marketPriceService.updatePrices();
+        long id11BIT = currentQuotations.stream()
+                .filter(t->t.getIndex().equals("11BIT"))
+                .map(MarketPriceDto::getId)
+                .findFirst().orElse(355L);
+        long idEssystem= currentQuotations.stream()
+                .filter(t->t.getIndex().equals("ESSYSTEM"))
+                .map(MarketPriceDto::getId)
+                .findFirst().orElse(355L);
+        long idMercor= currentQuotations.stream()
+                .filter(t->t.getIndex().equals("MERCOR"))
+                .map(MarketPriceDto::getId)
+                .findFirst().orElse(355L);
+        long idZue= currentQuotations.stream()
+                .filter(t->t.getIndex().equals("ZUE"))
+                .map(MarketPriceDto::getId)
+                .findFirst().orElse(355L);
         //then
-        assertEquals(size, currentQuotations.size());
-        assertEquals(name0, currentQuotations.get(0).getIndex());
-        assertEquals(name99, currentQuotations.get(99).getIndex());
-        assertEquals(name200, currentQuotations.get(200).getIndex());
-        assertEquals(name354, currentQuotations.get(354).getIndex());
-    }
-
-    @Test
-    public void shouldReturnAllStocksFromDb() {
-        //given
-        List<MarketPrice> receivedList = marketPriceService.findMarketPrices();
-        //when & then
-        assertEquals(355, receivedList.size());
-
+        assertEquals(355, size);
+        assertEquals(0, id11BIT);
+        assertEquals(99, idEssystem);
+        assertEquals(200, idMercor);
+        assertEquals(354, idZue);
     }
 
 }

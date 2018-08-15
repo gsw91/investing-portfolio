@@ -1,4 +1,4 @@
-package com.invest.tables;
+package com.invest.domain;
 
 import javax.persistence.*;
 import java.time.LocalDate;

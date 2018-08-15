@@ -1,9 +1,6 @@
-package com.invest.tables;
+package com.invest.domain;
 
-import com.invest.repositories.InstrumentDao;
-import com.invest.repositories.MarketPriceDao;
-import com.invest.repositories.StatisticsDao;
-import com.invest.repositories.UserDao;
+import com.invest.repositories.*;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +15,7 @@ import java.util.stream.Collectors;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+
 public class EntitiesTestSuite {
 
     @Autowired
@@ -43,7 +41,7 @@ public class EntitiesTestSuite {
         User testingUser1 = new User("test1", "test1", "test1@test.com");
         User testingUser2 = new User("test2", "test2", "test2@test.com");
         User testingUser3 = new User("test3", "test3", "test3@test.com");
-        MarketPrice testingInstrument = new MarketPrice(999999999L, "Cognor", 1.94, LocalDateTime.now());
+        MarketPrice testingInstrument = new MarketPrice(999999999L, "Cognor", 1.94, LocalDateTime.now(), LocalDateTime.now());
         //saving data testing into db
         userDao.save(testingUser1);
         userDao.save(testingUser2);
@@ -112,7 +110,7 @@ public class EntitiesTestSuite {
     }
 
     @Test
-    public void shouldCreateAndRemoveRelationMTMBetweenMarketPriceAndUsers() {
+    public void shouldCreateRelationMTM() {
         //given
         MarketPrice readTesting = marketPriceDao.findById(marketId).orElse(new MarketPrice());
         User readUser1 = userDao.findById(user1Id).orElse(new User());
@@ -122,7 +120,6 @@ public class EntitiesTestSuite {
         readTesting.getUsers().add(readUser1);
         readTesting.getUsers().add(readUser2);
         readTesting.getUsers().add(readUser3);
-        readTesting.setId(marketId);
 
         marketPriceDao.save(readTesting);
 

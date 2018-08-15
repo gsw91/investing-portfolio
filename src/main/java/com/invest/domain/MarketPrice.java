@@ -1,4 +1,4 @@
-package com.invest.tables;
+package com.invest.domain;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -15,22 +15,18 @@ public class MarketPrice {
     private List<Instrument> instruments = new ArrayList<>();
     private List<User> users = new ArrayList<>();
     private Double price;
-    private LocalDateTime actualization;
+    private LocalDateTime serverActualization;
+    private LocalDateTime applicationActualization;
 
     public MarketPrice() {
     }
 
-    public MarketPrice(String index, Double price, LocalDateTime actualization) {
-        this.index = index;
-        this.price = price;
-        this.actualization = actualization;
-    }
-
-    public MarketPrice(Long id, String index, Double price, LocalDateTime actualization) {
+    public MarketPrice(Long id, String index, Double price, LocalDateTime serverActualization, LocalDateTime applicationActualization) {
         this.id = id;
         this.index = index;
         this.price = price;
-        this.actualization = actualization;
+        this.serverActualization = serverActualization;
+        this.applicationActualization = applicationActualization;
     }
 
     @Id
@@ -66,9 +62,14 @@ public class MarketPrice {
         return price;
     }
 
-    @Column(name = "UPDATED", nullable = false)
-    public LocalDateTime getActualization() {
-        return actualization;
+    @Column(name = "STOCK_UPDATING", nullable = false)
+    public LocalDateTime getServerActualization() {
+        return serverActualization;
+    }
+
+    @Column(name = "APP_UPDATING", nullable = false)
+    public LocalDateTime getApplicationActualization() {
+        return applicationActualization;
     }
 
     public void setId(Long id) {
@@ -83,8 +84,8 @@ public class MarketPrice {
         this.price = price;
     }
 
-    public void setActualization(LocalDateTime actualization) {
-        this.actualization = actualization;
+    public void setServerActualization(LocalDateTime serverActualization) {
+        this.serverActualization = serverActualization;
     }
 
     public void setIndex(String index) {
@@ -95,13 +96,20 @@ public class MarketPrice {
         this.instruments = instruments;
     }
 
+    public void setApplicationActualization(LocalDateTime applicationActualization) {
+        this.applicationActualization = applicationActualization;
+    }
+
     @Override
     public String toString() {
         return "MarketPrice{" +
                 "id=" + id +
                 ", index='" + index + '\'' +
+                ", instruments=" + instruments +
+                ", users=" + users +
                 ", price=" + price +
-                ", actualization=" + actualization +
+                ", serverActualization=" + serverActualization +
+                ", applicationActualization=" + applicationActualization +
                 '}';
     }
 

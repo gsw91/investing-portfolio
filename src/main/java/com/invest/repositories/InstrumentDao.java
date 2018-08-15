@@ -1,6 +1,6 @@
 package com.invest.repositories;
 
-import com.invest.tables.Instrument;
+import com.invest.domain.Instrument;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;

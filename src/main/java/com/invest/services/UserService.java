@@ -1,7 +1,7 @@
 package com.invest.services;
 
 import com.invest.repositories.UserDao;
-import com.invest.tables.User;
+import com.invest.domain.User;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,7 @@ public class UserService {
     }
 
     public boolean updateUserLogin(Long userId, String login) {
-        if (userDao.existsById(userId)) {
+        if (userDao.findById(userId).isPresent()) {
             User user = userDao.findById(userId).get();
             user.setLogin(login);
             userDao.save(user);
@@ -49,7 +49,7 @@ public class UserService {
     }
 
     public boolean changeUserPassword(Long userId, String password) {
-        if (userDao.existsById(userId)) {
+        if (userDao.findById(userId).isPresent()) {
             User user = userDao.findById(userId).get();
             user.setPassword(password);
             userDao.save(user);
@@ -62,7 +62,7 @@ public class UserService {
     }
 
     public User findUser(Long id) {
-        if (userDao.existsById(id)) {
+        if (userDao.findById(id).isPresent()) {
             return userDao.findById(id).get();
         } else {
             LOGGER.warn("No such user with this id");

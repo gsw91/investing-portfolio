@@ -1,7 +1,7 @@
 package com.invest.services;
 
 import com.invest.repositories.UserDao;
-import com.invest.tables.User;
+import com.invest.domain.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.*;
@@ -55,7 +55,6 @@ public class UserServiceTestSuite {
         User user = new User("Mockito_user", "mockito", "mock@mockito.com");
         long userId = 991L;
         String userName = "helenka";
-        when(userDao.existsById(userId)).thenReturn(true);
         when(userDao.findById(userId)).thenReturn(Optional.of(user));
         when(userDao.save(user)).thenReturn(user);
         //when
@@ -71,7 +70,6 @@ public class UserServiceTestSuite {
         User user = new User("Mockito_user", "mockito", "mock@mockito.com");
         long userId = 991L;
         String password = "otikcom";
-        when(userDao.existsById(userId)).thenReturn(true);
         when(userDao.findById(userId)).thenReturn(Optional.of(user));
         when(userDao.save(user)).thenReturn(user);
         //when
@@ -86,7 +84,6 @@ public class UserServiceTestSuite {
         //given
         User user = new User("Mockito_user", "mockito", "mock@mockito.com");
         long userId = 991L;
-        when(userDao.existsById(userId)).thenReturn(true);
         when(userDao.findById(userId)).thenReturn(Optional.of(user));
         //when
         User readUser = userService.findUser(userId);
