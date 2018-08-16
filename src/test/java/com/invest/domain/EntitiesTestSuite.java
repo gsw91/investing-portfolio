@@ -1,22 +1,27 @@
 package com.invest.domain;
 
+import com.invest.controller.UserController;
 import com.invest.repositories.*;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-
 public class EntitiesTestSuite {
+
+    @SpyBean
+    UserController controller;
 
     @Autowired
     private UserDao userDao;
@@ -41,7 +46,7 @@ public class EntitiesTestSuite {
         User testingUser1 = new User("test1", "test1", "test1@test.com");
         User testingUser2 = new User("test2", "test2", "test2@test.com");
         User testingUser3 = new User("test3", "test3", "test3@test.com");
-        MarketPrice testingInstrument = new MarketPrice(999999999L, "Cognor", 1.94, LocalDateTime.now(), LocalDateTime.now());
+        MarketPrice testingInstrument = new MarketPrice(999999999L, "Cognor", new ArrayList<>(), new ArrayList<>(), 1.94, LocalDateTime.now(), LocalDateTime.now());
         //saving data testing into db
         userDao.save(testingUser1);
         userDao.save(testingUser2);

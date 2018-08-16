@@ -21,9 +21,11 @@ public class MarketPrice {
     public MarketPrice() {
     }
 
-    public MarketPrice(Long id, String index, Double price, LocalDateTime serverActualization, LocalDateTime applicationActualization) {
+    public MarketPrice(Long id, String index, List<Instrument> instruments, List<User> users, Double price, LocalDateTime serverActualization, LocalDateTime applicationActualization) {
         this.id = id;
         this.index = index;
+        this.instruments = instruments;
+        this.users = users;
         this.price = price;
         this.serverActualization = serverActualization;
         this.applicationActualization = applicationActualization;

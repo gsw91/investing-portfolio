@@ -1,6 +1,7 @@
 package com.invest.services;
 
 import com.invest.dtos.MarketPriceDto;
+import com.invest.quotations.QuotationConnecting;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +18,13 @@ public class MarketPriceServiceTestSuite {
     @Autowired
     private MarketPriceService marketPriceService;
 
+    @Autowired
+    private QuotationConnecting quotationConnecting;
+
     @Test
     public void shouldUpdateAllSharesPrices() {
         //given
-        marketPriceService.updatePrices();
+        marketPriceService.updatePrices(quotationConnecting.updateQuotations());
         List<MarketPriceDto> currentQuotations = marketPriceService.findMarketPrices();
         int size = currentQuotations.size();
         //when

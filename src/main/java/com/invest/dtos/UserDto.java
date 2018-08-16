@@ -1,13 +1,14 @@
-package com.invest.domain;
+package com.invest.dtos;
 
-import javax.persistence.*;
+import com.invest.domain.Instrument;
+import com.invest.domain.MarketPrice;
+import com.invest.domain.Statistics;
+
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-@Table(name = "USERS")
-@Access(AccessType.PROPERTY)
-public class User {
+public class UserDto {
+
     private Long id;
     private String login;
     private String password;
@@ -16,16 +17,17 @@ public class User {
     private List<Statistics> statistics = new ArrayList<>();
     private List<MarketPrice> marketPrices = new ArrayList<>();
 
-    public User() {
+    public UserDto() {
     }
 
-    public User(String login, String password, String email) {
+    public UserDto(Long id, String login, String password, String email) {
+        this.id = id;
         this.login = login;
         this.password = password;
         this.email = email;
     }
 
-    public User(Long id, String login, String password, String email, List<Instrument> instruments, List<Statistics> statistics, List<MarketPrice> marketPrices) {
+    public UserDto(Long id, String login, String password, String email, List<Instrument> instruments, List<Statistics> statistics, List<MarketPrice> marketPrices) {
         this.id = id;
         this.login = login;
         this.password = password;
@@ -35,26 +37,32 @@ public class User {
         this.marketPrices = marketPrices;
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "USER_ID")
     public Long getId() {
         return id;
     }
 
-    @Column(name = "LOGIN", nullable = false)
     public String getLogin() {
         return login;
     }
 
-    @Column(name = "PASSWORD", nullable = false)
     public String getPassword() {
         return password;
     }
 
-    @Column(name = "EMAIL", nullable = false)
     public String getEmail() {
         return email;
+    }
+
+    public List<Instrument> getInstruments() {
+        return instruments;
+    }
+
+    public List<Statistics> getStatistics() {
+        return statistics;
+    }
+
+    public List<MarketPrice> getMarketPrices() {
+        return marketPrices;
     }
 
     public void setId(Long id) {
@@ -73,30 +81,16 @@ public class User {
         this.email = email;
     }
 
-    @OneToMany(targetEntity = Instrument.class, mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    public List<Instrument> getInstruments() {
-        return instruments;
-    }
-
     public void setInstruments(List<Instrument> instruments) {
         this.instruments = instruments;
-    }
-
-    @OneToMany(targetEntity = Statistics.class, mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    public List<Statistics> getStatistics() {
-        return statistics;
     }
 
     public void setStatistics(List<Statistics> statistics) {
         this.statistics = statistics;
     }
 
-    @ManyToMany(targetEntity = MarketPrice.class, mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    public List<MarketPrice> getMarketPrices() {
-        return marketPrices;
-    }
-
     public void setMarketPrices(List<MarketPrice> marketPrices) {
         this.marketPrices = marketPrices;
     }
+
 }

@@ -7,6 +7,9 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class UserService {
 
@@ -15,15 +18,20 @@ public class UserService {
     @Autowired
     private UserDao userDao;
 
-    public User addUser(User user) {
-        userDao.save(user);
-        long userId = user.getId();
-        if (userDao.existsById(userId)) {
-            LOGGER.info("User created successfully with id = " + userId);
+    public User createUser(User user) {
+        return userDao.save(user);
+    }
+
+    public User findUserByName(String username) {
+        List<User> usersList = userDao.findAll();
+        Optional<User> isExist = usersList.stream()
+                .filter(t->t.getLogin().equals(username))
+                .findFirst();
+        if (isExist.isPresent()) {
+            return isExist.get();
         } else {
-            LOGGER.warn("User creation failed");
+            throw new IllegalArgumentException();
         }
-        return user;
     }
 
     public void deleteUser(Long userId) {
@@ -61,12 +69,22 @@ public class UserService {
         }
     }
 
-    public User findUser(Long id) {
+    public User getUser(Long id) {
         if (userDao.findById(id).isPresent()) {
             return userDao.findById(id).get();
         } else {
             LOGGER.warn("No such user with this id");
             return new User();
+        }
+    }
+
+    public boolean checkIfExists(Long id) {
+        if (userDao.findById(id).isPresent()) {
+            LOGGER.info("User with id " + id + " exists");
+            return true;
+        } else {
+            LOGGER.warn("No such user with this id");
+            return false;
         }
     }
 

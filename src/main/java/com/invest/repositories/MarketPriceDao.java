@@ -16,9 +16,12 @@ public interface MarketPriceDao extends CrudRepository<MarketPrice, Long> {
     <S extends MarketPrice> S save(S entity);
 
     @Override
-    Optional<MarketPrice> findById(Long aLong);
+    <S extends MarketPrice> List<S> saveAll(Iterable<S> entities);
 
     @Override
+    Optional<MarketPrice> findById(Long aLong);
+
+    //@Override
     List<MarketPrice> findAll();
 
     @Override

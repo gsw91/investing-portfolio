@@ -18,7 +18,6 @@ public class QuotationConnecting {
 
     private final static Logger LOGGER = Logger.getLogger(QuotationConnecting.class);
 
-
     public List<MarketPriceDto> updateQuotations() {
         List<MarketPriceDto> updatedQuotations = new ArrayList<>();
 
@@ -49,7 +48,6 @@ public class QuotationConnecting {
             LOGGER.error("Connection to website failed");
             return new ArrayList<>();
         }
-
         return updatedQuotations;
     }
 

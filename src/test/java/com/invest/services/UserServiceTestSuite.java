@@ -24,10 +24,9 @@ public class UserServiceTestSuite {
         //given
         User user = new User("Mockito_user", "mockito", "mock@mockito.com");
         user.setId(1032L);
-        when(userDao.existsById(1032L)).thenReturn(true);
         when(userDao.save(user)).thenReturn(user);
         //when
-        User savedUser = userService.addUser(user);
+        User savedUser = userService.createUser(user);
         //then
         assertEquals(1032L, savedUser.getId().longValue());
         assertEquals("Mockito_user", savedUser.getLogin());
@@ -86,7 +85,7 @@ public class UserServiceTestSuite {
         long userId = 991L;
         when(userDao.findById(userId)).thenReturn(Optional.of(user));
         //when
-        User readUser = userService.findUser(userId);
+        User readUser = userService.getUser(userId);
         //given
         assertEquals("Mockito_user", readUser.getLogin());
         assertEquals("mockito", readUser.getPassword());
