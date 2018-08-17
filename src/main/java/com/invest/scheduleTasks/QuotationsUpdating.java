@@ -22,7 +22,7 @@ public class QuotationsUpdating {
     @Autowired
     private MarketPriceService marketPriceService;
 
-    @Scheduled(cron = "0 0/05 9-18 * * MON-FRI")
+    @Scheduled(cron = "0 0/05 9-17 * * MON-FRI")
     public void updateQuotations() {
         LOGGER.info("Starting updating quotations...");
         long start = System.currentTimeMillis();

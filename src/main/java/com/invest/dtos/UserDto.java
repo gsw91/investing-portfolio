@@ -65,32 +65,4 @@ public class UserDto {
         return marketPrices;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setInstruments(List<Instrument> instruments) {
-        this.instruments = instruments;
-    }
-
-    public void setStatistics(List<Statistics> statistics) {
-        this.statistics = statistics;
-    }
-
-    public void setMarketPrices(List<MarketPrice> marketPrices) {
-        this.marketPrices = marketPrices;
-    }
-
 }

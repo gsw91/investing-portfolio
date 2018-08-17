@@ -42,7 +42,7 @@ public class User {
         return id;
     }
 
-    @Column(name = "LOGIN", nullable = false)
+    @Column(name = "LOGIN", nullable = false, unique = true)
     public String getLogin() {
         return login;
     }
@@ -52,7 +52,7 @@ public class User {
         return password;
     }
 
-    @Column(name = "EMAIL", nullable = false)
+    @Column(name = "EMAIL", nullable = false, unique = true)
     public String getEmail() {
         return email;
     }

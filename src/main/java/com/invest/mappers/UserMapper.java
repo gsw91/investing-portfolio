@@ -11,9 +11,6 @@ import java.util.stream.Collectors;
 public class UserMapper implements BasicMapper<User, UserDto> {
 
     @Override
-    public void accept(Object o) {}
-
-    @Override
     public User mapperToDomain(UserDto userDto) {
         return new User(
                 userDto.getId(),

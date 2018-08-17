@@ -39,55 +39,27 @@ public class MarketPriceDto {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getIndex() {
         return index;
-    }
-
-    public void setIndex(String index) {
-        this.index = index;
     }
 
     public List<Instrument> getInstruments() {
         return instruments;
     }
 
-    public void setInstruments(List<Instrument> instruments) {
-        this.instruments = instruments;
-    }
-
     public List<User> getUsers() {
         return users;
-    }
-
-    public void setUsers(List<User> users) {
-        this.users = users;
     }
 
     public Double getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
     public LocalDateTime getServerActualization() {
         return serverActualization;
     }
 
-    public void setServerActualization(LocalDateTime serverActualization) {
-        this.serverActualization = serverActualization;
-    }
-
     public LocalDateTime getApplicationActualization() {
         return applicationActualization;
-    }
-
-    public void setApplicationActualization(LocalDateTime applicationActualization) {
-        this.applicationActualization = applicationActualization;
     }
 }

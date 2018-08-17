@@ -23,6 +23,14 @@ public class Instrument {
         this.buyingDate = buyingDate;
     }
 
+    public Instrument(Long id, User user, MarketPrice marketPrice, Double buyingPrice, LocalDate buyingDate) {
+        this.id = id;
+        this.user = user;
+        this.marketPrice = marketPrice;
+        this.buyingPrice = buyingPrice;
+        this.buyingDate = buyingDate;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID", nullable = false)
