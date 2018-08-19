@@ -4,8 +4,7 @@ import com.invest.domain.Instrument;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
+import java.util.List;
 
 @Repository
 @Transactional
@@ -15,13 +14,7 @@ public interface InstrumentDao extends CrudRepository<Instrument, Long> {
     <S extends Instrument> S save(S entity);
 
     @Override
-    Optional<Instrument> findById(Long aLong);
-
-    @Override
-    boolean existsById(Long aLong);
-
-    @Override
-    long count();
+    List<Instrument> findAll();
 
     @Override
     void deleteById(Long aLong);

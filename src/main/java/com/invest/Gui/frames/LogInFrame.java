@@ -1,13 +1,19 @@
 package com.invest.Gui.frames;
 
+import com.invest.dtos.UserDto;
+import com.invest.exceptions.LogInException;
 import org.apache.log4j.Logger;
+import org.json.JSONObject;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 public class LogInFrame {
 
@@ -19,12 +25,13 @@ public class LogInFrame {
 
     public void run() {
         loginFrame = new JFrame("Investing app log in");
+        loginFrame.setLocation(500,300);
 
         JButton logIn = new JButton(" click to log in");
         logIn.setFont(new Font(Font.SERIF, Font.PLAIN, 20));
         logIn.addActionListener(new LogInActionListener());
 
-        JButton signUp = new JButton("change to sign up");
+        JButton signUp = new JButton("sign up");
         signUp.setFont(new Font(Font.SERIF, Font.PLAIN, 20));
         signUp.addActionListener(new SignUpActionListener());
 
@@ -65,7 +72,7 @@ public class LogInFrame {
         loginFrame.getContentPane().add(BorderLayout.NORTH, optionsPanel);
 
         loginFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        loginFrame.setSize(600, 450);
+        loginFrame.setSize(400, 250);
         loginFrame.setVisible(true);
 
     }
@@ -96,24 +103,50 @@ public class LogInFrame {
                 builder.append(i);
             }
             String password = builder.toString();
-
-            System.out.println(login + password);
             try {
                 sendLogRequest(login, password);
+            } catch (LogInException loginExce) {
+                LOGGER.warn("Wrong login or password");
             } catch (IOException exce) {
-                System.out.println("Be careful");
+                LOGGER.error("Connection refused");
             }
         }
 
-        private void sendLogRequest(String login, String password) throws IOException {
+        private void sendLogRequest(String login, String password) throws IOException, LogInException {
             String request = "http://localhost:8080/v1/user/login?name=" + login + "&password=" + password;
             URL url = new URL(request);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             int responseCode = connection.getResponseCode();
             if (responseCode==200) {
-                LOGGER.info("Log in successfully");
-                loginFrame.dispose();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String inputLine;
+                StringBuffer response = new StringBuffer();
+                while ((inputLine = bufferedReader.readLine()) != null) {
+                    response.append(inputLine);
+                }
+
+                String allResponse = response.toString();
+                allResponse = allResponse.replace("{", "");
+                String[] array = allResponse.split(",");
+
+                ArrayList<String> list = new ArrayList<>();
+                    for(String i: array) {
+                        String[] nextArray = i.split(":");
+                        list.add(nextArray[0]);
+                        list.add(nextArray[1]);
+                    }
+
+                    try {
+                        UserDto userDto = new UserDto(Long.valueOf(list.get(1)), list.get(3), list.get(5), list.get(7));
+                        UserFrame userFrame = new UserFrame(userDto);
+                        userFrame.OpenUserFrame();
+                        loginFrame.dispose();
+                        LOGGER.info("User " + login + " logged in");
+                    } catch (NumberFormatException e) {
+                        throw new LogInException();
+                    }
+
             } else {
                 LOGGER.warn("No user in database: " + login + " " + password);
             }
@@ -150,6 +183,7 @@ public class LogInFrame {
     class PasswordAreaMouseListener implements MouseListener {
         @Override
         public void mouseClicked(MouseEvent e) {
+            passwordField.setText("");
             passwordField.setEchoChar('*');
         }
 

@@ -46,7 +46,7 @@ public class EntitiesTestSuite {
         User testingUser1 = new User("test1", "test1", "test1@test.com");
         User testingUser2 = new User("test2", "test2", "test2@test.com");
         User testingUser3 = new User("test3", "test3", "test3@test.com");
-        MarketPrice testingInstrument = new MarketPrice(999999999L, "Cognor", new ArrayList<>(), new ArrayList<>(), 1.94, LocalDateTime.now(), LocalDateTime.now());
+        MarketPrice testingInstrument = new MarketPrice(999999999L, "Cognor", 1.94, LocalDateTime.now(), LocalDateTime.now());
         //saving data testing into db
         userDao.save(testingUser1);
         userDao.save(testingUser2);
@@ -112,55 +112,6 @@ public class EntitiesTestSuite {
         Assert.assertEquals(marketId, readCognor.getId().longValue());
         Assert.assertEquals(1.94, readCognor.getPrice(),0);
         Assert.assertEquals("Cognor", readCognor.getIndex());
-    }
-
-    @Test
-    public void shouldCreateRelationMTM() {
-        //given
-        MarketPrice readTesting = marketPriceDao.findById(marketId).orElse(new MarketPrice());
-        User readUser1 = userDao.findById(user1Id).orElse(new User());
-        User readUser2 = userDao.findById(user2Id).orElse(new User());
-        User readUser3 = userDao.findById(user3Id).orElse(new User());
-        //when
-        readTesting.getUsers().add(readUser1);
-        readTesting.getUsers().add(readUser2);
-        readTesting.getUsers().add(readUser3);
-
-        marketPriceDao.save(readTesting);
-
-        readTesting = marketPriceDao.findById(marketId).orElse(new MarketPrice());
-
-        Long userOneId = readTesting.getUsers().stream()
-                .filter(t -> t.getLogin().equals(readUser1.getLogin()))
-                .findFirst()
-                .orElse(new User())
-                .getId();
-
-        Long userTwoId = readTesting.getUsers().stream()
-                .filter(t -> t.getLogin().equals(readUser2.getLogin()))
-                .findFirst()
-                .orElse(new User())
-                .getId();
-
-        Long userThreeId = readTesting.getUsers().stream()
-                .filter(t -> t.getLogin().equals(readUser3.getLogin()))
-                .findFirst()
-                .orElse(new User())
-                .getId();
-        //then
-        Assert.assertEquals(readUser1.getId(), userOneId);
-        Assert.assertEquals(readUser2.getId(), userTwoId);
-        Assert.assertEquals(readUser3.getId(), userThreeId);
-
-        //clean-up
-        List<User> updateList = readTesting.getUsers().stream()
-                .filter(name -> !name.getLogin().equals(readUser1.getLogin()))
-                .filter(name -> !name.getLogin().equals(readUser2.getLogin()))
-                .filter(name -> !name.getLogin().equals(readUser3.getLogin()))
-                .collect(Collectors.toList());
-
-        readTesting.setUsers(updateList);
-        marketPriceDao.save(readTesting);
     }
 
     @Test

@@ -13,9 +13,6 @@ public class InstrumentDto {
     private Double buyingPrice;
     private LocalDate buyingDate;
 
-    public InstrumentDto() {
-    }
-
     public InstrumentDto(Long id, User user, MarketPrice marketPrice, Double buyingPrice, LocalDate buyingDate) {
         this.id = id;
         this.user = user;

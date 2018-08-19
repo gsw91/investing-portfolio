@@ -14,8 +14,6 @@ public class MarketPriceMapper implements BasicMapper<MarketPrice, MarketPriceDt
         return new MarketPrice(
                 marketPriceDto.getId(),
                 marketPriceDto.getIndex(),
-                marketPriceDto.getInstruments(),
-                marketPriceDto.getUsers(),
                 marketPriceDto.getPrice(),
                 marketPriceDto.getServerActualization(),
                 marketPriceDto.getApplicationActualization()
@@ -27,8 +25,6 @@ public class MarketPriceMapper implements BasicMapper<MarketPrice, MarketPriceDt
         return new MarketPriceDto(
                 marketPrice.getId(),
                 marketPrice.getIndex(),
-                marketPrice.getInstruments(),
-                marketPrice.getUsers(),
                 marketPrice.getPrice(),
                 marketPrice.getServerActualization(),
                 marketPrice.getApplicationActualization()

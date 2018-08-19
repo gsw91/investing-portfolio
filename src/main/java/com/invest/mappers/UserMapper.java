@@ -13,13 +13,9 @@ public class UserMapper implements BasicMapper<User, UserDto> {
     @Override
     public User mapperToDomain(UserDto userDto) {
         return new User(
-                userDto.getId(),
                 userDto.getLogin(),
                 userDto.getPassword(),
-                userDto.getEmail(),
-                userDto.getInstruments(),
-                userDto.getStatistics(),
-                userDto.getMarketPrices()
+                userDto.getEmail()
         );
     }
 
@@ -36,10 +32,7 @@ public class UserMapper implements BasicMapper<User, UserDto> {
                 user.getId(),
                 user.getLogin(),
                 user.getPassword(),
-                user.getEmail(),
-                user.getInstruments(),
-                user.getStatistics(),
-                user.getMarketPrices()
+                user.getEmail()
         );
     }
 

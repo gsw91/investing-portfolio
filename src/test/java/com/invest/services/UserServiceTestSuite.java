@@ -1,11 +1,15 @@
 package com.invest.services;
 
+import com.invest.exceptions.NoSuchUserException;
 import com.invest.repositories.UserDao;
 import com.invest.domain.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.*;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -33,7 +37,6 @@ public class UserServiceTestSuite {
         assertEquals("mockito", savedUser.getPassword());
         assertEquals("mock@mockito.com", savedUser.getEmail());
         assertEquals(0, savedUser.getInstruments().size());
-        assertEquals(0, savedUser.getMarketPrices().size());
     }
 
     @Test
@@ -82,14 +85,17 @@ public class UserServiceTestSuite {
     public void shouldFindUser() {
         //given
         User user = new User("Mockito_user", "mockito", "mock@mockito.com");
-        long userId = 991L;
-        when(userDao.findById(userId)).thenReturn(Optional.of(user));
-        //when
-        User readUser = userService.getUser(userId);
-        //given
-        assertEquals("Mockito_user", readUser.getLogin());
-        assertEquals("mockito", readUser.getPassword());
-        assertEquals("mock@mockito.com", readUser.getEmail());
+        List<User> users = new ArrayList<>();
+        users.add(user);
+        when(userDao.findAll()).thenReturn(users);
+        //when & then
+        try {
+            User readUser = userService.findUserByName("Mockito_user");
+            assertEquals("Mockito_user", readUser.getLogin());
+            assertEquals("mockito", readUser.getPassword());
+            assertEquals("mock@mockito.com", readUser.getEmail());
+        } catch (NoSuchUserException e) {
+        }
     }
 
 }

@@ -1,5 +1,6 @@
 package com.invest.services;
 
+import com.invest.exceptions.NoSuchUserException;
 import com.invest.repositories.UserDao;
 import com.invest.domain.User;
 
@@ -22,7 +23,7 @@ public class UserService {
         return userDao.save(user);
     }
 
-    public User findUserByName(String username) {
+    public User findUserByName(String username) throws NoSuchUserException {
         List<User> usersList = userDao.findAll();
         Optional<User> isExist = usersList.stream()
                 .filter(t->t.getLogin().equals(username))
@@ -30,7 +31,7 @@ public class UserService {
         if (isExist.isPresent()) {
             return isExist.get();
         } else {
-            throw new IllegalArgumentException();
+            throw new NoSuchUserException();
         }
     }
 
@@ -69,31 +70,17 @@ public class UserService {
         }
     }
 
-    public User getUser(Long id) {
-        if (userDao.findById(id).isPresent()) {
-            return userDao.findById(id).get();
-        } else {
-            LOGGER.warn("No such user with this id");
-            return new User();
-        }
-    }
-
-    public boolean checkIfExists(Long id) {
-        if (userDao.findById(id).isPresent()) {
-            LOGGER.info("User with id " + id + " exists");
+    public boolean changeUserEmail(Long userId, String email) {
+        if (userDao.findById(userId).isPresent()) {
+            User user = userDao.findById(userId).get();
+            user.setEmail(email);
+            userDao.save(user);
+            LOGGER.info("Password updated successfully");
             return true;
         } else {
-            LOGGER.warn("No such user with this id");
+            LOGGER.warn("Password updating failed");
             return false;
         }
     }
-
-    //method to add bought instrument
-    // add market price
-    // add statistics
-
-    //method to remove/sell instrument
-    // remove market price
-    // complement(fill in) statistics
 
 }

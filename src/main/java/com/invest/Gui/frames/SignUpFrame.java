@@ -29,6 +29,7 @@ public class SignUpFrame {
     public void openSignUpFrame() {
         singUpFrame = new JFrame("Sign Up");
         singUpFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        singUpFrame.setLocation(500,300);
 
         loginField = new JTextField("login");
         loginField.setFont(new Font(Font.SERIF, Font.PLAIN, 16));
@@ -46,7 +47,7 @@ public class SignUpFrame {
         emailField.setFont(new Font(Font.SERIF, Font.PLAIN, 16));
         emailField.addMouseListener(new EmailFieldMouseListener());
 
-        JButton logIn = new JButton("change to log in");
+        JButton logIn = new JButton("log in");
         logIn.setFont(new Font(Font.SERIF, Font.PLAIN, 20));
         logIn.addActionListener(new LogInActionListener());
 
@@ -83,7 +84,7 @@ public class SignUpFrame {
         singUpFrame.getContentPane().add(BorderLayout.CENTER, panel);
         singUpFrame.getContentPane().add(BorderLayout.SOUTH, signUp);
         singUpFrame.getContentPane().add(BorderLayout.NORTH, optionsPanel);
-        singUpFrame.setSize(600,450);
+        singUpFrame.setSize(400,250);
         singUpFrame.setVisible(true);
     }
 
@@ -103,7 +104,7 @@ public class SignUpFrame {
                 System.out.println(name + password + email);
                 sendCreateRequest(name, password, email);
             } catch (IOException ex) {
-                LOGGER.warn("Exception - " + ex.getMessage());
+                LOGGER.warn("Connection refused");
             }
         }
 

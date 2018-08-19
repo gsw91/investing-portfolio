@@ -16,6 +16,13 @@ public class Instrument {
     public Instrument() {
     }
 
+    public Instrument(Long id, MarketPrice marketPrice, Double buyingPrice, LocalDate buyingDate) {
+        this.id = id;
+        this.marketPrice = marketPrice;
+        this.buyingPrice = buyingPrice;
+        this.buyingDate = buyingDate;
+    }
+
     public Instrument(User user, MarketPrice marketPrice, double buyingPrice, LocalDate buyingDate) {
         this.user = user;
         this.marketPrice = marketPrice;

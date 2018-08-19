@@ -37,6 +37,21 @@ public class Statistics {
         this.duration = sellingDate.toEpochDay()-buyingDate.toEpochDay();
     }
 
+    public Statistics(Long id, User user, String instrumentName, BigDecimal buyingPrice, LocalDate buyingDate, Long quantity,
+                      BigDecimal sellingPrice, LocalDate sellingDate, BigDecimal result, BigDecimal returnRate, Long duration) {
+        this.id = id;
+        this.user = user;
+        this.instrumentName = instrumentName;
+        this.buyingPrice = buyingPrice;
+        this.buyingDate = buyingDate;
+        this.quantity = quantity;
+        this.sellingPrice = sellingPrice;
+        this.sellingDate = sellingDate;
+        this.result = result;
+        this.returnRate = returnRate;
+        this.duration = duration;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "STAT_ID", nullable = false)

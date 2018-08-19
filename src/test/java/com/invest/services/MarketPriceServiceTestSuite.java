@@ -1,6 +1,7 @@
 package com.invest.services;
 
-import com.invest.dtos.MarketPriceDto;
+import com.invest.domain.MarketPrice;
+import com.invest.mappers.MarketPriceMapper;
 import com.invest.quotations.QuotationConnecting;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,28 +22,31 @@ public class MarketPriceServiceTestSuite {
     @Autowired
     private QuotationConnecting quotationConnecting;
 
+    @Autowired
+    private MarketPriceMapper mapper;
+
     @Test
     public void shouldUpdateAllSharesPrices() {
         //given
-        marketPriceService.updatePrices(quotationConnecting.updateQuotations());
-        List<MarketPriceDto> currentQuotations = marketPriceService.findMarketPrices();
+        marketPriceService.updatePrices(mapper.mapperToListDomain(quotationConnecting.updateQuotations()));
+        List<MarketPrice> currentQuotations = marketPriceService.getAll();
         int size = currentQuotations.size();
         //when
         long id11BIT = currentQuotations.stream()
                 .filter(t->t.getIndex().equals("11BIT"))
-                .map(MarketPriceDto::getId)
+                .map(MarketPrice::getId)
                 .findFirst().orElse(355L);
         long idEssystem= currentQuotations.stream()
                 .filter(t->t.getIndex().equals("ESSYSTEM"))
-                .map(MarketPriceDto::getId)
+                .map(MarketPrice::getId)
                 .findFirst().orElse(355L);
         long idMercor= currentQuotations.stream()
                 .filter(t->t.getIndex().equals("MERCOR"))
-                .map(MarketPriceDto::getId)
+                .map(MarketPrice::getId)
                 .findFirst().orElse(355L);
         long idZue= currentQuotations.stream()
                 .filter(t->t.getIndex().equals("ZUE"))
-                .map(MarketPriceDto::getId)
+                .map(MarketPrice::getId)
                 .findFirst().orElse(355L);
         //then
         assertEquals(355, size);

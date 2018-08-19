@@ -14,9 +14,16 @@ public class User {
     private String email;
     private List<Instrument> instruments = new ArrayList<>();
     private List<Statistics> statistics = new ArrayList<>();
-    private List<MarketPrice> marketPrices = new ArrayList<>();
 
     public User() {
+    }
+
+    public User(Long id) {
+        this.id = id;
+    }
+
+    public User(String login) {
+        this.login = login;
     }
 
     public User(String login, String password, String email) {
@@ -25,14 +32,13 @@ public class User {
         this.email = email;
     }
 
-    public User(Long id, String login, String password, String email, List<Instrument> instruments, List<Statistics> statistics, List<MarketPrice> marketPrices) {
+    public User(Long id, String login, String password, String email, List<Instrument> instruments, List<Statistics> statistics) {
         this.id = id;
         this.login = login;
         this.password = password;
         this.email = email;
         this.instruments = instruments;
         this.statistics = statistics;
-        this.marketPrices = marketPrices;
     }
 
     @Id
@@ -91,12 +97,4 @@ public class User {
         this.statistics = statistics;
     }
 
-    @ManyToMany(targetEntity = MarketPrice.class, mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    public List<MarketPrice> getMarketPrices() {
-        return marketPrices;
-    }
-
-    public void setMarketPrices(List<MarketPrice> marketPrices) {
-        this.marketPrices = marketPrices;
-    }
 }

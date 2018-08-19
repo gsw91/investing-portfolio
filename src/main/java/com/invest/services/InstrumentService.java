@@ -1,9 +1,13 @@
 package com.invest.services;
 
 import com.invest.domain.Instrument;
+import com.invest.domain.User;
 import com.invest.repositories.InstrumentDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class InstrumentService {
@@ -11,12 +15,18 @@ public class InstrumentService {
     @Autowired
     private InstrumentDao instrumentDao;
 
-    public Instrument addNewInstrument(Instrument instrument) {
+    public Instrument buyInstrument(Instrument instrument) {
         return instrumentDao.save(instrument);
     }
 
-    public void removeInstrument(long id) {
+    public void sellInstrument(long id) {
         instrumentDao.deleteById(id);
+    }
+
+    public List<Instrument> showAll(User user) {
+        return instrumentDao.findAll().stream()
+                .filter(t -> t.getUser().equals(user))
+                .collect(Collectors.toList());
     }
 
 }

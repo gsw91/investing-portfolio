@@ -4,8 +4,7 @@ import com.invest.domain.Statistics;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
+import java.util.List;
 
 @Repository
 @Transactional
@@ -15,15 +14,11 @@ public interface StatisticsDao extends CrudRepository<Statistics, Long> {
     <S extends Statistics> S save(S entity);
 
     @Override
-    Optional<Statistics> findById(Long aLong);
+    List<Statistics> findAll();
 
     @Override
-    boolean existsById(Long aLong);
+    default void deleteById(Long aLong) {
 
-    @Override
-    long count();
-
-    @Override
-    void deleteById(Long aLong);
+    }
 
 }

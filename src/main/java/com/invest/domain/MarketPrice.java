@@ -13,7 +13,6 @@ public class MarketPrice {
     private Long id;
     private String index;
     private List<Instrument> instruments = new ArrayList<>();
-    private List<User> users = new ArrayList<>();
     private Double price;
     private LocalDateTime serverActualization;
     private LocalDateTime applicationActualization;
@@ -21,11 +20,10 @@ public class MarketPrice {
     public MarketPrice() {
     }
 
-    public MarketPrice(Long id, String index, List<Instrument> instruments, List<User> users, Double price, LocalDateTime serverActualization, LocalDateTime applicationActualization) {
+    public MarketPrice(Long id, String index, Double price, LocalDateTime serverActualization, LocalDateTime applicationActualization) {
         this.id = id;
         this.index = index;
         this.instruments = instruments;
-        this.users = users;
         this.price = price;
         this.serverActualization = serverActualization;
         this.applicationActualization = applicationActualization;
@@ -47,18 +45,6 @@ public class MarketPrice {
         return index;
     }
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "JOIN_USERS_INSTRUMENTS",
-            joinColumns = {
-                    @JoinColumn(name = "MARKET_ID", referencedColumnName = "MARKET_ID")},
-            inverseJoinColumns = {
-                    @JoinColumn(name = "USER_ID", referencedColumnName = "USER_ID")}
-    )
-    public List<User> getUsers() {
-        return users;
-    }
-
     @Column(name = "CURRENT_PRICE", nullable = false)
     public Double getPrice() {
         return price;
@@ -78,9 +64,6 @@ public class MarketPrice {
         this.id = id;
     }
 
-    public void setUsers(List<User> users) {
-        this.users = users;
-    }
 
     public void setPrice(Double price) {
         this.price = price;
@@ -108,7 +91,6 @@ public class MarketPrice {
                 "id=" + id +
                 ", index='" + index + '\'' +
                 ", instruments=" + instruments +
-                ", users=" + users +
                 ", price=" + price +
                 ", serverActualization=" + serverActualization +
                 ", applicationActualization=" + applicationActualization +
