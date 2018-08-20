@@ -2,22 +2,22 @@ package com.invest.Gui.tables;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
+import java.io.*;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
+import java.net.*;
+import java.util.*;
 
 public class UserTable extends AbstractTableModel {
 
     private String[] columnNames = { "Name", "Quantity", "Buy", "Now", "Value", "Change", "Result"};
     private Object[][] data;
 
-    public JTable showTable() {
-        List<UserData> list = new ArrayList<>();
-        list.add(new UserData("Krezus", 1000L, BigDecimal.valueOf(3.69), BigDecimal.valueOf(1.87)));
-        list.add(new UserData("Orlen", 300L, BigDecimal.valueOf(82.56), BigDecimal.valueOf(94.56)));
-        list.add(new UserData("Cognor", 2500L, BigDecimal.valueOf(1.69), BigDecimal.valueOf(2.09)));
-
-        setData(list);
+    public JTable showTable(Long userId) {
+        try {
+            setData(connectToDatabase(userId));
+        } catch (IOException e) {
+            setData(new ArrayList<>());
+        }
         return new JTable(data, columnNames);
     }
 
@@ -33,6 +33,81 @@ public class UserTable extends AbstractTableModel {
             data[i][5] = userDataList.get(i).getChange();
             data[i][6] = userDataList.get(i).getResult();
         }
+    }
+
+    private List<UserData> connectToDatabase(Long userId) throws IOException {
+        Set<String> indexList = new HashSet<>();
+        List<UserData> userDataList = new ArrayList<>();
+        String request = "http://localhost:8080//v1/instrument/show?userId=" + userId;
+        URL url = new URL(request);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+        int responseCode = connection.getResponseCode();
+        if (responseCode==200) {
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String inputLine;
+            StringBuffer response = new StringBuffer();
+            while ((inputLine = bufferedReader.readLine()) != null) {
+                response.append(inputLine);
+            }
+
+            String allResponse = response.toString();
+            allResponse = allResponse.replace("[", "");
+            allResponse = allResponse.replace("{", "");
+            allResponse = allResponse.replace("}", "");
+            allResponse = allResponse.replace("]", "");
+            String[] array = allResponse.split(",");
+
+            ArrayList<String> list = new ArrayList<>();
+            for (String i : array) {
+                String[] nextArray = i.split(":");
+                 if (nextArray.length == 2) {
+                    list.add(nextArray[1]);
+                }
+            }
+
+            //getPricesModulo
+            int modulo = list.size()%2;
+            if (modulo == 0) {
+                int quantity = list.size()/2;
+                for(int i=0; i<=quantity; i+=6) {
+                    indexList.add(list.get(i+3));
+                    userDataList.add(new UserData(
+                            list.get(i+3),
+                            Long.valueOf(list.get(i+2)),
+                            BigDecimal.valueOf(Double.valueOf(list.get(i+4))),
+                            BigDecimal.valueOf(Double.valueOf(getCurrentPrice(list.get(i+3))))
+                    ));
+                }
+            }
+        }
+        return userDataList;
+    }
+
+    private String getCurrentPrice(String indexList) throws IOException {
+        String newRequest = "http://localhost:8080/v1/shares/price?name=";
+            String mp = newRequest + indexList.replace("\"", "");
+            URL newUrl = new URL(mp);
+            HttpURLConnection newConnection = (HttpURLConnection) newUrl.openConnection();
+            newConnection.setRequestMethod("GET");
+            int newResponseCode = newConnection.getResponseCode();
+            if (newResponseCode == 200) {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(newConnection.getInputStream()));
+                String newLine;
+                StringBuffer buffer = new StringBuffer();
+                while ((newLine = reader.readLine()) != null) {
+                    buffer.append(newLine);
+                }
+                String newResponse = buffer.toString();
+                newResponse = newResponse.replace("[", "");
+                newResponse = newResponse.replace("{", "");
+                newResponse = newResponse.replace("}", "");
+                newResponse = newResponse.replace("]", "");
+                String[] array = newResponse.split(",");
+                array = array[2].split(":");
+                return array[1];
+            }
+        return "";
     }
 
 

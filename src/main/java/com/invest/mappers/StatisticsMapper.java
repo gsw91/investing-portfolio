@@ -2,11 +2,15 @@ package com.invest.mappers;
 
 import com.invest.domain.Statistics;
 import com.invest.dtos.StatisticsDto;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class StatisticsMapper implements BasicMapper<Statistics, StatisticsDto> {
+
+    @Override
+    public void accept(Object o) {
+
+    }
 
     @Override
     public Statistics mapperToDomain(StatisticsDto statisticsDto) {

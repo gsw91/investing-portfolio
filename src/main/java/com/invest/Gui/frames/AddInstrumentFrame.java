@@ -1,17 +1,13 @@
 package com.invest.Gui.frames;
 
 import com.invest.domain.MarketPrice;
-import com.invest.domain.User;
 import com.invest.dtos.UserDto;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
-
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.io.*;
+import java.net.*;
 import java.time.LocalDate;
 
 public class AddInstrumentFrame {

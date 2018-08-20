@@ -1,5 +1,8 @@
 package com.invest.domain;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -7,6 +10,9 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "STATISTICS")
 @Access(AccessType.PROPERTY)
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Statistics {
 
     private Long id;

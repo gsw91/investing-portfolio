@@ -7,6 +7,8 @@ import com.invest.services.InstrumentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @CrossOrigin("*")
@@ -26,6 +28,11 @@ public class InstrumentController {
     @RequestMapping(method = RequestMethod.POST, value = "add", consumes = APPLICATION_JSON_VALUE)
     public InstrumentDto addInstrument(@RequestBody InstrumentDto instrumentDto) {
         return instrumentMapper.mapperToDto(service.buyInstrument(instrumentMapper.mapperToDomain(instrumentDto)));
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "show", params = {"userId"})
+    public List<InstrumentDto> showUserInstruments(@RequestParam("userId") Long userId) {
+        return instrumentMapper.mapperToListDto(service.allUserInstruments(userId));
     }
 
 //    @RequestMapping(method = RequestMethod.DELETE, value = "sell", params = { "user", "name", "quantity", "price" })

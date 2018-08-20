@@ -1,16 +1,15 @@
 package com.invest.Gui;
 
-import com.invest.Gui.frames.SignUpFrame;
-import com.invest.Gui.frames.UserFrame;
+import com.invest.Gui.frames.LogInFrame;
 
 public class GuiConfiguration {
 
     protected void run() {
-        SignUpFrame frame = new SignUpFrame();
-        frame.openSignUpFrame();
+        LogInFrame logInFrame = new LogInFrame();
+        logInFrame.run();
 
-        //UserFrame userFrame = new UserFrame();
-        //userFrame.OpenUserFrame("gw001");
+//        UserFrame userFrame = new UserFrame(new UserDto(421L, "admin", "admin", "g.wojcik@vp.pl"));
+//        userFrame.OpenUserFrame();
 
     }
 }

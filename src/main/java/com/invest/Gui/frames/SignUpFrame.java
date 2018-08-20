@@ -2,17 +2,11 @@ package com.invest.Gui.frames;
 
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.awt.event.*;
+import java.io.*;
+import java.net.*;
 
 public class SignUpFrame {
 
@@ -101,7 +95,6 @@ public class SignUpFrame {
             String email = emailField.getText();
 
             try {
-                System.out.println(name + password + email);
                 sendCreateRequest(name, password, email);
             } catch (IOException ex) {
                 LOGGER.warn("Connection refused");
@@ -128,11 +121,19 @@ public class SignUpFrame {
             wr.flush();
 
             int responseCode = connection.getResponseCode();
-            System.out.println("response code " + responseCode);
-            if (responseCode==200) {
-                LOGGER.info("User creater");
+
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String inputLine;
+            StringBuffer response = new StringBuffer();
+            while ((inputLine = bufferedReader.readLine()) != null) {
+                response.append(inputLine);
+            }
+            String allResponse = response.toString();
+
+            if (responseCode==200 && allResponse.equals("User created")) {
+                LOGGER.info("User created");
             } else {
-                LOGGER.warn("User creation failed");
+                LOGGER.warn(allResponse);
             }
         }
     }

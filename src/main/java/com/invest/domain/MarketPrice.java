@@ -1,5 +1,10 @@
 package com.invest.domain;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -8,6 +13,10 @@ import java.util.List;
 @Entity
 @Table(name = "CURRENT_MARKET_PRICES")
 @Access(AccessType.PROPERTY)
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "index")
+@JsonIdentityReference(alwaysAsId=true)
 public class MarketPrice {
 
     private Long id;
@@ -23,6 +32,14 @@ public class MarketPrice {
     public MarketPrice(Long id, String index, Double price, LocalDateTime serverActualization, LocalDateTime applicationActualization) {
         this.id = id;
         this.index = index;
+        this.price = price;
+        this.serverActualization = serverActualization;
+        this.applicationActualization = applicationActualization;
+    }
+
+    public MarketPrice(Long id, String index, List<Instrument> instruments, Double price, LocalDateTime serverActualization, LocalDateTime applicationActualization) {
+        this.id = id;
+        this.index = index;
         this.instruments = instruments;
         this.price = price;
         this.serverActualization = serverActualization;
@@ -30,12 +47,13 @@ public class MarketPrice {
     }
 
     @Id
-    @Column(name = "MARKET_ID", nullable = false)
+    @Column(name = "MARKET_ID")
     public Long getId() {
         return id;
     }
 
-    @OneToMany(targetEntity = Instrument.class, mappedBy = "marketPrice", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(targetEntity = Instrument.class, mappedBy = "marketPrice", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnore
     public List<Instrument> getInstruments() {
         return instruments;
     }
@@ -83,18 +101,6 @@ public class MarketPrice {
 
     public void setApplicationActualization(LocalDateTime applicationActualization) {
         this.applicationActualization = applicationActualization;
-    }
-
-    @Override
-    public String toString() {
-        return "MarketPrice{" +
-                "id=" + id +
-                ", index='" + index + '\'' +
-                ", instruments=" + instruments +
-                ", price=" + price +
-                ", serverActualization=" + serverActualization +
-                ", applicationActualization=" + applicationActualization +
-                '}';
     }
 
 }

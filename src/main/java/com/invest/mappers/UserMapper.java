@@ -3,12 +3,16 @@ package com.invest.mappers;
 import com.invest.domain.User;
 import com.invest.dtos.UserDto;
 import org.springframework.stereotype.Component;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
 public class UserMapper implements BasicMapper<User, UserDto> {
+
+    @Override
+    public void accept(Object o) {
+
+    }
 
     @Override
     public User mapperToDomain(UserDto userDto) {

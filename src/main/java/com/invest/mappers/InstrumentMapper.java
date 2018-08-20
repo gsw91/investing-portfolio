@@ -1,6 +1,7 @@
 package com.invest.mappers;
 
 import com.invest.domain.Instrument;
+import com.invest.domain.User;
 import com.invest.dtos.InstrumentDto;
 import org.springframework.stereotype.Component;
 
@@ -11,10 +12,15 @@ import java.util.stream.Collectors;
 public class InstrumentMapper implements BasicMapper<Instrument, InstrumentDto> {
 
     @Override
+    public void accept(Object o) {
+    }
+
+    @Override
     public Instrument mapperToDomain(InstrumentDto instrumentDto) {
         return new Instrument(
                 instrumentDto.getId(),
-                instrumentDto.getUser(),
+                new User(instrumentDto.getUserId()),
+                instrumentDto.getQuantity(),
                 instrumentDto.getMarketPrice(),
                 instrumentDto.getBuyingPrice(),
                 instrumentDto.getBuyingDate()
@@ -32,7 +38,8 @@ public class InstrumentMapper implements BasicMapper<Instrument, InstrumentDto> 
     public InstrumentDto mapperToDto(Instrument instrument) {
         return new InstrumentDto(
                 instrument.getId(),
-                instrument.getUser(),
+                instrument.getUser().getId(),
+                instrument.getQuantity(),
                 instrument.getMarketPrice(),
                 instrument.getBuyingPrice(),
                 instrument.getBuyingDate()

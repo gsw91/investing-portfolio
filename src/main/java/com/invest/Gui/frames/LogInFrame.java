@@ -3,16 +3,11 @@ package com.invest.Gui.frames;
 import com.invest.dtos.UserDto;
 import com.invest.exceptions.LogInException;
 import org.apache.log4j.Logger;
-import org.json.JSONObject;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.io.*;
+import java.net.*;
 import java.util.ArrayList;
 
 public class LogInFrame {

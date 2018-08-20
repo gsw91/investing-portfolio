@@ -33,12 +33,12 @@ public class QuotationsUpdating {
 
         try {
 
-            MarketPriceDto beforeUpdateFirst = mapper.mapperToDto(service.findMarketPrice(0L));
-            MarketPriceDto beforeUpdateLast = mapper.mapperToDto(service.findMarketPrice(354L));
+            MarketPriceDto beforeUpdateFirst = mapper.mapperToDto(service.findMarketPrice("11BIT"));
+            MarketPriceDto beforeUpdateLast = mapper.mapperToDto(service.findMarketPrice("ZUE"));
             List<MarketPriceDto> listDto = quotationConnecting.updateQuotations();
             service.updatePrices(mapper.mapperToListDomain(listDto));
-            MarketPriceDto afterUpdateFirst = mapper.mapperToDto(service.findMarketPrice(0L));
-            MarketPriceDto afterUpdateLast = mapper.mapperToDto(service.findMarketPrice(354L));
+            MarketPriceDto afterUpdateFirst = mapper.mapperToDto(service.findMarketPrice("11BIT"));
+            MarketPriceDto afterUpdateLast = mapper.mapperToDto(service.findMarketPrice("ZUE"));
 
             if (!beforeUpdateFirst.equals(afterUpdateFirst) && !beforeUpdateLast.equals(afterUpdateLast)) {
                 long stop = System.currentTimeMillis();

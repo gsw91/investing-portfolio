@@ -10,6 +10,11 @@ import java.util.stream.Collectors;
 public class MarketPriceMapper implements BasicMapper<MarketPrice, MarketPriceDto> {
 
     @Override
+    public void accept(Object o) {
+
+    }
+
+    @Override
     public MarketPrice mapperToDomain(MarketPriceDto marketPriceDto) {
         return new MarketPrice(
                 marketPriceDto.getId(),

@@ -9,6 +9,7 @@ import java.time.LocalDate;
 public class Instrument {
     private Long id;
     private User user;
+    private Long quantity;
     private MarketPrice marketPrice;
     private Double buyingPrice;
     private LocalDate buyingDate;
@@ -16,23 +17,26 @@ public class Instrument {
     public Instrument() {
     }
 
-    public Instrument(Long id, MarketPrice marketPrice, Double buyingPrice, LocalDate buyingDate) {
+    public Instrument(Long id, MarketPrice marketPrice, Long quantity, Double buyingPrice, LocalDate buyingDate) {
         this.id = id;
         this.marketPrice = marketPrice;
+        this.quantity = quantity;
         this.buyingPrice = buyingPrice;
         this.buyingDate = buyingDate;
     }
 
-    public Instrument(User user, MarketPrice marketPrice, double buyingPrice, LocalDate buyingDate) {
+    public Instrument(User user, MarketPrice marketPrice, Long quantity, double buyingPrice, LocalDate buyingDate) {
         this.user = user;
         this.marketPrice = marketPrice;
+        this.quantity = quantity;
         this.buyingPrice = buyingPrice;
         this.buyingDate = buyingDate;
     }
 
-    public Instrument(Long id, User user, MarketPrice marketPrice, Double buyingPrice, LocalDate buyingDate) {
+    public Instrument(Long id, User user,Long quantity, MarketPrice marketPrice, Double buyingPrice, LocalDate buyingDate) {
         this.id = id;
         this.user = user;
+        this.quantity = quantity;
         this.marketPrice = marketPrice;
         this.buyingPrice = buyingPrice;
         this.buyingDate = buyingDate;
@@ -45,14 +49,19 @@ public class Instrument {
         return id;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "USER_ID", nullable = false)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "USER_ID")
     public User getUser() {
         return user;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "MARKET_ID", nullable = false)
+    @Column(name = "QUANTITY")
+    public Long getQuantity() {
+        return quantity;
+    }
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "MARKET_ID")
     public MarketPrice getMarketPrice() {
         return marketPrice;
     }
@@ -85,6 +94,10 @@ public class Instrument {
 
     public void setBuyingDate(LocalDate buyingDate) {
         this.buyingDate = buyingDate;
+    }
+
+    public void setQuantity(Long quantity) {
+        this.quantity = quantity;
     }
 
 }

@@ -3,6 +3,7 @@ package com.invest.controller;
 import com.invest.domain.User;
 import com.invest.dtos.UserDto;
 import com.invest.exceptions.NoSuchUserException;
+import com.invest.exceptions.UserExistsException;
 import com.invest.mappers.UserMapper;
 import com.invest.services.UserService;
 import org.apache.log4j.Logger;
@@ -25,8 +26,14 @@ public class UserController {
     private UserMapper mapper;
 
     @RequestMapping(method = RequestMethod.POST, value = "create", consumes = APPLICATION_JSON_VALUE)
-    public void createUser(@RequestBody UserDto userDto) {
-        User user = service.createUser(mapper.mapperToDomain(userDto));
+    public String createUser(@RequestBody UserDto userDto) {
+        try {
+            User user = service.createUser(mapper.mapperToDomain(userDto));
+            return "User created";
+        } catch (UserExistsException e) {
+            LOGGER.warn(e.getMessage());
+            return e.getMessage();
+        }
     }
 
     @RequestMapping(method = RequestMethod.GET, params = { "name", "password" },  value = "login")

@@ -1,5 +1,10 @@
 package com.invest.domain;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +12,10 @@ import java.util.List;
 @Entity
 @Table(name = "USERS")
 @Access(AccessType.PROPERTY)
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
+@JsonIdentityReference(alwaysAsId=true)
 public class User {
     private Long id;
     private String login;
@@ -79,7 +88,8 @@ public class User {
         this.email = email;
     }
 
-    @OneToMany(targetEntity = Instrument.class, mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(targetEntity = Instrument.class, mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnore
     public List<Instrument> getInstruments() {
         return instruments;
     }
@@ -89,6 +99,7 @@ public class User {
     }
 
     @OneToMany(targetEntity = Statistics.class, mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     public List<Statistics> getStatistics() {
         return statistics;
     }

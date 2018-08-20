@@ -1,16 +1,14 @@
 package com.invest.services;
 
 import com.invest.exceptions.NoSuchUserException;
+import com.invest.exceptions.UserExistsException;
 import com.invest.repositories.UserDao;
 import com.invest.domain.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.*;
 import org.mockito.junit.MockitoJUnitRunner;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -30,13 +28,16 @@ public class UserServiceTestSuite {
         user.setId(1032L);
         when(userDao.save(user)).thenReturn(user);
         //when
-        User savedUser = userService.createUser(user);
-        //then
-        assertEquals(1032L, savedUser.getId().longValue());
-        assertEquals("Mockito_user", savedUser.getLogin());
-        assertEquals("mockito", savedUser.getPassword());
-        assertEquals("mock@mockito.com", savedUser.getEmail());
-        assertEquals(0, savedUser.getInstruments().size());
+        try {
+            User savedUser = userService.createUser(user);
+            //then
+            assertEquals(1032L, savedUser.getId().longValue());
+            assertEquals("Mockito_user", savedUser.getLogin());
+            assertEquals("mockito", savedUser.getPassword());
+            assertEquals("mock@mockito.com", savedUser.getEmail());
+            assertEquals(0, savedUser.getInstruments().size());
+        } catch (UserExistsException e) {
+        }
     }
 
     @Test

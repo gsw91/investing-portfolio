@@ -1,6 +1,5 @@
 package com.invest.quotations;
 
-import com.invest.domain.MarketPrice;
 import com.invest.dtos.MarketPriceDto;
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;

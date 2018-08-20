@@ -1,8 +1,6 @@
 package com.invest.dtos;
 
-import com.invest.domain.*;
 import java.time.LocalDateTime;
-import java.util.*;
 
 public class MarketPriceDto {
 
@@ -11,6 +9,9 @@ public class MarketPriceDto {
     private Double price;
     private LocalDateTime serverActualization;
     private LocalDateTime applicationActualization;
+
+    public MarketPriceDto() {
+    }
 
     public MarketPriceDto(Long id, String index, Double price, LocalDateTime serverActualization, LocalDateTime applicationActualization) {
         this.id = id;

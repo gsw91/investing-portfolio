@@ -3,7 +3,6 @@ package com.invest.Gui.frames;
 import com.invest.Gui.tables.UserTable;
 import com.invest.dtos.UserDto;
 import org.apache.log4j.Logger;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -28,13 +27,13 @@ public class UserFrame {
     public void OpenUserFrame() {
 
         userFrame = new JFrame("User panel");
-        userFrame.setSize(540,300);
+        userFrame.setSize(600,300);
         userFrame.setLocation(500,300);
 
         configureButtons();
 
         UserTable userTable = new UserTable();
-        JTable table = userTable.showTable();
+        JTable table = userTable.showTable(userDto.getId());
         JScrollPane scrollPane = new JScrollPane(table);
         table.setFillsViewportHeight(true);
 
