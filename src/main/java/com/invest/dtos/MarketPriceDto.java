@@ -40,4 +40,5 @@ public class MarketPriceDto {
     public LocalDateTime getApplicationActualization() {
         return applicationActualization;
     }
+
 }

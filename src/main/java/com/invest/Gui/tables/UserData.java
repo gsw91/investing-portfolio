@@ -13,12 +13,6 @@ public class UserData {
     private String change;
     private BigDecimal result;
 
-    public UserData(String name, Long quantity, BigDecimal buy) {
-        this.name = name;
-        this.quantity = quantity;
-        this.buy = buy;
-    }
-
     public UserData(String name, Long quantity, BigDecimal buy, BigDecimal now) {
         this.name = name;
         this.quantity = quantity;
@@ -43,10 +37,6 @@ public class UserData {
 
     public BigDecimal getNow() {
         return now;
-    }
-
-    public void setNow(BigDecimal now) {
-        this.now = now;
     }
 
     public BigDecimal getValue() {

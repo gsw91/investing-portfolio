@@ -1,6 +1,5 @@
 package com.invest.Gui.frames;
 
-import com.invest.domain.MarketPrice;
 import com.invest.dtos.UserDto;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
@@ -15,20 +14,22 @@ public class AddInstrumentFrame {
     private final static Logger LOGGER = Logger.getLogger(AddInstrumentFrame.class);
     private UserDto userDto;
 
-    public AddInstrumentFrame(UserDto userDto) {
+    protected AddInstrumentFrame(UserDto userDto) {
         this.userDto = userDto;
     }
 
-    public void openAddingInstrumentFrame() {
+    protected void openAddingInstrumentFrame() {
         JFrame frame = new JFrame("Add instrument");
         frame.setLocation(500,300);
         frame.setSize(300,180);
-        frame.setLayout(new GridLayout(4,2));
+        frame.setLayout(new GridLayout(5,2));
         frame.getContentPane().add(new JLabel("Instrument name"));
         frame.getContentPane().add(new JTextField());
         frame.getContentPane().add(new JLabel("Quantity"));
         frame.getContentPane().add(new JTextField());
         frame.getContentPane().add(new JLabel("Price"));
+        frame.getContentPane().add(new JTextField());
+        frame.getContentPane().add(new JLabel("Bought YYYY-MM-DD"));
         frame.getContentPane().add(new JTextField());
         frame.getContentPane().add(new JButton("Confirm"));
         frame.getContentPane().add(new JButton("Cancel"));
@@ -36,8 +37,7 @@ public class AddInstrumentFrame {
         frame.setVisible(true);
     }
 
-
-    public void addingInstrument(MarketPrice marketPrice, double buyingPrice, LocalDate buyingDate) throws IOException {
+    public void addingInstrument(String index, Long quantity, Double buyingPrice, LocalDate buyingDate) throws IOException {
 
         String request = "http://localhost:8080/v1/instrument/add";
         URL url = new URL(request);
@@ -49,8 +49,9 @@ public class AddInstrumentFrame {
         connection.setRequestMethod("POST");
 
         JSONObject cred = new JSONObject();
-        cred.put("user", userDto);
-        cred.put("marketPrice", marketPrice);
+        cred.put("userId", userDto.getId());
+        cred.put("quantity", quantity);
+        cred.put("sharesIndex", index);
         cred.put("buyingPrice", buyingPrice);
         cred.put("buyingDate", buyingDate);
 

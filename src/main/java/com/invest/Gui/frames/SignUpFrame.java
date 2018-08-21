@@ -17,19 +17,19 @@ public class SignUpFrame {
     private JPasswordField passwordField;
     private JTextField emailField;
 
-    public SignUpFrame() throws HeadlessException {
+    protected SignUpFrame() throws HeadlessException {
     }
 
-    public void openSignUpFrame() {
+    protected void openSignUpFrame() {
         singUpFrame = new JFrame("Sign Up");
         singUpFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         singUpFrame.setLocation(500,300);
 
-        loginField = new JTextField("login");
+        loginField = new JTextField();
         loginField.setFont(new Font(Font.SERIF, Font.PLAIN, 16));
         loginField.addMouseListener(new LoginFieldMouseListener());
 
-        passwordField = new JPasswordField("password");
+        passwordField = new JPasswordField();
         passwordField.setFont(new Font(Font.SERIF, Font.PLAIN, 16));
         passwordField.addMouseListener(new PasswordFieldMouseListener());
 
@@ -37,7 +37,7 @@ public class SignUpFrame {
         exitButton.setFont(new Font(Font.SERIF, Font.PLAIN, 20));
         exitButton.addActionListener(new ExitButtonActionListener());
 
-        emailField = new JTextField("email");
+        emailField = new JTextField();
         emailField.setFont(new Font(Font.SERIF, Font.PLAIN, 16));
         emailField.addMouseListener(new EmailFieldMouseListener());
 

@@ -1,6 +1,5 @@
 package com.invest.services;
 
-import com.invest.exceptions.NoSuchUserException;
 import com.invest.exceptions.UserExistsException;
 import com.invest.repositories.UserDao;
 import com.invest.domain.User;
@@ -95,7 +94,7 @@ public class UserServiceTestSuite {
             assertEquals("Mockito_user", readUser.getLogin());
             assertEquals("mockito", readUser.getPassword());
             assertEquals("mock@mockito.com", readUser.getEmail());
-        } catch (NoSuchUserException e) {
+        } catch (UserExistsException e) {
         }
     }
 

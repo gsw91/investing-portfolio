@@ -78,4 +78,5 @@ public class StatisticsDto {
     public Long getDuration() {
         return duration;
     }
+
 }

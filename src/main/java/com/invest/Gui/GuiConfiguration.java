@@ -8,8 +8,6 @@ public class GuiConfiguration {
         LogInFrame logInFrame = new LogInFrame();
         logInFrame.run();
 
-//        UserFrame userFrame = new UserFrame(new UserDto(421L, "admin", "admin", "g.wojcik@vp.pl"));
-//        userFrame.OpenUserFrame();
-
     }
+
 }

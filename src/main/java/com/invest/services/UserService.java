@@ -1,6 +1,5 @@
 package com.invest.services;
 
-import com.invest.exceptions.NoSuchUserException;
 import com.invest.exceptions.UserExistsException;
 import com.invest.repositories.UserDao;
 import com.invest.domain.User;
@@ -33,7 +32,16 @@ public class UserService {
         }
     }
 
-    public User findUserByName(String username) throws NoSuchUserException {
+    public User findUserById(Long userId) throws UserExistsException {
+        boolean isExisting = userDao.findById(userId).isPresent();
+        if (isExisting) {
+            return userDao.findById(userId).get();
+        } else {
+            throw new UserExistsException(UserExistsException.NO_SUCH_USER);
+        }
+    }
+
+    public User findUserByName(String username) throws UserExistsException {
         List<User> usersList = userDao.findAll();
         Optional<User> isExist = usersList.stream()
                 .filter(t->t.getLogin().equals(username))
@@ -41,7 +49,7 @@ public class UserService {
         if (isExist.isPresent()) {
             return isExist.get();
         } else {
-            throw new NoSuchUserException();
+            throw new UserExistsException(UserExistsException.NO_SUCH_USER);
         }
     }
 

@@ -23,7 +23,6 @@ public class UserTable extends AbstractTableModel {
 
     private void setData(List<UserData> userDataList) {
         data = new Object[userDataList.size()][7];
-
         for (int i=0; i<userDataList.size(); i++) {
             data[i][0] = userDataList.get(i).getName();
             data[i][1] = userDataList.get(i).getQuantity();
@@ -36,9 +35,8 @@ public class UserTable extends AbstractTableModel {
     }
 
     private List<UserData> connectToDatabase(Long userId) throws IOException {
-        Set<String> indexList = new HashSet<>();
         List<UserData> userDataList = new ArrayList<>();
-        String request = "http://localhost:8080//v1/instrument/show?userId=" + userId;
+        String request = "http://localhost:8080/v1/instrument/show?userId=" + userId;
         URL url = new URL(request);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
@@ -67,20 +65,20 @@ public class UserTable extends AbstractTableModel {
             }
 
             //getPricesModulo
-            int modulo = list.size()%2;
+            int modulo = list.size()%5;
             if (modulo == 0) {
-                int quantity = list.size()/2;
-                for(int i=0; i<=quantity; i+=6) {
-                    indexList.add(list.get(i+3));
+                int quantity = list.size();
+                for(int i=0; i<quantity; i+=5) {
                     userDataList.add(new UserData(
-                            list.get(i+3),
-                            Long.valueOf(list.get(i+2)),
-                            BigDecimal.valueOf(Double.valueOf(list.get(i+4))),
-                            BigDecimal.valueOf(Double.valueOf(getCurrentPrice(list.get(i+3))))
+                            list.get(i+2),
+                            Long.valueOf(list.get(i+1)),
+                            BigDecimal.valueOf(Double.valueOf(list.get(i+3))),
+                            BigDecimal.valueOf(Double.valueOf(getCurrentPrice(list.get(i+2))))
                     ));
                 }
             }
         }
+
         return userDataList;
     }
 

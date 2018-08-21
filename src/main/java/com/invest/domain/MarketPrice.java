@@ -1,10 +1,5 @@
 package com.invest.domain;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -13,10 +8,6 @@ import java.util.List;
 @Entity
 @Table(name = "CURRENT_MARKET_PRICES")
 @Access(AccessType.PROPERTY)
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "index")
-@JsonIdentityReference(alwaysAsId=true)
 public class MarketPrice {
 
     private Long id;
@@ -27,6 +18,14 @@ public class MarketPrice {
     private LocalDateTime applicationActualization;
 
     public MarketPrice() {
+    }
+
+    public MarketPrice(Long id) {
+        this.id = id;
+    }
+
+    public MarketPrice(String index) {
+        this.index = index;
     }
 
     public MarketPrice(Long id, String index, Double price, LocalDateTime serverActualization, LocalDateTime applicationActualization) {
@@ -52,28 +51,27 @@ public class MarketPrice {
         return id;
     }
 
-    @OneToMany(targetEntity = Instrument.class, mappedBy = "marketPrice", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JsonIgnore
+    @OneToMany(targetEntity = Instrument.class, mappedBy = "marketPrice", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     public List<Instrument> getInstruments() {
         return instruments;
     }
 
-    @Column(name = "INSTR_NAME", nullable = false)
+    @Column(name = "INSTR_NAME")
     public String getIndex() {
         return index;
     }
 
-    @Column(name = "CURRENT_PRICE", nullable = false)
+    @Column(name = "CURRENT_PRICE")
     public Double getPrice() {
         return price;
     }
 
-    @Column(name = "STOCK_UPDATING", nullable = false)
+    @Column(name = "STOCK_UPDATING")
     public LocalDateTime getServerActualization() {
         return serverActualization;
     }
 
-    @Column(name = "APP_UPDATING", nullable = false)
+    @Column(name = "APP_UPDATING")
     public LocalDateTime getApplicationActualization() {
         return applicationActualization;
     }
@@ -81,7 +79,6 @@ public class MarketPrice {
     public void setId(Long id) {
         this.id = id;
     }
-
 
     public void setPrice(Double price) {
         this.price = price;

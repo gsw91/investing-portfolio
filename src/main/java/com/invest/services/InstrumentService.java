@@ -1,7 +1,6 @@
 package com.invest.services;
 
-import com.invest.domain.Instrument;
-import com.invest.domain.User;
+import com.invest.domain.*;
 import com.invest.dtos.InstrumentDto;
 import com.invest.mappers.InstrumentMapper;
 import com.invest.repositories.InstrumentDao;

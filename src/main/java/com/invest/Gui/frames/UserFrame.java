@@ -5,12 +5,12 @@ import com.invest.dtos.UserDto;
 import org.apache.log4j.Logger;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 
 public class UserFrame {
 
     private final static Logger LOGGER = Logger.getLogger(UserFrame.class);
+
     private UserDto userDto;
     private JFrame userFrame;
     private JButton refreshButton;
@@ -20,11 +20,11 @@ public class UserFrame {
     private JButton settingsButton;
     private JButton logOutButton;
 
-    public UserFrame(UserDto userDto) {
+    protected UserFrame(UserDto userDto) {
         this.userDto = userDto;
     }
 
-    public void OpenUserFrame() {
+    protected void OpenUserFrame() {
 
         userFrame = new JFrame("User panel");
         userFrame.setSize(600,300);

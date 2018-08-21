@@ -8,11 +8,6 @@ import java.util.stream.Collectors;
 public class StatisticsMapper implements BasicMapper<Statistics, StatisticsDto> {
 
     @Override
-    public void accept(Object o) {
-
-    }
-
-    @Override
     public Statistics mapperToDomain(StatisticsDto statisticsDto) {
          return new Statistics(
                 statisticsDto.getId(),

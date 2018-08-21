@@ -2,13 +2,16 @@ package com.invest.exceptions;
 
 public class MarketPriceException extends Exception {
 
-    private static String NO_SUCH_ELEMENT = "No market price has been found";
+    public static String UPDATING_QUOTATIONS_FAILED = "Updating quotations failed";
+    public static String MARKET_PRICE_EXCEPTION = "No market price has been found";
 
-    public MarketPriceException() {
+    public MarketPriceException(String message) {
+        super(message);
     }
 
     @Override
     public String getMessage() {
-        return NO_SUCH_ELEMENT;
+        return super.getMessage();
     }
+
 }

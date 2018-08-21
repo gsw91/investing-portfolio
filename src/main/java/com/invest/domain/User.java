@@ -1,10 +1,5 @@
 package com.invest.domain;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,10 +7,6 @@ import java.util.List;
 @Entity
 @Table(name = "USERS")
 @Access(AccessType.PROPERTY)
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
-@JsonIdentityReference(alwaysAsId=true)
 public class User {
     private Long id;
     private String login;
@@ -41,6 +32,13 @@ public class User {
         this.email = email;
     }
 
+    public User(Long id, String login, String password, String email) {
+        this.id = id;
+        this.login = login;
+        this.password = password;
+        this.email = email;
+    }
+
     public User(Long id, String login, String password, String email, List<Instrument> instruments, List<Statistics> statistics) {
         this.id = id;
         this.login = login;
@@ -53,6 +51,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "USER_ID")
+   // @JsonProperty("id")
     public Long getId() {
         return id;
     }
@@ -89,7 +88,7 @@ public class User {
     }
 
     @OneToMany(targetEntity = Instrument.class, mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JsonIgnore
+    //@JsonIgnore
     public List<Instrument> getInstruments() {
         return instruments;
     }
@@ -99,7 +98,7 @@ public class User {
     }
 
     @OneToMany(targetEntity = Statistics.class, mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnore
+    //@JsonIgnore
     public List<Statistics> getStatistics() {
         return statistics;
     }

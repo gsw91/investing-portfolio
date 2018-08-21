@@ -29,7 +29,7 @@ public class MarketPriceService {
                     .filter(t->t.getIndex().equals(index))
                     .findFirst().get();
         } else {
-            throw new MarketPriceException();
+            throw new MarketPriceException(MarketPriceException.MARKET_PRICE_EXCEPTION);
         }
     }
 

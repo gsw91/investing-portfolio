@@ -34,11 +34,11 @@ public class LogInFrame {
         exitButton.setFont(new Font(Font.SERIF, Font.PLAIN, 20));
         exitButton.addActionListener(new ExitButtonActionListener());
 
-        loginField = new JTextField("login");
+        loginField = new JTextField();
         loginField.setFont(new Font(Font.SERIF, Font.PLAIN, 16));
         loginField.addMouseListener(new LoginAreaMouseListener());
 
-        passwordField = new JPasswordField("password");
+        passwordField = new JPasswordField();
         passwordField.setFont(new Font(Font.SERIF, Font.PLAIN, 16));
         passwordField.addMouseListener(new PasswordAreaMouseListener());
 
@@ -123,17 +123,20 @@ public class LogInFrame {
 
                 String allResponse = response.toString();
                 allResponse = allResponse.replace("{", "");
+                allResponse = allResponse.replace("}", "");
                 String[] array = allResponse.split(",");
 
                 ArrayList<String> list = new ArrayList<>();
+
                     for(String i: array) {
                         String[] nextArray = i.split(":");
-                        list.add(nextArray[0]);
-                        list.add(nextArray[1]);
+                        if (nextArray.length ==2) {
+                            list.add(nextArray[1]);
+                        }
                     }
 
                     try {
-                        UserDto userDto = new UserDto(Long.valueOf(list.get(1)), list.get(3), list.get(5), list.get(7));
+                        UserDto userDto = new UserDto(Long.valueOf(list.get(0)), list.get(1), list.get(2), list.get(3));
                         UserFrame userFrame = new UserFrame(userDto);
                         userFrame.OpenUserFrame();
                         loginFrame.dispose();
