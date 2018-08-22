@@ -1,5 +1,7 @@
 package com.invest.domain;
 
+import org.springframework.context.annotation.Configuration;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 
@@ -11,26 +13,26 @@ public class Instrument {
     private Long id;
     private User user;
     private Long quantity;
-    private MarketPrice marketPrice;
+    private String share;
     private Double buyingPrice;
     private LocalDate buyingDate;
 
     public Instrument() {
     }
 
-    public Instrument(User user, Long quantity, MarketPrice marketPrice, Double buyingPrice, LocalDate buyingDate) {
+    public Instrument(User user, Long quantity, String share, Double buyingPrice, LocalDate buyingDate) {
         this.user = user;
         this.quantity = quantity;
-        this.marketPrice = marketPrice;
+        this.share = share;
         this.buyingPrice = buyingPrice;
         this.buyingDate = buyingDate;
     }
 
-    public Instrument(Long id, User user, Long quantity, MarketPrice marketPrice, Double buyingPrice, LocalDate buyingDate) {
+    public Instrument(Long id, User user, Long quantity, String share, Double buyingPrice, LocalDate buyingDate) {
         this.id = id;
         this.user = user;
         this.quantity = quantity;
-        this.marketPrice = marketPrice;
+        this.share = share;
         this.buyingPrice = buyingPrice;
         this.buyingDate = buyingDate;
     }
@@ -42,7 +44,7 @@ public class Instrument {
         return id;
     }
 
-    @ManyToOne//(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "USER_ID")
     public User getUser() {
         return user;
@@ -51,12 +53,6 @@ public class Instrument {
     @Column(name = "QUANTITY")
     public Long getQuantity() {
         return quantity;
-    }
-
-    @ManyToOne//(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "MARKET_ID")
-    public MarketPrice getMarketPrice() {
-        return marketPrice;
     }
 
     @Column(name = "BUYING_PRICE    ")
@@ -69,6 +65,10 @@ public class Instrument {
         return buyingDate;
     }
 
+    @Column(name = "SHARE_NAME")
+    public String getShare() {
+        return share;
+    }
 
     public void setId(Long id) {
         this.id = id;
@@ -78,8 +78,8 @@ public class Instrument {
         this.user = user;
     }
 
-    public void setMarketPrice(MarketPrice marketPrice) {
-        this.marketPrice = marketPrice;
+    public void setShare(String share) {
+        this.share = share;
     }
 
     public void setBuyingPrice(Double buyingPrice) {

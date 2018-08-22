@@ -100,6 +100,7 @@ public class LogInFrame {
             String password = builder.toString();
             try {
                 sendLogRequest(login, password);
+                LOGGER.info("User " + login + " logged in ");
             } catch (LogInException loginExce) {
                 LOGGER.warn("Wrong login or password");
             } catch (IOException exce) {
@@ -138,9 +139,8 @@ public class LogInFrame {
                     try {
                         UserDto userDto = new UserDto(Long.valueOf(list.get(0)), list.get(1), list.get(2), list.get(3));
                         UserFrame userFrame = new UserFrame(userDto);
-                        userFrame.OpenUserFrame();
+                        userFrame.openUserFrame();
                         loginFrame.dispose();
-                        LOGGER.info("User " + login + " logged in");
                     } catch (NumberFormatException e) {
                         throw new LogInException();
                     }

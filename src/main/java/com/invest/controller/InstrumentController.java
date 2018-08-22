@@ -33,4 +33,9 @@ public class InstrumentController {
         return instrumentMapper.mapperToListDto(service.allUserInstruments(userId));
     }
 
+    @RequestMapping(method = RequestMethod.DELETE, value = "sell", params = {"id"})
+    public void sellInstrument(@RequestParam("id") Long id) {
+        service.sellInstrument(id);
+    }
+
 }

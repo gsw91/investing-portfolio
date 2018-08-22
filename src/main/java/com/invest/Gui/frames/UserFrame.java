@@ -3,14 +3,16 @@ package com.invest.Gui.frames;
 import com.invest.Gui.tables.UserTable;
 import com.invest.dtos.UserDto;
 import org.apache.log4j.Logger;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class UserFrame {
 
     private final static Logger LOGGER = Logger.getLogger(UserFrame.class);
-
+    private AddInstrumentFrame addInstrumentFrame;
     private UserDto userDto;
     private JFrame userFrame;
     private JButton refreshButton;
@@ -19,21 +21,24 @@ public class UserFrame {
     private JButton statsButton;
     private JButton settingsButton;
     private JButton logOutButton;
+    private JTable table;
+    private UserTable userTable;
 
     protected UserFrame(UserDto userDto) {
         this.userDto = userDto;
     }
 
-    protected void OpenUserFrame() {
+    protected void openUserFrame() {
 
         userFrame = new JFrame("User panel");
         userFrame.setSize(600,300);
         userFrame.setLocation(500,300);
 
+        configureOtherFrames();
         configureButtons();
 
-        UserTable userTable = new UserTable();
-        JTable table = userTable.showTable(userDto.getId());
+        userTable = new UserTable();
+        table = userTable.showTable(userDto.getId());
         JScrollPane scrollPane = new JScrollPane(table);
         table.setFillsViewportHeight(true);
 
@@ -48,10 +53,15 @@ public class UserFrame {
         buttonsPanel.add(logOutButton);
 
         userFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        userFrame.add(BorderLayout.CENTER, scrollPane);
-        userFrame.add(BorderLayout.SOUTH, buttonsPanel);
+        userFrame.getContentPane().add(BorderLayout.CENTER, scrollPane);
+        userFrame.getContentPane().add(BorderLayout.SOUTH, buttonsPanel);
         userFrame.setVisible(true);
 
+    }
+
+    private void configureOtherFrames() {
+        addInstrumentFrame = new AddInstrumentFrame(userFrame, userDto, false);
+        addInstrumentFrame.openAddingInstrumentFrame();
     }
 
     private void configureButtons() {
@@ -76,15 +86,17 @@ public class UserFrame {
     class AddButtonActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            AddInstrumentFrame addInstrumentFrame = new AddInstrumentFrame(userDto);
-            addInstrumentFrame.openAddingInstrumentFrame();
+            addInstrumentFrame.setVisibility(true);
         }
     }
 
     class RefreshButtonActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            userFrame.setVisible(true);
+            LOGGER.info("Refreshing shares panel");
+            UserFrame newUserFrame = new UserFrame(userDto);
+            newUserFrame.openUserFrame();
+            userFrame.dispose();
         }
     }
 
@@ -97,5 +109,6 @@ public class UserFrame {
             userFrame.dispose();
         }
     }
+
 
 }

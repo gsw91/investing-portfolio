@@ -1,5 +1,7 @@
 package com.invest.Gui.tables;
 
+import org.apache.log4j.Logger;
+
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import java.io.*;
@@ -9,6 +11,7 @@ import java.util.*;
 
 public class UserTable extends AbstractTableModel {
 
+    private static Logger LOGGER = Logger.getLogger(UserTable.class);
     private String[] columnNames = { "Name", "Quantity", "Buy", "Now", "Value", "Change", "Result"};
     private Object[][] data;
 
@@ -63,7 +66,7 @@ public class UserTable extends AbstractTableModel {
                     list.add(nextArray[1]);
                 }
             }
-
+            LOGGER.info("Creating table for user");
             //getPricesModulo
             int modulo = list.size()%5;
             if (modulo == 0) {
@@ -83,7 +86,7 @@ public class UserTable extends AbstractTableModel {
     }
 
     private String getCurrentPrice(String indexList) throws IOException {
-        String newRequest = "http://localhost:8080/v1/shares/price?name=";
+        String newRequest = "http://localhost:8080/v1/share/name?name=";
             String mp = newRequest + indexList.replace("\"", "");
             URL newUrl = new URL(mp);
             HttpURLConnection newConnection = (HttpURLConnection) newUrl.openConnection();
@@ -102,12 +105,12 @@ public class UserTable extends AbstractTableModel {
                 newResponse = newResponse.replace("}", "");
                 newResponse = newResponse.replace("]", "");
                 String[] array = newResponse.split(",");
-                array = array[2].split(":");
+
+                array = array[1].split(":");
                 return array[1];
             }
         return "";
     }
-
 
     @Override
     public int getRowCount() {

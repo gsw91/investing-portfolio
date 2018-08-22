@@ -27,13 +27,9 @@ public class EntitiesTestSuite {
     @Autowired
     private StatisticsDao statisticsDao;
 
-    @Autowired
-    private MarketPriceDao marketPriceDao;
-
     private long user1Id = 0;
     private long user2Id = 0;
     private long user3Id = 0;
-    private long marketId = 0;
 
     @Before
     public void shouldGetIds() {
@@ -41,17 +37,14 @@ public class EntitiesTestSuite {
         User testingUser1 = new User("test1", "test1", "test1@test.com");
         User testingUser2 = new User("test2", "test2", "test2@test.com");
         User testingUser3 = new User("test3", "test3", "test3@test.com");
-        MarketPrice testingInstrument = new MarketPrice(999999999L, "Cognor", 1.94, LocalDateTime.now(), LocalDateTime.now());
         //saving data testing into db
         userDao.save(testingUser1);
         userDao.save(testingUser2);
         userDao.save(testingUser3);
-        marketPriceDao.save(testingInstrument);
         //getting the ids
         user1Id = testingUser1.getId();
         user2Id = testingUser2.getId();
         user3Id = testingUser3.getId();
-        marketId = testingInstrument.getId();
     }
 
     @Test
@@ -100,27 +93,16 @@ public class EntitiesTestSuite {
     }
 
     @Test
-    public void shouldAddMarketPrice() {
+    public void shouldAddInstrumentsWithRelationsToUser() {
         //given
-        MarketPrice readCognor = marketPriceDao.findById(marketId).orElse(new MarketPrice());
-        //when & then
-        Assert.assertEquals(marketId, readCognor.getId().longValue());
-        Assert.assertEquals(1.94, readCognor.getPrice(),0);
-        Assert.assertEquals("Cognor", readCognor.getIndex());
-    }
-
-    @Test
-    public void shouldAddInstrumentsWithRelationsToUserAndMarketPrice() {
-        //given
-        MarketPrice readMarketPrice = marketPriceDao.findById(marketId).orElse(new MarketPrice());
         User userOne = userDao.findById(user1Id).orElse(new User());
         User userTwo = userDao.findById(user2Id).orElse(new User());
         User userThree = userDao.findById(user3Id).orElse(new User());
 
-        Instrument userOneInstrument = new Instrument(userOne, 1000L, readMarketPrice, 1.80, LocalDate.parse("2018-05-05"));
-        Instrument userTwoInstrument = new Instrument(userTwo, 1500L, readMarketPrice, 1.76, LocalDate.parse("2018-05-05"));
-        Instrument userThreeInstrument = new Instrument(userThree, 2000L, readMarketPrice, 1.55, LocalDate.parse("2018-05-05"));
-        Instrument userOneInstrument2 = new Instrument(userOne, 1800L, readMarketPrice, 1.94, LocalDate.now());
+        Instrument userOneInstrument = new Instrument(userOne, 1000L, "COGNOR", 1.80, LocalDate.parse("2018-05-05"));
+        Instrument userTwoInstrument = new Instrument(userTwo, 1500L, "KREZUS", 1.76, LocalDate.parse("2018-05-05"));
+        Instrument userThreeInstrument = new Instrument(userThree, 2000L, "POLIMEXMS", 1.55, LocalDate.parse("2018-05-05"));
+        Instrument userOneInstrument2 = new Instrument(userOne, 1800L, "POLIMEXMS", 1.94, LocalDate.now());
         //when
         instrumentDao.save(userOneInstrument);
         instrumentDao.save(userTwoInstrument);
@@ -139,8 +121,8 @@ public class EntitiesTestSuite {
         //then
         Assert.assertEquals(user1Id, readInstrumentOne.getUser().getId().longValue());
         Assert.assertEquals(user2Id, readInstrumentTwo.getUser().getId().longValue());
-        Assert.assertEquals(marketId, readInstrumentThree.getMarketPrice().getId().longValue());
-        Assert.assertEquals(marketId, readInstrumentFour.getMarketPrice().getId().longValue());
+        Assert.assertEquals("POLIMEXMS", readInstrumentThree.getShare());
+        Assert.assertEquals("POLIMEXMS", readInstrumentFour.getShare());
         //clean-up
         instrumentDao.deleteById(idOne);
         instrumentDao.deleteById(idTwo);
@@ -154,7 +136,6 @@ public class EntitiesTestSuite {
         userDao.deleteById(user1Id);
         userDao.deleteById(user2Id);
         userDao.deleteById(user3Id);
-        marketPriceDao.deleteById(marketId);
     }
 
 }

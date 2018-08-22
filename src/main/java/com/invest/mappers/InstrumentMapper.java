@@ -15,26 +15,18 @@ public class InstrumentMapper implements BasicMapper<Instrument, InstrumentDto> 
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private MarketPriceService marketPriceService;
-
     @Override
     public Instrument mapperToDomain(InstrumentDto instrumentDto) {
 
         try {
             User user = userService.findUserById(instrumentDto.getUserId());
-            MarketPrice marketPrice = marketPriceService.findMarketPrice(instrumentDto.getSharesIndex());
-
-            return new Instrument(
+   return new Instrument(
                     new User(user.getId(), user.getLogin(), user.getPassword(), user.getEmail()),
                     instrumentDto.getQuantity(),
-                    new MarketPrice(marketPrice.getId(), marketPrice.getIndex(), marketPrice.getPrice(),
-                            marketPrice.getServerActualization(), marketPrice.getApplicationActualization()),
+                    instrumentDto.getSharesIndex(),
                     instrumentDto.getBuyingPrice(),
                     instrumentDto.getBuyingDate()
             );
-        } catch (MarketPriceException mpe) {
-            return null;
         } catch (UserExistsException e) {
             return null;
         }
@@ -52,7 +44,7 @@ public class InstrumentMapper implements BasicMapper<Instrument, InstrumentDto> 
         return new InstrumentDto(
                 instrument.getUser().getId(),
                 instrument.getQuantity(),
-                instrument.getMarketPrice().getIndex(),
+                instrument.getShare(),
                 instrument.getBuyingPrice(),
                 instrument.getBuyingDate()
         );

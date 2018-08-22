@@ -1,6 +1,5 @@
 package com.invest.quotations;
 
-import com.invest.dtos.MarketPriceDto;
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -10,14 +9,12 @@ import java.io.IOException;
 import java.time.*;
 import java.util.*;
 
-
 @Service
-public class QuotationConnecting {
+public class QuotationConnectingMap {
 
-    private final static Logger LOGGER = Logger.getLogger(QuotationConnecting.class);
+    private final static Logger LOGGER = Logger.getLogger(QuotationConnectingMap.class);
 
-    public List<MarketPriceDto> updateQuotations() {
-        List<MarketPriceDto> updatedQuotations = new ArrayList<>();
+    public Map<String, Share> updateQuotations(Map<String, Share> updatedQuotations) {
 
         try {
             Document doc = Jsoup.connect("http://notowania.pb.pl/stocktable/WIG").userAgent("Chrome/68.0.3440.106").get();
@@ -30,21 +27,21 @@ public class QuotationConnecting {
                 for(int x=0; x<sharesNames.size(); x++) {
                     String correctedPrice = correctPrice(sharesPrices.get(x).text());
                     String correctedDate = correctDate(actualization.get(x).text());
-                    MarketPriceDto currentShares = new MarketPriceDto(
-                            Integer.valueOf(x).longValue(),
+                    String key = sharesNames.get(x).text();
+                    Share currentShares = new Share(
                             sharesNames.get(x).text(),
                             Double.valueOf(correctedPrice),
                             LocalDateTime.parse(correctedDate),
                             LocalDateTime.now()
                     );
-                    updatedQuotations.add(currentShares);
+                    updatedQuotations.put(key, currentShares);
                 }
 
             }
             LOGGER.info("Connected to website");
         } catch (IOException e) {
             LOGGER.error("Connection to website failed");
-            return new ArrayList<>();
+            return new HashMap<>();
         }
         return updatedQuotations;
     }
