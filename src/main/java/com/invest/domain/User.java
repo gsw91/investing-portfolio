@@ -51,7 +51,6 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "USER_ID")
-   // @JsonProperty("id")
     public Long getId() {
         return id;
     }
@@ -87,8 +86,7 @@ public class User {
         this.email = email;
     }
 
-    @OneToMany(targetEntity = Instrument.class, mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    //@JsonIgnore
+    @OneToMany(targetEntity = Instrument.class, mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     public List<Instrument> getInstruments() {
         return instruments;
     }

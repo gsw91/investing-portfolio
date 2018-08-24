@@ -46,7 +46,7 @@ public class AddInstrumentFrame {
         addInstrumentFrame.setSize(300,180);
         addInstrumentFrame.setLayout(new GridLayout(5,2));
 
-        confirmButton = new JButton("Confirm");
+        confirmButton = new JButton("Buy");
         confirmButton.addActionListener(new ConfirmButtonActionListener());
         cancelButton = new JButton("Cancel");
         cancelButton.addActionListener(new CancelButtonActionListener());
@@ -74,28 +74,25 @@ public class AddInstrumentFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
-                String index = indexToUpperCase(instrumentName.getText());
+                String index = instrumentName.getText().toUpperCase();
                 Long qty = convertToLong(quantity.getText());
                 Double buingPrice = convertToDouble(price.getText());
                 LocalDate date = convertToLocalDate(bought.getText());
 
                 addingInstrument(index, qty, buingPrice, date);
 
+                setVisibility(false);
                 UserFrame newUserFrame = new UserFrame(userDto);
                 newUserFrame.openUserFrame();
                 userFrame.dispose();
 
             } catch (DateTimeParseException dte) {
-                System.out.println("Incorrect data time inserted");
+                LOGGER.warn("Incorrect data time inserted");
             } catch (NumberFormatException nfe) {
-                System.out.println("Incorrect values inserted");
+                LOGGER.warn("Incorrect values inserted");
             } catch (IOException ioe) {
-                System.out.println("Something gone wrong " +ioe.getMessage());
+                LOGGER.error(ioe.getMessage());
             }
-        }
-
-        private String indexToUpperCase(String index) {
-            return index.toUpperCase();
         }
 
         private Long convertToLong(String quantity) throws NumberFormatException {
@@ -111,6 +108,36 @@ public class AddInstrumentFrame {
             return LocalDate.parse(date);
         }
 
+        private void addingInstrument(String index, Long quantity, Double buyingPrice, LocalDate buyingDate) throws IOException {
+
+            String request = "http://localhost:8080/v1/instrument/add";
+            URL url = new URL(request);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoOutput(true);
+            connection.setDoInput(true);
+            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setRequestProperty("Accept", "application/json");
+            connection.setRequestMethod("POST");
+
+            JSONObject cred = new JSONObject();
+            cred.put("userId", userDto.getId());
+            cred.put("quantity", quantity);
+            cred.put("sharesIndex", index);
+            cred.put("buyingPrice", buyingPrice);
+            cred.put("buyingDate", buyingDate);
+
+            OutputStreamWriter wr = new OutputStreamWriter(connection.getOutputStream());
+            wr.write(cred.toString());
+            wr.flush();
+
+            int responseCode = connection.getResponseCode();
+            if (responseCode == 200) {
+                LOGGER.info("Instrument added for user " + userDto.getLogin());
+            } else {
+                LOGGER.warn("Adding instrument failed");
+            }
+        }
+
 
     }
 
@@ -121,34 +148,5 @@ public class AddInstrumentFrame {
         }
     }
 
-    public void addingInstrument(String index, Long quantity, Double buyingPrice, LocalDate buyingDate) throws IOException {
-
-        String request = "http://localhost:8080/v1/instrument/add";
-        URL url = new URL(request);
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setDoOutput(true);
-        connection.setDoInput(true);
-        connection.setRequestProperty("Content-Type", "application/json");
-        connection.setRequestProperty("Accept", "application/json");
-        connection.setRequestMethod("POST");
-
-        JSONObject cred = new JSONObject();
-        cred.put("userId", userDto.getId());
-        cred.put("quantity", quantity);
-        cred.put("sharesIndex", index);
-        cred.put("buyingPrice", buyingPrice);
-        cred.put("buyingDate", buyingDate);
-
-        OutputStreamWriter wr = new OutputStreamWriter(connection.getOutputStream());
-        wr.write(cred.toString());
-        wr.flush();
-
-        int responseCode = connection.getResponseCode();
-        if (responseCode == 200) {
-            LOGGER.info("Instrument added for user " + userDto.getLogin());
-        } else {
-            LOGGER.warn("Adding instrument failed");
-        }
-    }
 
 }

@@ -1,7 +1,4 @@
 package com.invest.quotations;
-
-import org.springframework.context.annotation.Configuration;
-
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;

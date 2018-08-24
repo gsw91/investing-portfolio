@@ -13,6 +13,7 @@ public class UserFrame {
 
     private final static Logger LOGGER = Logger.getLogger(UserFrame.class);
     private AddInstrumentFrame addInstrumentFrame;
+    private SellInstrumentFrame sellInstrumentFrame;
     private UserDto userDto;
     private JFrame userFrame;
     private JButton refreshButton;
@@ -62,6 +63,9 @@ public class UserFrame {
     private void configureOtherFrames() {
         addInstrumentFrame = new AddInstrumentFrame(userFrame, userDto, false);
         addInstrumentFrame.openAddingInstrumentFrame();
+
+        sellInstrumentFrame = new SellInstrumentFrame(userFrame, userDto, false);
+        sellInstrumentFrame.openSellingWindow();
     }
 
     private void configureButtons() {
@@ -73,6 +77,7 @@ public class UserFrame {
         addButton.addActionListener(new AddButtonActionListener());
 
         sellButton = new JButton("sell");
+        sellButton.addActionListener(new SellButtonActionListener());
 
         statsButton = new JButton("stats");
 
@@ -81,6 +86,13 @@ public class UserFrame {
         logOutButton = new JButton("log out");
         logOutButton.addActionListener(new LogOutButtonActionListener());
 
+    }
+
+    class SellButtonActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            sellInstrumentFrame.setVisibility(true);
+        }
     }
 
     class AddButtonActionListener implements ActionListener {

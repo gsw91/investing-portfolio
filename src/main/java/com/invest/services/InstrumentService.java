@@ -19,14 +19,12 @@ public class InstrumentService {
     private InstrumentMapper mapper;
 
     public List<Instrument> allUserInstruments(Long userId) {
-        List<InstrumentDto> list = mapper.mapperToListDto(instrumentDao.findAll());
-        return list.stream()
-                .filter(t -> t.getUserId().equals(userId))
-                .map(mapper::mapperToDomain)
+        return instrumentDao.findAll().stream()
+                .filter(t -> t.getUser().getId().equals(userId))
                 .collect(Collectors.toList());
     }
 
-    public Instrument buyInstrument(Instrument instrument) {
+    public Instrument addInstrument(Instrument instrument) {
         return instrumentDao.save(instrument);
     }
 
@@ -34,10 +32,12 @@ public class InstrumentService {
         instrumentDao.deleteById(id);
     }
 
-    public List<Instrument> showAll(User user) {
-        return instrumentDao.findAll().stream()
-                .filter(t -> t.getUser().equals(user))
-                .collect(Collectors.toList());
+    public Instrument findById(Long id) {
+        if (instrumentDao.findById(id).isPresent()) {
+            return instrumentDao.findById(id).get();
+        } else {
+            return new Instrument();
+        }
     }
 
 }

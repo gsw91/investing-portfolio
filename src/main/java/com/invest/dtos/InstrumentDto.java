@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 public class InstrumentDto {
 
+    private Long id;
     private Long userId;
     private Long quantity;
     private String sharesIndex;
@@ -13,12 +14,17 @@ public class InstrumentDto {
     public InstrumentDto() {
     }
 
-    public InstrumentDto(Long userId, Long quantity, String sharesIndex, Double buyingPrice, LocalDate buyingDate) {
+    public InstrumentDto(Long id, Long userId, Long quantity, String sharesIndex, Double buyingPrice, LocalDate buyingDate) {
+        this.id = id;
         this.userId = userId;
         this.quantity = quantity;
         this.sharesIndex = sharesIndex;
         this.buyingPrice = buyingPrice;
         this.buyingDate = buyingDate;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public Long getUserId() {
@@ -27,6 +33,10 @@ public class InstrumentDto {
 
     public Long getQuantity() {
         return quantity;
+    }
+
+    public void setQuantity(Long quantity) {
+        this.quantity = quantity;
     }
 
     public String getSharesIndex() {
@@ -44,6 +54,7 @@ public class InstrumentDto {
     @Override
     public String toString() {
         return "InstrumentDto{" +
+                "id=" + id +
                 ", userId=" + userId +
                 ", quantity=" + quantity +
                 ", sharesIndex='" + sharesIndex + '\'' +

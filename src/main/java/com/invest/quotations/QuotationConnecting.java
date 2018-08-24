@@ -10,9 +10,9 @@ import java.time.*;
 import java.util.*;
 
 @Service
-public class QuotationConnectingMap {
+public class QuotationConnecting {
 
-    private final static Logger LOGGER = Logger.getLogger(QuotationConnectingMap.class);
+    private final static Logger LOGGER = Logger.getLogger(QuotationConnecting.class);
 
     public Map<String, Share> updateQuotations(Map<String, Share> updatedQuotations) {
 

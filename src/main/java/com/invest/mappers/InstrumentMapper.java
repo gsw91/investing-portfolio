@@ -21,6 +21,7 @@ public class InstrumentMapper implements BasicMapper<Instrument, InstrumentDto> 
         try {
             User user = userService.findUserById(instrumentDto.getUserId());
    return new Instrument(
+                    instrumentDto.getId(),
                     new User(user.getId(), user.getLogin(), user.getPassword(), user.getEmail()),
                     instrumentDto.getQuantity(),
                     instrumentDto.getSharesIndex(),
@@ -42,6 +43,7 @@ public class InstrumentMapper implements BasicMapper<Instrument, InstrumentDto> 
     @Override
     public InstrumentDto mapperToDto(Instrument instrument) {
         return new InstrumentDto(
+                instrument.getId(),
                 instrument.getUser().getId(),
                 instrument.getQuantity(),
                 instrument.getShare(),

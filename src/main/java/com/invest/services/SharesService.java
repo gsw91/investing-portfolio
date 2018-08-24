@@ -16,7 +16,7 @@ public class SharesService {
         try {
             return sharesMap.getMarketPriceMap().get(name);
         } catch (IllegalArgumentException e){
-            throw new SharesException(SharesException.MARKET_PRICE_EXCEPTION);
+            throw new SharesException(SharesException.NO_SHARE_EXCEPTION);
         }
     }
 

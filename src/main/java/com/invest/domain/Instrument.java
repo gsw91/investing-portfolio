@@ -1,7 +1,5 @@
 package com.invest.domain;
 
-import org.springframework.context.annotation.Configuration;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 

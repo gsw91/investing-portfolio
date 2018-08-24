@@ -19,6 +19,7 @@ public class UserTable extends AbstractTableModel {
         try {
             setData(connectToDatabase(userId));
         } catch (IOException e) {
+            LOGGER.info("Table creation failed");
             setData(new ArrayList<>());
         }
         return new JTable(data, columnNames);
@@ -68,15 +69,15 @@ public class UserTable extends AbstractTableModel {
             }
             LOGGER.info("Creating table for user");
             //getPricesModulo
-            int modulo = list.size()%5;
+            int modulo = list.size()%6;
             if (modulo == 0) {
                 int quantity = list.size();
-                for(int i=0; i<quantity; i+=5) {
+                for(int i=0; i<quantity; i+=6) {
                     userDataList.add(new UserData(
-                            list.get(i+2),
-                            Long.valueOf(list.get(i+1)),
-                            BigDecimal.valueOf(Double.valueOf(list.get(i+3))),
-                            BigDecimal.valueOf(Double.valueOf(getCurrentPrice(list.get(i+2))))
+                            list.get(i+3),
+                            Long.valueOf(list.get(i+2)),
+                            BigDecimal.valueOf(Double.valueOf(list.get(i+4))),
+                            BigDecimal.valueOf(Double.valueOf(getCurrentPrice(list.get(i+3))))
                     ));
                 }
             }
