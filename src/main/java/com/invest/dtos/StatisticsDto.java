@@ -1,14 +1,12 @@
 package com.invest.dtos;
 
-import com.invest.domain.User;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class StatisticsDto {
 
     private Long id;
-    private User user;
+    private Long user;
     private String instrumentName;
     private BigDecimal buyingPrice;
     private LocalDate buyingDate;
@@ -19,9 +17,10 @@ public class StatisticsDto {
     private BigDecimal returnRate;
     private Long duration;
 
-    public StatisticsDto(Long id, User user, String instrumentName, BigDecimal buyingPrice, LocalDate buyingDate,
-                         Long quantity, BigDecimal sellingPrice, LocalDate sellingDate) {
-        this.id = id;
+    public StatisticsDto() {
+    }
+
+    public StatisticsDto(Long user, String instrumentName, BigDecimal buyingPrice, LocalDate buyingDate, Long quantity, BigDecimal sellingPrice, LocalDate sellingDate) {
         this.user = user;
         this.instrumentName = instrumentName;
         this.buyingPrice = buyingPrice;
@@ -31,7 +30,8 @@ public class StatisticsDto {
         this.sellingDate = sellingDate;
     }
 
-    public StatisticsDto(Long id, User user, String instrumentName, BigDecimal buyingPrice, LocalDate buyingDate, Long quantity, BigDecimal sellingPrice, LocalDate sellingDate, BigDecimal result, BigDecimal returnRate, Long duration) {
+    public StatisticsDto(Long id, Long user, String instrumentName, BigDecimal buyingPrice, LocalDate buyingDate,
+                         Long quantity, BigDecimal sellingPrice, LocalDate sellingDate, BigDecimal result, BigDecimal returnRate, Long duration) {
         this.id = id;
         this.user = user;
         this.instrumentName = instrumentName;
@@ -49,7 +49,7 @@ public class StatisticsDto {
         return id;
     }
 
-    public User getUser() {
+    public Long getUser() {
         return user;
     }
 

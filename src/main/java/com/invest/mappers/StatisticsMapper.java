@@ -1,26 +1,27 @@
 package com.invest.mappers;
 
 import com.invest.domain.Statistics;
+import com.invest.domain.User;
 import com.invest.dtos.StatisticsDto;
+import org.springframework.stereotype.Component;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component
 public class StatisticsMapper implements BasicMapper<Statistics, StatisticsDto> {
 
     @Override
     public Statistics mapperToDomain(StatisticsDto statisticsDto) {
-         return new Statistics(
+        return new Statistics(
                 statisticsDto.getId(),
-                statisticsDto.getUser(),
+                new User(statisticsDto.getUser()),
                 statisticsDto.getInstrumentName(),
                 statisticsDto.getBuyingPrice(),
                 statisticsDto.getBuyingDate(),
-                statisticsDto.getQuantity(),
                 statisticsDto.getSellingPrice(),
                 statisticsDto.getSellingDate(),
-                statisticsDto.getResult(),
-                statisticsDto.getReturnRate(),
-                statisticsDto.getDuration());
+                statisticsDto.getQuantity());
     }
 
     @Override
@@ -34,7 +35,7 @@ public class StatisticsMapper implements BasicMapper<Statistics, StatisticsDto> 
     public StatisticsDto mapperToDto(Statistics statistics) {
         return new StatisticsDto(
                 statistics.getId(),
-                statistics.getUser(),
+                statistics.getUser().getId(),
                 statistics.getInstrumentName(),
                 statistics.getBuyingPrice(),
                 statistics.getBuyingDate(),

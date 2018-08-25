@@ -66,9 +66,9 @@ public class EntitiesTestSuite {
         User readT2User = userDao.findById(user2Id).orElse(new User());
         User readT3User = userDao.findById(user3Id).orElse(new User());
 
-        Statistics statistics1 = new Statistics(readT1User, "Cognor", BigDecimal.valueOf(1.80), LocalDate.parse("2018-08-10"), BigDecimal.valueOf(1.94), LocalDate.now(), 2400L);
-        Statistics statistics2 = new Statistics(readT2User, "Cognor", BigDecimal.valueOf(1.55), LocalDate.parse("2018-07-02"), BigDecimal.valueOf(1.94), LocalDate.now(), 100L);
-        Statistics statistics3 = new Statistics(readT3User, "Cognor", BigDecimal.valueOf(2.00), LocalDate.parse("2018-06-10"), BigDecimal.valueOf(1.94), LocalDate.now(), 20000L);
+        Statistics statistics1 = new Statistics(readT1User, "Cognor", BigDecimal.valueOf(1.80), LocalDate.parse("2018-08-10"), 2400L, BigDecimal.valueOf(1.94), LocalDate.now());
+        Statistics statistics2 = new Statistics(readT2User, "Cognor", BigDecimal.valueOf(1.55), LocalDate.parse("2018-07-02"), 100L, BigDecimal.valueOf(1.94), LocalDate.now());
+        Statistics statistics3 = new Statistics(readT3User, "Cognor", BigDecimal.valueOf(2.00), LocalDate.parse("2018-06-10"), 20000L, BigDecimal.valueOf(1.94), LocalDate.now());
 
         //when
         statisticsDao.save(statistics1);

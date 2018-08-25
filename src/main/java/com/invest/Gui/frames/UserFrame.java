@@ -14,13 +14,16 @@ public class UserFrame {
     private final static Logger LOGGER = Logger.getLogger(UserFrame.class);
     private AddInstrumentFrame addInstrumentFrame;
     private SellInstrumentFrame sellInstrumentFrame;
+    private QuotationsFrame quotationsFrame;
+    private JFrame stats;
+    private JFrame quots;
     private UserDto userDto;
     private JFrame userFrame;
     private JButton refreshButton;
     private JButton sellButton;
     private JButton addButton;
     private JButton statsButton;
-    private JButton settingsButton;
+    private JButton quotationsButton;
     private JButton logOutButton;
     private JTable table;
     private UserTable userTable;
@@ -50,7 +53,7 @@ public class UserFrame {
         buttonsPanel.add(addButton);
         buttonsPanel.add(sellButton);
         buttonsPanel.add(statsButton);
-        buttonsPanel.add(settingsButton);
+        buttonsPanel.add(quotationsButton);
         buttonsPanel.add(logOutButton);
 
         userFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -66,6 +69,9 @@ public class UserFrame {
 
         sellInstrumentFrame = new SellInstrumentFrame(userFrame, userDto, false);
         sellInstrumentFrame.openSellingWindow();
+
+        StatisticsFrame statisticsFrame = new StatisticsFrame();
+        stats = statisticsFrame.createStatisticsFrame(userDto.getId(), false);
     }
 
     private void configureButtons() {
@@ -80,12 +86,29 @@ public class UserFrame {
         sellButton.addActionListener(new SellButtonActionListener());
 
         statsButton = new JButton("stats");
+        statsButton.addActionListener(new StatsButtonActionListener());
 
-        settingsButton = new JButton("settings");
+        quotationsButton = new JButton("quotations");
+        quotationsButton.addActionListener(new QuotationsButtonActionListener());
 
         logOutButton = new JButton("log out");
         logOutButton.addActionListener(new LogOutButtonActionListener());
 
+    }
+
+    class QuotationsButtonActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            quotationsFrame = new QuotationsFrame();
+            quots = quotationsFrame.createStatisticsFrame(true);
+        }
+    }
+
+    class StatsButtonActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            stats.setVisible(true);
+        }
     }
 
     class SellButtonActionListener implements ActionListener {

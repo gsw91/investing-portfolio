@@ -2,7 +2,7 @@ package com.invest.controller;
 
 import com.invest.domain.User;
 import com.invest.dtos.UserDto;
-import com.invest.exceptions.*;
+import com.invest.exceptions.UserExistsException;
 import com.invest.mappers.UserMapper;
 import com.invest.services.UserService;
 import org.apache.log4j.Logger;

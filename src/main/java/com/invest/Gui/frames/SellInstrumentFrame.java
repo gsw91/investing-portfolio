@@ -16,6 +16,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class SellInstrumentFrame {
 
@@ -77,6 +78,8 @@ public class SellInstrumentFrame {
             Double sellingPrice = convertToDouble(price.getText());
 
             try {
+//                String[] array = getListOfInstruments(userId, name);
+//                addStats(userId, name, qtyToSell, sellingPrice, array);
                 boolean isSold = sellInstrument(userId, name, qtyToSell, sellingPrice);
                 if (isSold) {
                     setVisibility(false);
@@ -97,6 +100,26 @@ public class SellInstrumentFrame {
             price = price.replace(",", ".");
             return Double.valueOf(price);
         }
+
+//        private void addStats(Long userId, String index, Long quantity, Double sellingPrice, String[] data) throws IOException {
+//            String request = "http://localhost:8080/v1/statistics/add";
+//            URL url = new URL(request);
+//            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+//            connection.setDoOutput(true);
+//            connection.setDoInput(true);
+//            connection.setRequestProperty("Content-Type", "application/json");
+//            connection.setRequestProperty("Accept", "application/json");
+//            connection.setRequestMethod("POST");
+//
+//            JSONObject cred = new JSONObject();
+//            cred.put("user", userId);
+//            cred.put("instrumentName", index);
+//            cred.put("buyingPrice", data[i]);
+//            cred.put("buyingDate", data[i+1]);
+//            cred.put("quantity", quantity);
+//            cred.put("sellingPrice", sellingPrice);
+//            cred.put("sellingDate", LocalDate.now());
+//        }
 
         private boolean sellInstrument(Long userId, String name, Long quantity, Double sellingPrice) throws IOException {
 
@@ -119,6 +142,46 @@ public class SellInstrumentFrame {
                 return false;
             }
         }
+
+//        private String[] getListOfInstruments(Long userId, String index) throws IOException {
+//            String path = "http://localhost:8080/v1/instrument/showOnlyOne?userId=" + userId +"&index=" + index;
+//            URL url = new URL(path);
+//            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+//            connection.setRequestMethod("GET");
+//
+//            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+//            String line;
+//            StringBuffer buffer = new StringBuffer();
+//            while ((line = reader.readLine()) != null) {
+//                buffer.append(line);
+//            }
+//            String response = buffer.toString();
+//            response = response.replace("{","");
+//            response = response.replace("}","");
+//            response = response.replace("[","");
+//            response = response.replace("]","");
+//            response = response.replace("\"","");
+//            String[] array = response.split(",");
+//            ArrayList<String> data = new ArrayList<>();
+//            for(String element: array) {
+//                String[] ar = element.split(":");
+//                data.add(ar[1]);
+//            }
+//
+//            String[] buyDate = new String[data.size()/3];
+//            int x = 0;
+//            for(int i = 0; i<data.size(); i+=6) {
+//                buyDate[x] = data.get(i+4);
+//                x++;
+//                buyDate[x] = data.get(i+5);
+//                x++;
+//            }
+//
+//        return buyDate;
+//
+//
+//        }
+
     }
 
     class CancelButtonActionListener implements ActionListener {

@@ -24,7 +24,21 @@ public class Statistics {
     public Statistics() {
     }
 
-    public Statistics(User user, String instrumentName, BigDecimal buyingPrice, LocalDate buyingDate, BigDecimal sellingPrice, LocalDate sellingDate, Long quantity) {
+    public Statistics(User user, String instrumentName, BigDecimal buyingPrice, LocalDate buyingDate, Long quantity, BigDecimal sellingPrice, LocalDate sellingDate) {
+        this.user = user;
+        this.instrumentName = instrumentName;
+        this.buyingPrice = buyingPrice;
+        this.buyingDate = buyingDate;
+        this.quantity = quantity;
+        this.sellingPrice = sellingPrice;
+        this.sellingDate = sellingDate;
+        this.result = (sellingPrice.subtract(buyingPrice)).setScale(2, BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.valueOf(quantity));
+        this.returnRate = (sellingPrice.subtract(buyingPrice)).setScale(2, BigDecimal.ROUND_HALF_UP).divide(buyingPrice, 4, BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.valueOf(100L));
+        this.duration = sellingDate.toEpochDay()-buyingDate.toEpochDay();
+    }
+
+    public Statistics(Long id, User user, String instrumentName, BigDecimal buyingPrice, LocalDate buyingDate, BigDecimal sellingPrice, LocalDate sellingDate, Long quantity) {
+        this.id = id;
         this.user = user;
         this.instrumentName = instrumentName;
         this.buyingPrice = buyingPrice;
@@ -35,21 +49,6 @@ public class Statistics {
         this.result = (sellingPrice.subtract(buyingPrice)).setScale(2, BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.valueOf(quantity));
         this.returnRate = (sellingPrice.subtract(buyingPrice)).setScale(2, BigDecimal.ROUND_HALF_UP).divide(buyingPrice, 4, BigDecimal.ROUND_HALF_UP).multiply(BigDecimal.valueOf(100L));
         this.duration = sellingDate.toEpochDay()-buyingDate.toEpochDay();
-    }
-
-    public Statistics(Long id, User user, String instrumentName, BigDecimal buyingPrice, LocalDate buyingDate, Long quantity,
-                      BigDecimal sellingPrice, LocalDate sellingDate, BigDecimal result, BigDecimal returnRate, Long duration) {
-        this.id = id;
-        this.user = user;
-        this.instrumentName = instrumentName;
-        this.buyingPrice = buyingPrice;
-        this.buyingDate = buyingDate;
-        this.quantity = quantity;
-        this.sellingPrice = sellingPrice;
-        this.sellingDate = sellingDate;
-        this.result = result;
-        this.returnRate = returnRate;
-        this.duration = duration;
     }
 
     @Id

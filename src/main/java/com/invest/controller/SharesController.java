@@ -6,6 +6,9 @@ import com.invest.services.SharesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/v1/share/")
@@ -20,6 +23,15 @@ public class SharesController {
             return sharesService.getShare(name);
         } catch (SharesException e) {
             return new Share();
+        }
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "all")
+    public Map<String, Share> getCurrentSharesPrices(String name) {
+        try {
+            return sharesService.getAllShares();
+        } catch (SharesException e) {
+            return new HashMap<String, Share>();
         }
     }
 

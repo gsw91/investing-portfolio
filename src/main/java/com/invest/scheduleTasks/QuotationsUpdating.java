@@ -1,11 +1,14 @@
 package com.invest.scheduleTasks;
 
 import com.invest.quotations.QuotationConnecting;
+import com.invest.quotations.Share;
 import com.invest.quotations.SharesMap;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
+import java.util.Map;
 
 @Component
 public class QuotationsUpdating {
@@ -19,9 +22,11 @@ public class QuotationsUpdating {
     public void updateQuotations () {
         Long startTime = System.currentTimeMillis();
         LOGGER.info("Start updating  map quotations ");
-        quotationConnecting.updateQuotations(SharesMap.marketPriceMap);
+        Map<String, Share> map = quotationConnecting.updateQuotations(SharesMap.marketPriceMap);
         Long endTime = System.currentTimeMillis();
-        LOGGER.info("Quotations updated, size: " + SharesMap.marketPriceMap.size() +", it took " + (endTime-startTime) + " ms");
+        if (map.size() > 0) {
+            LOGGER.info("Quotations updated, size: " + SharesMap.marketPriceMap.size() + ", it took " + (endTime - startTime) + " ms");
+        }
     }
 
 }

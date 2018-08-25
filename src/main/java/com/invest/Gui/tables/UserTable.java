@@ -18,8 +18,9 @@ public class UserTable extends AbstractTableModel {
     public JTable showTable(Long userId) {
         try {
             setData(connectToDatabase(userId));
+            LOGGER.info("User table has been created");
         } catch (IOException e) {
-            LOGGER.info("Table creation failed");
+            LOGGER.error("User table creation failed");
             setData(new ArrayList<>());
         }
         return new JTable(data, columnNames);
