@@ -14,6 +14,14 @@ public class InstrumentDto {
     public InstrumentDto() {
     }
 
+    public InstrumentDto(Long userId, Long quantity, String sharesIndex, Double buyingPrice, LocalDate buyingDate) {
+        this.userId = userId;
+        this.quantity = quantity;
+        this.sharesIndex = sharesIndex;
+        this.buyingPrice = buyingPrice;
+        this.buyingDate = buyingDate;
+    }
+
     public InstrumentDto(Long id, Long userId, Long quantity, String sharesIndex, Double buyingPrice, LocalDate buyingDate) {
         this.id = id;
         this.userId = userId;

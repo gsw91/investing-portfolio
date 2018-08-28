@@ -27,7 +27,7 @@ public class SharesController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "all")
-    public Map<String, Share> getCurrentSharesPrices(String name) {
+    public Map<String, Share> getCurrentSharesPrices() {
         try {
             return sharesService.getAllShares();
         } catch (SharesException e) {

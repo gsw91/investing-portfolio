@@ -16,7 +16,7 @@ import java.time.*;
 public class EntitiesTestSuite {
 
     @SpyBean
-    UserController controller;
+    private UserController controller;
 
     @Autowired
     private UserDao userDao;

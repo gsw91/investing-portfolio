@@ -31,9 +31,8 @@ public class InstrumentController {
     private InstrumentOperations instrumentOperations;
 
     @RequestMapping(method = RequestMethod.POST, value = "add", consumes = APPLICATION_JSON_VALUE)
-    public Instrument addInstrument(@RequestBody InstrumentDto instrumentDto) {
-        System.out.println(instrumentMapper.mapperToDomain(instrumentDto));
-        return instrumentService.addInstrument(instrumentMapper.mapperToDomain(instrumentDto));
+    public InstrumentDto addInstrument(@RequestBody InstrumentDto instrumentDto) {
+        return instrumentMapper.mapperToDto(instrumentService.addInstrument(instrumentMapper.mapperToDomain(instrumentDto)));
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "show", params = {"userId"})
@@ -41,11 +40,12 @@ public class InstrumentController {
         return instrumentMapper.mapperToListDto(instrumentService.allUserInstruments(userId));
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "showOnlyOne", params = {"userId", "index"})
-    public List<InstrumentDto> showUserInstruments(@RequestParam("userId") Long userId, @RequestParam("index") String index) {
-        return instrumentMapper.mapperToListDto((instrumentService.allUserInstruments(userId)).stream()
+    @RequestMapping(method = RequestMethod.GET, value = "showOne", params = {"userId", "index"})
+    public InstrumentDto showUserInstruments(@RequestParam("userId") Long userId, @RequestParam("index") String index) {
+        return instrumentMapper.mapperToDto((instrumentService.allUserInstruments(userId)).stream()
                 .filter(t->t.getShare().equals(index))
-                .collect(Collectors.toList()));
+                .findFirst()
+                .orElse(new Instrument()));
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "sell", params ={"userId", "name", "quantity", "price"})
