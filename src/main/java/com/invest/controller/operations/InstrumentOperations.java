@@ -24,16 +24,14 @@ public class InstrumentOperations {
     @Autowired
     private StatisticsOperations statisticsOperations;
 
-    public boolean doIt(Long userId, String name, Long quantity, double price) throws Exception {
+    public boolean doIt(Long userId, String name, Long quantity, double price) {
         List<InstrumentDto> instruments = instrumentMapper.mapperToListDto(instrumentService.allUserInstruments(userId)).stream()
                 .filter(t-> t.getSharesIndex().equals(name))
                 .collect(Collectors.toList());
-
         if(instruments.size()>0) {
             Long shareQuantity = instruments.stream()
                     .mapToLong(InstrumentDto::getQuantity)
                     .sum();
-
             if(shareQuantity.longValue() == quantity.longValue()) {
 
                 LOGGER.info("Adding new statistics for user " + userId);
@@ -81,7 +79,7 @@ public class InstrumentOperations {
                 return false;
             }
         } else {
-            throw new Exception();
+            return false;
         }
     }
 

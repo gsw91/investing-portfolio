@@ -3,7 +3,7 @@
 
 About project :
 
-    - creating of web application based on Spring framework to manage shares portfolio
+    - web application based on Spring framework to manage shares portfolio
 
     - the application consists of two parts - an internet application as a server and a client created using Swing
 
@@ -24,3 +24,4 @@ About project :
             - JSON
 
             - JSoup
+

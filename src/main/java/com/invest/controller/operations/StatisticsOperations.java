@@ -12,7 +12,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Service
-public class StatisticsOperations {
+public class    StatisticsOperations {
 
     @Autowired
     private StatisticsService statisticsService;
