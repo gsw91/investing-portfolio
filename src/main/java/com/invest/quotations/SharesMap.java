@@ -1,6 +1,6 @@
 package com.invest.quotations;
 
-import com.invest.scheduleTasks.QuotationsUpdating;
+import com.invest.scheduledTasks.QuotationsUpdating;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

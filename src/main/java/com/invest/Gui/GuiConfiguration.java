@@ -4,7 +4,7 @@ import com.invest.Gui.frames.LogInFrame;
 
 public class GuiConfiguration {
 
-    protected void run() {
+    public void run() {
         LogInFrame logInFrame = new LogInFrame();
         logInFrame.run();
 

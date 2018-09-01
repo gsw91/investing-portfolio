@@ -3,6 +3,7 @@ package com.invest.controller.operations;
 import com.invest.domain.Instrument;
 import com.invest.domain.User;
 import com.invest.dtos.InstrumentDto;
+import com.invest.dtos.StatisticsDto;
 import com.invest.mappers.InstrumentMapper;
 import com.invest.services.InstrumentService;
 import org.junit.Assert;
@@ -33,26 +34,22 @@ public class InstrumentOperationsTestSuite {
     @MockBean
     private InstrumentService instrumentService;
 
-    @MockBean
-    private StatisticsOperations statisticsOperations;
-
     @Test
-    public void testDoItShouldReturnFalse() {
+    public void testSellAndPrepareStatisticsReturnEmptyList() {
         //given
         List<InstrumentDto> listDto = new ArrayList<>();
         List<Instrument> list = new ArrayList<>();
         long userId = 12;
-
         when(instrumentMapper.mapperToListDto(list)).thenReturn(listDto);
         when(instrumentService.allUserInstruments(userId)).thenReturn(list);
         //when
-        boolean exception = instrumentOperations.doIt(userId, "COGNOR", 1291L, 99.99);
+        List<StatisticsDto> statisticsDtos = instrumentOperations.sellAndPrepareStatistics(userId, "COGNOR", 1291L, 99.99);
         //then
-        Assert.assertFalse(exception);
+        Assert.assertEquals(0, statisticsDtos.size());
     }
 
     @Test
-    public void testDoItSellingMoreSharesThanUserHas() {
+    public void testSellAndPrepareStatisticsToManyToSell() {
         //given
         long userId = 12;
         List<Instrument> list = new ArrayList<>();
@@ -65,13 +62,13 @@ public class InstrumentOperationsTestSuite {
         when(instrumentMapper.mapperToListDto(list)).thenReturn(listDto);
         when(instrumentService.allUserInstruments(userId)).thenReturn(list);
         //when
-        boolean exception = instrumentOperations.doIt(userId, "COGNOR", quantityToSell, 99.99);
+        List<StatisticsDto> statisticsDtos = instrumentOperations.sellAndPrepareStatistics(userId, "COGNOR", quantityToSell, 99.99);
         //then
-        Assert.assertFalse(exception);
+        Assert.assertEquals(0, statisticsDtos.size());
     }
 
     @Test
-    public void testDoItSellingAllSharesUserHas() {
+    public void testSellAndPrepareStatisticsSellAllShares() {
         //given
         Long userId = 12L;
         List<Instrument> list = new ArrayList<>();
@@ -85,15 +82,16 @@ public class InstrumentOperationsTestSuite {
         when(instrumentService.allUserInstruments(userId)).thenReturn(list);
         doNothing().when(instrumentService).sellInstrument(1L);
         doNothing().when(instrumentService).sellInstrument(2L);
-        doNothing().when(statisticsOperations).createStatisticsWhenAllSold(listDto, userId, "COGNOR", 99.99);
         //when
-        boolean exception = instrumentOperations.doIt(userId, "COGNOR", quantityToSell, 99.99);
+        List<StatisticsDto> statisticsDtos = instrumentOperations.sellAndPrepareStatistics(userId, "COGNOR", quantityToSell, 99.99);
         //then
-        Assert.assertTrue(exception);
+        Assert.assertEquals(2, statisticsDtos.size());
+        Assert.assertEquals(1000L, statisticsDtos.get(0).getQuantity().longValue());
+        Assert.assertEquals(800L, statisticsDtos.get(1).getQuantity().longValue());
     }
 
     @Test
-    public void testDoItSellingLessSharesThanUserHas() {
+    public void testSellAndPrepareStatisticsSellLessShares() {
         //given
         long userId = 12;
         List<Instrument> list = new ArrayList<>();
@@ -111,13 +109,13 @@ public class InstrumentOperationsTestSuite {
         when(instrumentMapper.mapperToDomain(instrumentDto)).thenReturn(instrument);
         doNothing().when(instrumentService).sellInstrument(1L);
         doNothing().when(instrumentService).sellInstrument(2L);
-        doNothing().when(statisticsOperations).createStatisticsWhenMoreSold(userId,"COGNOR", 0,99.99, listDto);
-        doNothing().when(statisticsOperations).createStatisticsWhenMoreSold(userId,"COGNOR", 1,99.99, listDto);
         when(instrumentService.addInstrument(instrument)).thenReturn(instrument);
         //when
-        boolean exception = instrumentOperations.doIt(userId, "COGNOR", quantityToSell, 99.99);
+        List<StatisticsDto> statisticsDtos = instrumentOperations.sellAndPrepareStatistics(userId, "COGNOR", quantityToSell, 99.99);
         //then
-        Assert.assertTrue(exception);
+        Assert.assertEquals(2, statisticsDtos.size());
+        Assert.assertEquals(1000L, statisticsDtos.get(0).getQuantity().longValue());
+        Assert.assertEquals(800L, statisticsDtos.get(1).getQuantity().longValue());
     }
 
 }

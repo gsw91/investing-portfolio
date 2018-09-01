@@ -1,4 +1,4 @@
-package com.invest.scheduleTasks;
+package com.invest.scheduledTasks;
 
 import com.invest.quotations.QuotationConnecting;
 import com.invest.quotations.Share;

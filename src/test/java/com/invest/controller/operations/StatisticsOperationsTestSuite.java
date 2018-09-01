@@ -1,78 +1,42 @@
 package com.invest.controller.operations;
 
-import com.invest.domain.Statistics;
-import com.invest.domain.User;
 import com.invest.dtos.InstrumentDto;
 import com.invest.dtos.StatisticsDto;
-import com.invest.mappers.StatisticsMapper;
-import com.invest.services.StatisticsService;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class StatisticsOperationsTestSuite {
 
-    @MockBean
+    @Autowired
     private StatisticsOperations statisticsOperations;
-
-    @MockBean
-    private StatisticsService statisticsService;
-
-    @MockBean
-    private StatisticsMapper statisticsMapper;
 
     @Test
     public void testCreateStatisticsWhenAllSold() {
         //given
-        Long userId = 12L;
+        long userId = 12;
         String name = "COGNOR";
         List<InstrumentDto> list = new ArrayList<>();
         double sellingPrice = 2.20;
-        list.add(new InstrumentDto(41L, userId, 1000L, name, 2.01, LocalDate.of(2018,8,2)));
-        list.add(new InstrumentDto(44L, userId, 1000L, name, 2.20, LocalDate.of(2018,8,7)));
-        list.add(new InstrumentDto(47L, userId, 1000L, name, 1.99, LocalDate.of(2018,8,11)));
-
-        StatisticsDto statisticsDto1 = new StatisticsDto(userId, name, BigDecimal.valueOf(list.get(0).getBuyingPrice()), list.get(0).getBuyingDate(),
-                list.get(0).getQuantity(), BigDecimal.valueOf(sellingPrice), LocalDate.now());
-
-        StatisticsDto statisticsDto2 = new StatisticsDto(userId, name, BigDecimal.valueOf(list.get(1).getBuyingPrice()), list.get(1).getBuyingDate(),
-                list.get(1).getQuantity(), BigDecimal.valueOf(sellingPrice), LocalDate.now());
-
-        StatisticsDto statisticsDto3 = new StatisticsDto(userId, name, BigDecimal.valueOf(list.get(2).getBuyingPrice()), list.get(2).getBuyingDate(),
-                list.get(2).getQuantity(), BigDecimal.valueOf(sellingPrice), LocalDate.now());
-
-        Statistics statistics1 = new Statistics(4L, new User(userId), name, BigDecimal.valueOf(2.01), LocalDate.of(2018,8,2),
-                BigDecimal.valueOf(sellingPrice), LocalDate.now(), 1000L);
-
-        Statistics statistics2 = new Statistics(5L, new User(userId), name, BigDecimal.valueOf(2.20), LocalDate.of(2018,8,7),
-                BigDecimal.valueOf(sellingPrice), LocalDate.now(), 1000L);
-
-        Statistics statistics3 = new Statistics(6L, new User(userId), name, BigDecimal.valueOf(1.99), LocalDate.of(2018,8,11),
-                BigDecimal.valueOf(sellingPrice), LocalDate.now(), 1000L);
-
-        when(statisticsService.addNewStatistics(statistics1)).thenReturn(statistics1);
-        when(statisticsService.addNewStatistics(statistics2)).thenReturn(statistics2);
-        when(statisticsService.addNewStatistics(statistics3)).thenReturn(statistics3);
-        when(statisticsMapper.mapperToDomain(statisticsDto1)).thenReturn(statistics1);
-        when(statisticsMapper.mapperToDomain(statisticsDto2)).thenReturn(statistics2);
-        when(statisticsMapper.mapperToDomain(statisticsDto3)).thenReturn(statistics3);
+        list.add(new InstrumentDto(41L, userId, 1000L, name, 2.01, LocalDate.of(2018, 8, 2)));
+        list.add(new InstrumentDto(44L, userId, 1000L, name, 2.20, LocalDate.of(2018, 8, 7)));
+        list.add(new InstrumentDto(47L, userId, 1000L, name, 1.99, LocalDate.of(2018, 8, 11)));
         //when
-        statisticsOperations.createStatisticsWhenAllSold(list, userId, name, sellingPrice);
+        List<StatisticsDto> statisticsDtos = statisticsOperations.createStatisticsWhenAllSold(list, userId, name, sellingPrice);
         //then
-        verify(statisticsOperations, times(1)).createStatisticsWhenAllSold(list, userId, name, sellingPrice);
+        Assert.assertEquals(3, statisticsDtos.size());
+        Assert.assertEquals(userId, statisticsDtos.get(0).getUser().longValue());
+        Assert.assertEquals(name, statisticsDtos.get(1).getInstrumentName());
+        Assert.assertEquals(1000L, statisticsDtos.get(2).getQuantity().longValue());
     }
 
     @Test
@@ -85,39 +49,17 @@ public class StatisticsOperationsTestSuite {
         list.add(new InstrumentDto(41L, userId, 1000L, name, 2.01, LocalDate.of(2018,8,2)));
         list.add(new InstrumentDto(44L, userId, 1000L, name, 2.20, LocalDate.of(2018,8,7)));
         list.add(new InstrumentDto(47L, userId, 1000L, name, 1.99, LocalDate.of(2018,8,11)));
-
-        StatisticsDto statisticsDto1 = new StatisticsDto(userId, name, BigDecimal.valueOf(list.get(0).getBuyingPrice()), list.get(0).getBuyingDate(),
-                list.get(0).getQuantity(), BigDecimal.valueOf(sellingPrice), LocalDate.now());
-
-        StatisticsDto statisticsDto2 = new StatisticsDto(userId, name, BigDecimal.valueOf(list.get(1).getBuyingPrice()), list.get(1).getBuyingDate(),
-                list.get(1).getQuantity(), BigDecimal.valueOf(sellingPrice), LocalDate.now());
-
-        StatisticsDto statisticsDto3 = new StatisticsDto(userId, name, BigDecimal.valueOf(list.get(2).getBuyingPrice()), list.get(2).getBuyingDate(),
-                list.get(2).getQuantity(), BigDecimal.valueOf(sellingPrice), LocalDate.now());
-
-        Statistics statistics1 = new Statistics(4L, new User(userId), name, BigDecimal.valueOf(2.01), LocalDate.of(2018,8,2),
-                BigDecimal.valueOf(sellingPrice), LocalDate.now(), 1000L);
-
-        Statistics statistics2 = new Statistics(5L, new User(userId), name, BigDecimal.valueOf(2.20), LocalDate.of(2018,8,7),
-                BigDecimal.valueOf(sellingPrice), LocalDate.now(), 1000L);
-
-        Statistics statistics3 = new Statistics(6L, new User(userId), name, BigDecimal.valueOf(1.99), LocalDate.of(2018,8,11),
-                BigDecimal.valueOf(sellingPrice), LocalDate.now(), 1000L);
-
-        when(statisticsService.addNewStatistics(statistics1)).thenReturn(statistics1);
-        when(statisticsService.addNewStatistics(statistics2)).thenReturn(statistics2);
-        when(statisticsService.addNewStatistics(statistics3)).thenReturn(statistics3);
-        when(statisticsMapper.mapperToDomain(statisticsDto1)).thenReturn(statistics1);
-        when(statisticsMapper.mapperToDomain(statisticsDto2)).thenReturn(statistics2);
-        when(statisticsMapper.mapperToDomain(statisticsDto3)).thenReturn(statistics3);
         //when
-        statisticsOperations.createStatisticsWhenMoreSold(userId, name, 0, sellingPrice, list);
-        statisticsOperations.createStatisticsWhenMoreSold(userId, name, 1, sellingPrice, list);
-        statisticsOperations.createStatisticsWhenMoreSold(userId, name, 2, sellingPrice, list);
+        StatisticsDto statisticsDto1 = statisticsOperations.createStatisticsWhenMoreSold(userId, name, 0, sellingPrice, list);
+        StatisticsDto statisticsDto2 = statisticsOperations.createStatisticsWhenMoreSold(userId, name, 1, sellingPrice, list);
+        StatisticsDto statisticsDto3 = statisticsOperations.createStatisticsWhenMoreSold(userId, name, 2, sellingPrice, list);
         //then
-        verify(statisticsOperations, times(1)).createStatisticsWhenMoreSold(userId, name, 0, sellingPrice, list);
-        verify(statisticsOperations, times(1)).createStatisticsWhenMoreSold(userId, name, 1, sellingPrice, list);
-        verify(statisticsOperations, times(1)).createStatisticsWhenMoreSold(userId, name, 2, sellingPrice, list);
+        Assert.assertNotNull(statisticsDto1);
+        Assert.assertNotNull(statisticsDto2);
+        Assert.assertNotNull(statisticsDto3);
+        Assert.assertEquals(userId, statisticsDto1.getUser());
+        Assert.assertEquals(1000L, statisticsDto2.getQuantity().longValue());
+        Assert.assertEquals(1.99, statisticsDto3.getBuyingPrice().doubleValue(), 0.01);
     }
 
     @Test
@@ -129,19 +71,11 @@ public class StatisticsOperationsTestSuite {
         double sellingPrice = 2.20;
         long quantity = 800;
         list.add(new InstrumentDto(41L, userId, 1000L, name, 2.01, LocalDate.of(2018,8,2)));
-
-        StatisticsDto statisticsDto1 = new StatisticsDto(userId, name, BigDecimal.valueOf(list.get(0).getBuyingPrice()), list.get(0).getBuyingDate(),
-                list.get(0).getQuantity(), BigDecimal.valueOf(sellingPrice), LocalDate.now());
-
-        Statistics statistics1 = new Statistics(4L, new User(userId), name, BigDecimal.valueOf(2.01), LocalDate.of(2018,8,2),
-                BigDecimal.valueOf(sellingPrice), LocalDate.now(), 1000L);
-
-        when(statisticsService.addNewStatistics(statistics1)).thenReturn(statistics1);
-        when(statisticsMapper.mapperToDomain(statisticsDto1)).thenReturn(statistics1);
         //when
-        statisticsOperations.createStatisticsWhenLessSold(userId, name, 0, quantity,sellingPrice, list);
-         //then
-        verify(statisticsOperations, times(1)).createStatisticsWhenLessSold(userId, name, 0, quantity,sellingPrice, list);
+        StatisticsDto statisticsDto = statisticsOperations.createStatisticsWhenLessSold(userId, name, 0, quantity,sellingPrice, list);
+        //then
+        Assert.assertNotNull(statisticsDto);
+        Assert.assertEquals(userId, statisticsDto.getUser());
     }
 
 }

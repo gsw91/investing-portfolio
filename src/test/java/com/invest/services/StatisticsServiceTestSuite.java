@@ -32,7 +32,7 @@ public class StatisticsServiceTestSuite {
 
         when(statisticsDao.save(statistics)).thenReturn(statistics);
         //when
-        Statistics savedStatistics = statisticsDao.save(statistics);
+        Statistics savedStatistics = statisticsService.addNewStatistics(statistics);
         //then
         Assert.assertEquals(statistics, savedStatistics);
     }

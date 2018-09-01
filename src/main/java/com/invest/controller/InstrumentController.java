@@ -1,8 +1,11 @@
 package com.invest.controller;
 
 import com.invest.controller.operations.InstrumentOperations;
+import com.invest.controller.operations.StatisticsCreation;
+import com.invest.controller.operations.StatisticsOperations;
 import com.invest.domain.Instrument;
 import com.invest.dtos.InstrumentDto;
+import com.invest.dtos.StatisticsDto;
 import com.invest.mappers.InstrumentMapper;
 import com.invest.services.InstrumentService;
 import org.apache.log4j.Logger;
@@ -10,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -29,6 +31,9 @@ public class InstrumentController {
 
     @Autowired
     private InstrumentOperations instrumentOperations;
+
+    @Autowired
+    private StatisticsCreation statisticsCreation;
 
     @RequestMapping(method = RequestMethod.POST, value = "add", consumes = APPLICATION_JSON_VALUE)
     public InstrumentDto addInstrument(@RequestBody InstrumentDto instrumentDto) {
@@ -52,7 +57,8 @@ public class InstrumentController {
     public boolean updateQuantity(@RequestParam("userId") Long userId, @RequestParam("name") String name,
                                         @RequestParam("quantity") Long quantity, @RequestParam("price") Double price) {
         try {
-            return instrumentOperations.doIt(userId, name, quantity, price);
+            List<StatisticsDto> statisticsDtos = instrumentOperations.sellAndPrepareStatistics(userId, name, quantity, price);
+            return statisticsCreation.saveAllStatistics(statisticsDtos);
         } catch (Exception e) {
             LOGGER.error("Incorrect instrument name");
             return false;

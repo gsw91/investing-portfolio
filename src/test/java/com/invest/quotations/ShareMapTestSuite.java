@@ -19,7 +19,7 @@ public class ShareMapTestSuite {
     private SharesMap sharesMap;
 
     @Test
-    public void shouldUpdateSharesMap() {
+    public void testGetMarketPriceMap() {
         if (InternetConnection.isAvailable()) {
             //given
             Map<String, Share> shares = sharesMap.getMarketPriceMap();

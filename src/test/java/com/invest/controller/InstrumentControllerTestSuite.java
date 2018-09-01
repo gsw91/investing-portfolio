@@ -1,9 +1,11 @@
 package com.invest.controller;
 
 import com.invest.controller.operations.InstrumentOperations;
+import com.invest.controller.operations.StatisticsCreation;
 import com.invest.domain.Instrument;
 import com.invest.domain.User;
 import com.invest.dtos.InstrumentDto;
+import com.invest.dtos.StatisticsDto;
 import com.invest.mappers.InstrumentMapper;
 import com.invest.services.InstrumentService;
 import org.json.JSONObject;
@@ -22,6 +24,7 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -45,10 +48,15 @@ public class InstrumentControllerTestSuite {
     @MockBean
     private InstrumentOperations operations;
 
+    @MockBean
+    private StatisticsCreation statisticsCreation;
+
     @Test
     public void shouldSellInstrument() throws Exception {
         //given
-        when(operations.doIt(1L, "COGNOR", 1600L, 2.3)).thenReturn(true);
+        List<StatisticsDto> statisticsDtos = new ArrayList<>();
+        when(operations.sellAndPrepareStatistics(1L, "COGNOR", 1600L, 2.3)).thenReturn(statisticsDtos);
+        doNothing().when(statisticsCreation).saveAllStatistics(statisticsDtos);
         //when & then
         mockMvc.perform(put("/v1/instrument/sell/")
                 .contentType(MediaType.APPLICATION_JSON)

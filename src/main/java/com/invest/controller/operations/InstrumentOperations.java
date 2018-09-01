@@ -1,12 +1,14 @@
 package com.invest.controller.operations;
 
 import com.invest.dtos.InstrumentDto;
+import com.invest.dtos.StatisticsDto;
 import com.invest.mappers.InstrumentMapper;
 import com.invest.services.InstrumentService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,7 +26,8 @@ public class InstrumentOperations {
     @Autowired
     private StatisticsOperations statisticsOperations;
 
-    public boolean doIt(Long userId, String name, Long quantity, double price) {
+    public List<StatisticsDto> sellAndPrepareStatistics(Long userId, String name, Long quantity, double price) {
+        List<StatisticsDto> statisticsDtos = new ArrayList<>();
         List<InstrumentDto> instruments = instrumentMapper.mapperToListDto(instrumentService.allUserInstruments(userId)).stream()
                 .filter(t-> t.getSharesIndex().equals(name))
                 .collect(Collectors.toList());
@@ -36,7 +39,7 @@ public class InstrumentOperations {
 
                 LOGGER.info("Adding new statistics for user " + userId);
 
-                statisticsOperations.createStatisticsWhenAllSold(instruments, userId, name, price);
+                statisticsDtos = statisticsOperations.createStatisticsWhenAllSold(instruments, userId, name, price);
 
                 instruments.stream()
                         .map(InstrumentDto::getId)
@@ -44,7 +47,7 @@ public class InstrumentOperations {
                 LOGGER.info("All instruments have just been sold: name - " + name + ", quantity - " + quantity + ", user - "
                         + userId);
 
-                return true;
+                return statisticsDtos;
             } else if (shareQuantity > quantity) {
 
                 int i = 0;
@@ -56,14 +59,16 @@ public class InstrumentOperations {
                         Long instrumentId = instruments.get(i).getId();
                         instrumentService.sellInstrument(instrumentId);
 
-                        statisticsOperations.createStatisticsWhenMoreSold(userId, name, statisticsVariable, price, instruments);
+                        StatisticsDto toSave = statisticsOperations.createStatisticsWhenMoreSold(userId, name, statisticsVariable, price, instruments);
+                        statisticsDtos.add(toSave);
 
                         statisticsVariable++;
 
                     } else {
                         currentQty = currentQty - quantity;
 
-                        statisticsOperations.createStatisticsWhenLessSold(userId, name, statisticsVariable, quantity, price, instruments);
+                        StatisticsDto toSave = statisticsOperations.createStatisticsWhenLessSold(userId, name, statisticsVariable, quantity, price, instruments);
+                        statisticsDtos.add(toSave);
 
                         InstrumentDto instrumentDto = instruments.get(i);
                         Long id = instrumentDto.getId();
@@ -74,12 +79,12 @@ public class InstrumentOperations {
                     }
                     i++;
                 }
-                return true;
+                return statisticsDtos;
             } else {
-                return false;
+                return statisticsDtos;
             }
         } else {
-            return false;
+            return statisticsDtos;
         }
     }
 

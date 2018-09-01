@@ -53,7 +53,7 @@ public class InstrumentServiceTestSuite {
                 LocalDate.of(2018, 7, 21));
         when(instrumentDao.save(instrument)).thenReturn(instrument);
         //when
-        Instrument savedInstrument = instrumentDao.save(instrument);
+        Instrument savedInstrument = instrumentService.addInstrument(instrument);
         //then
         Assert.assertEquals(21L, savedInstrument.getId().longValue());
         Assert.assertEquals(61L, savedInstrument.getUser().getId().longValue());

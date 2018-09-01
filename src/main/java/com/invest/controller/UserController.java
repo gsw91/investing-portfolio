@@ -27,7 +27,7 @@ public class UserController {
     @RequestMapping(method = RequestMethod.POST, value = "create", consumes = APPLICATION_JSON_VALUE)
     public String createUser(@RequestBody UserDto userDto) {
         try {
-            User user = service.createUser(mapper.mapperToDomain(userDto));
+            service.createUser(mapper.mapperToDomain(userDto));
            return "User created";
         } catch (UserExistsException e) {
             LOGGER.warn(e.getMessage());

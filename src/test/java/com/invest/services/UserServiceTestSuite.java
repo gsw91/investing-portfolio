@@ -21,7 +21,7 @@ public class UserServiceTestSuite {
     private UserDao userDao;
 
     @Test
-    public void testAddNewUser() {
+    public void testCreateUser() {
         //given
         User user = new User("Mockito_user", "mockito", "mock@mockito.com");
         user.setId(1032L);
@@ -40,7 +40,7 @@ public class UserServiceTestSuite {
     }
 
     @Test
-    public void testRemoveUser() {
+    public void testDeleteUser() {
         //given
         long userId = 1032L;
         doNothing().when(userDao).deleteById(userId);
@@ -52,7 +52,7 @@ public class UserServiceTestSuite {
     }
 
     @Test
-    public void testChangeUserLogin() {
+    public void testUpdateUserLogin() {
         //given
         User user = new User("Mockito_user", "mockito", "mock@mockito.com");
         long userId = 991L;
@@ -63,7 +63,6 @@ public class UserServiceTestSuite {
         boolean isUpdated = userService.updateUserLogin(userId, userName);
         //then
         assertTrue(isUpdated);
-        assertEquals("helenka", user.getLogin());
     }
 
     @Test
@@ -78,11 +77,10 @@ public class UserServiceTestSuite {
         boolean isUpdated = userService.changeUserPassword(userId, password);
         //then
         assertTrue(isUpdated);
-        assertEquals("otikcom", user.getPassword());
     }
 
     @Test
-    public void testFindUser() {
+    public void testFindUserByName() {
         //given
         User user = new User("Mockito_user", "mockito", "mock@mockito.com");
         List<User> users = new ArrayList<>();
@@ -97,5 +95,33 @@ public class UserServiceTestSuite {
         } catch (UserExistsException e) {
         }
     }
+
+    @Test
+    public void testFindUserById() throws UserExistsException {
+        //given
+        User user = new User("Mockito_user", "mockito", "mock@mockito.com");
+        Long userId = 6L;
+        when(userDao.findById(userId)).thenReturn(Optional.of(user));
+        //when
+        User receivedUser = userService.findUserById(userId);
+        //then
+        assertEquals(user, receivedUser);
+
+    }
+
+    @Test
+    public void testChangeUserEmail() {
+        //given
+        User user = new User("Mockito_user", "mockito", "mock@mockito.com");
+        long userId = 991L;
+        String mail = "changed@mockito.com";
+        when(userDao.findById(userId)).thenReturn(Optional.of(user));
+        when(userDao.save(user)).thenReturn(user);
+        //when
+        boolean isUpdated = userService.changeUserEmail(userId, mail);
+        //then
+        assertTrue(isUpdated);
+    }
+
 
 }
