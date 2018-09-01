@@ -15,9 +15,6 @@ public class InstrumentService {
     @Autowired
     private InstrumentDao instrumentDao;
 
-    @Autowired
-    private InstrumentMapper mapper;
-
     public List<Instrument> allUserInstruments(Long userId) {
         return instrumentDao.findAll().stream()
                 .filter(t -> t.getUser().getId().equals(userId))
@@ -30,14 +27,6 @@ public class InstrumentService {
 
     public void sellInstrument(long id) {
         instrumentDao.deleteById(id);
-    }
-
-    public Instrument findById(Long id) {
-        if (instrumentDao.findById(id).isPresent()) {
-            return instrumentDao.findById(id).get();
-        } else {
-            return new Instrument();
-        }
     }
 
 }

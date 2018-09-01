@@ -18,9 +18,6 @@ public interface InstrumentDao extends CrudRepository<Instrument, Long> {
     List<Instrument> findAll();
 
     @Override
-    Optional<Instrument> findById(Long aLong);
-
-    @Override
     void deleteById(Long aLong);
 
 }

@@ -21,7 +21,7 @@ public class UserServiceTestSuite {
     private UserDao userDao;
 
     @Test
-    public void shouldAddNewUser() {
+    public void testAddNewUser() {
         //given
         User user = new User("Mockito_user", "mockito", "mock@mockito.com");
         user.setId(1032L);
@@ -40,7 +40,7 @@ public class UserServiceTestSuite {
     }
 
     @Test
-    public void shouldRemoveUser() {
+    public void testRemoveUser() {
         //given
         long userId = 1032L;
         doNothing().when(userDao).deleteById(userId);
@@ -52,7 +52,7 @@ public class UserServiceTestSuite {
     }
 
     @Test
-    public void shouldChangeUserLogin() {
+    public void testChangeUserLogin() {
         //given
         User user = new User("Mockito_user", "mockito", "mock@mockito.com");
         long userId = 991L;
@@ -67,7 +67,7 @@ public class UserServiceTestSuite {
     }
 
     @Test
-    public void shouldChangeUserPassword() {
+    public void testChangeUserPassword() {
         //given
         User user = new User("Mockito_user", "mockito", "mock@mockito.com");
         long userId = 991L;
@@ -82,7 +82,7 @@ public class UserServiceTestSuite {
     }
 
     @Test
-    public void shouldFindUser() {
+    public void testFindUser() {
         //given
         User user = new User("Mockito_user", "mockito", "mock@mockito.com");
         List<User> users = new ArrayList<>();
