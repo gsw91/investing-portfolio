@@ -2,12 +2,11 @@ package com.invest.Gui;
 
 import com.invest.Gui.frames.LogInFrame;
 
-public class GuiConfiguration {
+class GuiConfiguration {
 
-    public void run() {
+    protected void run() {
         LogInFrame logInFrame = new LogInFrame();
         logInFrame.run();
-
     }
 
 }

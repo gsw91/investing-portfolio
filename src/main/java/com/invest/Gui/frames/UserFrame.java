@@ -9,13 +9,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class UserFrame {
+class UserFrame {
 
     private final static Logger LOGGER = Logger.getLogger(UserFrame.class);
     private AddInstrumentFrame addInstrumentFrame;
     private SellInstrumentFrame sellInstrumentFrame;
-    private QuotationsFrame quotationsFrame;
-    private JFrame stats;
+    private StatisticsFrame statisticsFrame;
     private JFrame quots;
     private UserDto userDto;
     private JFrame userFrame;
@@ -25,8 +24,6 @@ public class UserFrame {
     private JButton statsButton;
     private JButton quotationsButton;
     private JButton logOutButton;
-    private JTable table;
-    private UserTable userTable;
 
     protected UserFrame(UserDto userDto) {
         this.userDto = userDto;
@@ -41,8 +38,8 @@ public class UserFrame {
         configureOtherFrames();
         configureButtons();
 
-        userTable = new UserTable();
-        table = userTable.showTable(userDto.getId());
+        UserTable userTable = new UserTable();
+        JTable table = userTable.showTable(userDto.getId());
         JScrollPane scrollPane = new JScrollPane(table);
         table.setFillsViewportHeight(true);
 
@@ -60,18 +57,19 @@ public class UserFrame {
         userFrame.getContentPane().add(BorderLayout.CENTER, scrollPane);
         userFrame.getContentPane().add(BorderLayout.SOUTH, buttonsPanel);
         userFrame.setVisible(true);
-
     }
 
     private void configureOtherFrames() {
         addInstrumentFrame = new AddInstrumentFrame(userFrame, userDto, false);
-        addInstrumentFrame.openAddingInstrumentFrame();
 
         sellInstrumentFrame = new SellInstrumentFrame(userFrame, userDto, false);
         sellInstrumentFrame.openSellingWindow();
 
-        StatisticsFrame statisticsFrame = new StatisticsFrame();
-        stats = statisticsFrame.createStatisticsFrame(userDto.getId(), false);
+        statisticsFrame = new StatisticsFrame("Statistics", userDto.getId(), false);
+        //stats = statisticsFrame.createStatisticsFrame(userDto.getId(), false);
+
+        QuotationsFrame quotationsFrame = new QuotationsFrame();
+        quots = quotationsFrame.createQuotationsFrame(false);
     }
 
     private void configureButtons() {
@@ -99,15 +97,14 @@ public class UserFrame {
     class QuotationsButtonActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            quotationsFrame = new QuotationsFrame();
-            quots = quotationsFrame.createStatisticsFrame(true);
+            quots.setVisible(true);
         }
     }
 
     class StatsButtonActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            stats.setVisible(true);
+            statisticsFrame.setVisible(true);
         }
     }
 

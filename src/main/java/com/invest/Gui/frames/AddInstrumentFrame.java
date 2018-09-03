@@ -15,40 +15,39 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
-public class AddInstrumentFrame {
+class AddInstrumentFrame extends JFrame {
 
     private final static Logger LOGGER = Logger.getLogger(AddInstrumentFrame.class);
     private JFrame userFrame;
     private UserDto userDto;
     private Boolean visibility;
     private JFrame addInstrumentFrame;
-    private JButton confirmButton;
-    private JButton cancelButton;
     private JTextField instrumentName;
     private JTextField quantity;
     private JTextField price;
     private JTextField bought;
 
-    public AddInstrumentFrame(JFrame userFrame, UserDto userDto, Boolean visibility) {
+    protected AddInstrumentFrame(JFrame userFrame, UserDto userDto, Boolean visibility) {
         this.userFrame = userFrame;
         this.userDto = userDto;
         this.visibility = visibility;
+        createAddingInstrumentFrame();
     }
 
-    public void setVisibility(Boolean visibility) {
+    protected void setVisibility(Boolean visibility) {
         this.visibility = visibility;
         addInstrumentFrame.setVisible(visibility);
     }
 
-    protected void openAddingInstrumentFrame() {
+    private void createAddingInstrumentFrame() {
         addInstrumentFrame = new JFrame("Add instrument");
         addInstrumentFrame.setLocation(500,300);
         addInstrumentFrame.setSize(300,180);
         addInstrumentFrame.setLayout(new GridLayout(5,2));
 
-        confirmButton = new JButton("Buy");
+        JButton confirmButton = new JButton("Buy");
         confirmButton.addActionListener(new ConfirmButtonActionListener());
-        cancelButton = new JButton("Cancel");
+        JButton cancelButton = new JButton("Cancel");
         cancelButton.addActionListener(new CancelButtonActionListener());
 
         instrumentName = new JTextField();
@@ -70,7 +69,7 @@ public class AddInstrumentFrame {
         addInstrumentFrame.setVisible(visibility);
     }
 
-    class ConfirmButtonActionListener implements ActionListener {
+    private class ConfirmButtonActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
@@ -138,15 +137,13 @@ public class AddInstrumentFrame {
             }
         }
 
-
     }
 
-    class CancelButtonActionListener implements ActionListener {
+    private class CancelButtonActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             addInstrumentFrame.setVisible(false);
         }
     }
-
 
 }

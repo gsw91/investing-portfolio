@@ -7,12 +7,14 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class StatisticsFrame {
+class StatisticsFrame extends JFrame {
 
-    private JFrame statisticsFrame;
+    protected StatisticsFrame(String title, Long userId, boolean visibility) throws HeadlessException {
+        super(title);
+        createStatisticsFrame(userId, visibility, this);
+    }
 
-    public JFrame createStatisticsFrame(Long userId, boolean visibility) {
-        statisticsFrame = new JFrame("Statistics");
+    private void createStatisticsFrame(Long userId, boolean visibility, StatisticsFrame statisticsFrame) {
         statisticsFrame.setSize(800, 600);
         statisticsFrame.setLocation(300,200);
 
@@ -28,14 +30,12 @@ public class StatisticsFrame {
         statisticsFrame.getContentPane().add(BorderLayout.SOUTH, close);
 
         statisticsFrame.setVisible(visibility);
-
-        return statisticsFrame;
     }
 
     class CloseButtonActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            statisticsFrame.setVisible(false);
+            setVisible(false);
         }
     }
 

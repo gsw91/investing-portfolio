@@ -12,7 +12,7 @@ public class QuotationsFrame {
 
     private JFrame quotationsFrame;
 
-    public JFrame createStatisticsFrame(boolean visibility) {
+    public JFrame createQuotationsFrame(boolean visibility) {
         quotationsFrame = new JFrame("Current quotations");
         quotationsFrame.setSize(800, 600);
         quotationsFrame.setLocation(300,200);
