@@ -21,7 +21,6 @@ class AddInstrumentFrame extends JFrame {
     private JFrame userFrame;
     private UserDto userDto;
     private Boolean visibility;
-    private JFrame addInstrumentFrame;
     private JTextField instrumentName;
     private JTextField quantity;
     private JTextField price;
@@ -34,16 +33,19 @@ class AddInstrumentFrame extends JFrame {
         createAddingInstrumentFrame();
     }
 
+    private AddInstrumentFrame getFrame() {
+        return this;
+    }
+
     protected void setVisibility(Boolean visibility) {
         this.visibility = visibility;
-        addInstrumentFrame.setVisible(visibility);
     }
 
     private void createAddingInstrumentFrame() {
-        addInstrumentFrame = new JFrame("Add instrument");
-        addInstrumentFrame.setLocation(500,300);
-        addInstrumentFrame.setSize(300,180);
-        addInstrumentFrame.setLayout(new GridLayout(5,2));
+        this.setTitle("Add instrument");
+        this.setLocation(500,300);
+        this.setSize(300,180);
+        this.setLayout(new GridLayout(5,2));
 
         JButton confirmButton = new JButton("Buy");
         confirmButton.addActionListener(new ConfirmButtonActionListener());
@@ -55,18 +57,18 @@ class AddInstrumentFrame extends JFrame {
         price = new JTextField();
         bought = new JTextField();
 
-        addInstrumentFrame.getContentPane().add(new JLabel("Instrument name"));
-        addInstrumentFrame.getContentPane().add(instrumentName);
-        addInstrumentFrame.getContentPane().add(new JLabel("Quantity"));
-        addInstrumentFrame.getContentPane().add(quantity);
-        addInstrumentFrame.getContentPane().add(new JLabel("Price"));
-        addInstrumentFrame.getContentPane().add(price);
-        addInstrumentFrame.getContentPane().add(new JLabel("Bought YYYY-MM-DD"));
-        addInstrumentFrame.getContentPane().add(bought);
-        addInstrumentFrame.getContentPane().add(confirmButton);
-        addInstrumentFrame.getContentPane().add(cancelButton);
+        this.getContentPane().add(new JLabel("Instrument name"));
+        this.getContentPane().add(instrumentName);
+        this.getContentPane().add(new JLabel("Quantity"));
+        this.getContentPane().add(quantity);
+        this.getContentPane().add(new JLabel("Price"));
+        this.getContentPane().add(price);
+        this.getContentPane().add(new JLabel("Bought YYYY-MM-DD"));
+        this.getContentPane().add(bought);
+        this.getContentPane().add(confirmButton);
+        this.getContentPane().add(cancelButton);
 
-        addInstrumentFrame.setVisible(visibility);
+        this.setVisible(visibility);
     }
 
     private class ConfirmButtonActionListener implements ActionListener {
@@ -142,7 +144,7 @@ class AddInstrumentFrame extends JFrame {
     private class CancelButtonActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            addInstrumentFrame.setVisible(false);
+            getFrame().setVisible(false);
         }
     }
 

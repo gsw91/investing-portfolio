@@ -8,22 +8,31 @@ import java.awt.event.*;
 import java.io.*;
 import java.net.*;
 
-public class SignUpFrame {
+public class SignUpFrame extends JFrame {
 
     private final static Logger LOGGER = Logger.getLogger(SignUpFrame.class);
 
-    private JFrame singUpFrame;
     private JTextField loginField;
     private JPasswordField passwordField;
     private JTextField emailField;
 
-    protected SignUpFrame() throws HeadlessException {
+    protected SignUpFrame(String title) throws HeadlessException {
+        super(title);
+        this.openSignUpFrame();
     }
 
-    protected void openSignUpFrame() {
-        singUpFrame = new JFrame("Sign Up");
-        singUpFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        singUpFrame.setLocation(500,300);
+    private SignUpFrame getSignUpFrame() {
+        return this;
+    }
+
+    @Override
+    public void setVisible(boolean b) {
+        super.setVisible(b);
+    }
+
+    private void openSignUpFrame() {
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        this.setLocation(500,300);
 
         loginField = new JTextField();
         loginField.setFont(new Font(Font.SERIF, Font.PLAIN, 16));
@@ -75,14 +84,13 @@ public class SignUpFrame {
         optionsPanel.add(logIn);
         optionsPanel.add(exitButton);
 
-        singUpFrame.getContentPane().add(BorderLayout.CENTER, panel);
-        singUpFrame.getContentPane().add(BorderLayout.SOUTH, signUp);
-        singUpFrame.getContentPane().add(BorderLayout.NORTH, optionsPanel);
-        singUpFrame.setSize(400,250);
-        singUpFrame.setVisible(true);
+        this.getContentPane().add(BorderLayout.CENTER, panel);
+        this.getContentPane().add(BorderLayout.SOUTH, signUp);
+        this.getContentPane().add(BorderLayout.NORTH, optionsPanel);
+        this.setSize(400,250);
     }
 
-    class SignUpActionListener implements ActionListener {
+    private class SignUpActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             String name = loginField.getText();
@@ -138,23 +146,22 @@ public class SignUpFrame {
         }
     }
 
-    class ExitButtonActionListener implements ActionListener {
+    private class ExitButtonActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             System.exit(0);
         }
     }
 
-    class LogInActionListener implements ActionListener {
+    private class LogInActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            LogInFrame logInFrame = new LogInFrame();
-            logInFrame.run();
-            singUpFrame.dispose();
+            new LogInFrame();
+            getSignUpFrame().dispose();
         }
     }
 
-    class LoginFieldMouseListener implements MouseListener {
+    private class LoginFieldMouseListener implements MouseListener {
         @Override
         public void mouseClicked(MouseEvent e) {
             loginField.setText("");
@@ -179,7 +186,7 @@ public class SignUpFrame {
         }
     }
 
-    class PasswordFieldMouseListener implements MouseListener {
+    private class PasswordFieldMouseListener implements MouseListener {
         @Override
         public void mouseClicked(MouseEvent e) {
             passwordField.setText("");
@@ -205,7 +212,7 @@ public class SignUpFrame {
         }
     }
 
-    class EmailFieldMouseListener implements MouseListener {
+    private class EmailFieldMouseListener implements MouseListener {
         @Override
         public void mouseClicked(MouseEvent e) {
             emailField.setText("");

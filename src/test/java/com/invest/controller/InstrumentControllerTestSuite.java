@@ -55,15 +55,15 @@ public class InstrumentControllerTestSuite {
     public void shouldSellInstrument() throws Exception {
         //given
         List<StatisticsDto> statisticsDtos = new ArrayList<>();
-        when(operations.sellAndPrepareStatistics(1L, "COGNOR", 1600L, 2.3)).thenReturn(statisticsDtos);
-        doNothing().when(statisticsCreation).saveAllStatistics(statisticsDtos);
+        when(operations.sellAndPrepareStatistics(1L, "COGNOR", 16000L, 2.3)).thenReturn(statisticsDtos);
+        when(statisticsCreation.saveAllStatistics(statisticsDtos)).thenReturn(true);
         //when & then
         mockMvc.perform(put("/v1/instrument/sell/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
                 .param("userId", "1")
                 .param("name", "COGNOR")
-                .param("quantity", "1600")
+                .param("quantity", "16000")
                 .param("price", "2.3"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", is(true)));

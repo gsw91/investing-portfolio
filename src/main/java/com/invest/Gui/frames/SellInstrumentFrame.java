@@ -13,55 +13,56 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class SellInstrumentFrame {
+public class SellInstrumentFrame extends JFrame {
 
     private final static Logger LOGGER = Logger.getLogger(SellInstrumentFrame.class);
-    private JFrame sellingFrame;
     private JFrame userFrame;
     private UserDto userDto;
     private Boolean visibility;
     private JTextField instrumentName;
     private JTextField quantity;
     private JTextField price;
-    private JButton confirmButton;
-    private JButton cancelButton;
 
-    public SellInstrumentFrame(JFrame userFrame, UserDto userDto, Boolean visibility) {
+    protected SellInstrumentFrame(JFrame userFrame, UserDto userDto, Boolean visibility) throws HeadlessException {
         this.userFrame = userFrame;
         this.userDto = userDto;
         this.visibility = visibility;
+        openSellingWindow();
     }
 
-    public void setVisibility(Boolean visibility) {
-        this.visibility = visibility;
-        sellingFrame.setVisible(visibility);
+    private SellInstrumentFrame getFrame() {
+        return this;
     }
 
-    public void openSellingWindow() {
-        sellingFrame = new JFrame("Sell instrument");
-        sellingFrame.setLocation(500,300);
-        sellingFrame.setSize(300, 180);
-        sellingFrame.setVisible(true);
+    @Override
+    public void setVisible(boolean b) {
+        super.setVisible(b);
+    }
 
-        confirmButton = new JButton("Sell");
+    private void openSellingWindow() {
+        this.setTitle("Sell instrument");
+        this.setLocation(500,300);
+        this.setSize(300, 180);
+
+        JButton confirmButton = new JButton("Sell");
         confirmButton.addActionListener(new ConfirmButtonActionListener());
-        cancelButton = new JButton("Cancel");
+        JButton cancelButton = new JButton("Cancel");
         cancelButton.addActionListener(new CancelButtonActionListener());
 
         instrumentName = new JTextField();
         quantity = new JTextField();
         price = new JTextField();
 
-        sellingFrame.setLayout(new GridLayout(4, 2));
-        sellingFrame.add(new JLabel("Instrument"));
-        sellingFrame.add(instrumentName);
-        sellingFrame.add(new JLabel("Quantity"));
-        sellingFrame.add(quantity);
-        sellingFrame.add(new JLabel("Price"));
-        sellingFrame.add(price);
-        sellingFrame.add(confirmButton);
-        sellingFrame.add(cancelButton);
-        sellingFrame.setVisible(visibility);
+        this.setLayout(new GridLayout(4, 2));
+        this.add(new JLabel("Instrument"));
+        this.add(instrumentName);
+        this.add(new JLabel("Quantity"));
+        this.add(quantity);
+        this.add(new JLabel("Price"));
+        this.add(price);
+        this.add(confirmButton);
+        this.add(cancelButton);
+        this.setVisible(visibility);
     }
 
     class ConfirmButtonActionListener implements ActionListener {
@@ -74,7 +75,7 @@ public class SellInstrumentFrame {
                 Double sellingPrice = convertToDouble(price.getText());
                 boolean isSold = sellInstrument(userId, name, qtyToSell, sellingPrice);
                 if (isSold) {
-                    setVisibility(false);
+                    setVisible(false);
                     UserFrame newUserFrame = new UserFrame(userDto);
                     newUserFrame.openUserFrame();
                     userFrame.dispose();
@@ -121,7 +122,7 @@ public class SellInstrumentFrame {
     class CancelButtonActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            sellingFrame.setVisible(false);
+            getFrame().setVisible(false);
         }
     }
 

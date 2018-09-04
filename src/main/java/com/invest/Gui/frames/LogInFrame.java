@@ -10,17 +10,24 @@ import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
 
-public class LogInFrame {
+public class LogInFrame extends JFrame {
 
     private final static Logger LOGGER = Logger.getLogger(LogInFrame.class);
 
-    private JFrame loginFrame;
     private JTextField loginField;
     private JPasswordField passwordField;
 
-    public void run() {
-        loginFrame = new JFrame("Investing app log in");
-        loginFrame.setLocation(500,300);
+    public LogInFrame() throws HeadlessException {
+        createLoginFrame();
+    }
+
+    private LogInFrame getFrame() {
+        return this;
+    }
+
+    private void createLoginFrame() {
+        this.setTitle("Investing app log in");
+        this.setLocation(500,300);
 
         JButton logIn = new JButton(" click to log in");
         logIn.setFont(new Font(Font.SERIF, Font.PLAIN, 20));
@@ -62,14 +69,13 @@ public class LogInFrame {
         optionsPanel.add(signUp);
         optionsPanel.add(exitButton);
 
-        loginFrame.getContentPane().add(BorderLayout.CENTER, userPanel);
-        loginFrame.getContentPane().add(BorderLayout.SOUTH, logIn);
-        loginFrame.getContentPane().add(BorderLayout.NORTH, optionsPanel);
+        this.getContentPane().add(BorderLayout.CENTER, userPanel);
+        this.getContentPane().add(BorderLayout.SOUTH, logIn);
+        this.getContentPane().add(BorderLayout.NORTH, optionsPanel);
 
-        loginFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        loginFrame.setSize(400, 250);
-        loginFrame.setVisible(true);
-
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        this.setSize(400, 250);
+        this.setVisible(true);
     }
 
     class ExitButtonActionListener implements ActionListener {
@@ -82,9 +88,9 @@ public class LogInFrame {
     class SignUpActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            SignUpFrame signUpFrame = new SignUpFrame();
-            signUpFrame.openSignUpFrame();
-            loginFrame.dispose();
+            SignUpFrame signUpFrame = new SignUpFrame("Sign up");
+            signUpFrame.setVisible(true);
+            getFrame().dispose();
         }
     }
 
@@ -140,7 +146,7 @@ public class LogInFrame {
                         UserDto userDto = new UserDto(Long.valueOf(list.get(0)), list.get(1), list.get(2), list.get(3));
                         UserFrame userFrame = new UserFrame(userDto);
                         userFrame.openUserFrame();
-                        loginFrame.dispose();
+                        getFrame().dispose();
                     } catch (NumberFormatException e) {
                         throw new LogInException();
                     }

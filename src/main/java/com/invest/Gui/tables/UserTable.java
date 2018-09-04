@@ -64,30 +64,34 @@ public class UserTable extends AbstractTableModel {
             ArrayList<String> list = new ArrayList<>();
             for (String i : array) {
                 String[] nextArray = i.split(":");
-                 if (nextArray.length == 2) {
+                if (nextArray.length == 2) {
                     list.add(nextArray[1]);
                 }
             }
-            LOGGER.info("Creating table for user");
-            //getPricesModulo
-            int modulo = list.size()%6;
-            if (modulo == 0) {
-                int quantity = list.size();
-                for(int i=0; i<quantity; i+=6) {
-                    userDataList.add(new UserData(
-                            list.get(i+3),
-                            Long.valueOf(list.get(i+2)),
-                            BigDecimal.valueOf(Double.valueOf(list.get(i+4))),
-                            BigDecimal.valueOf(Double.valueOf(getCurrentPrice(list.get(i+3))))
-                    ));
+            try {
+                LOGGER.info("Creating table for user");
+                //getPricesModulo
+                int modulo = list.size() % 6;
+                if (modulo == 0) {
+                    int quantity = list.size();
+                    for (int i = 0; i < quantity; i += 6) {
+                        userDataList.add(new UserData(
+                                list.get(i + 3),
+                                Long.valueOf(list.get(i + 2)),
+                                BigDecimal.valueOf(Double.valueOf(list.get(i + 4))),
+                                BigDecimal.valueOf(Double.valueOf(getCurrentPrice(list.get(i + 3))))
+                        ));
+                    }
                 }
+            } catch (ArrayIndexOutOfBoundsException e1) {
+                throw new IOException();
             }
         }
-
         return userDataList;
     }
 
-    private String getCurrentPrice(String indexList) throws IOException {
+
+    private String getCurrentPrice(String indexList) throws IOException, ArrayIndexOutOfBoundsException {
         String newRequest = "http://localhost:8080/v1/share/name?name=";
             String mp = newRequest + indexList.replace("\"", "");
             URL newUrl = new URL(mp);

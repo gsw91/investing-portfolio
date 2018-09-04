@@ -24,9 +24,14 @@ public class SharesMap {
         Long startTime = System.currentTimeMillis();
         LOGGER.info("Preparing map quotations ");
         quotationsUpdating.updateQuotations();
-        Long endTime = System.currentTimeMillis();
-        LOGGER.info("Quotations ready, size: " + marketPriceMap.size() +", it took " + (endTime-startTime) + " ms");
-        return marketPriceMap;
+        boolean isUpdated = quotationsUpdating.isUpdated();
+        if(isUpdated) {
+            Long endTime = System.currentTimeMillis();
+            LOGGER.info("Quotations ready, size: " + marketPriceMap.size() + ", it took " + (endTime - startTime) + " ms");
+            return marketPriceMap;
+        } else {
+            return new HashMap<>();
+        }
     }
 
 }

@@ -31,7 +31,7 @@ public class ShareMapTestSuite {
             boolean doesContainMBANK = shares.containsKey("MBANK");
 
             //when & then
-            assertEquals(355, shares.size());
+            assertEquals(356, shares.size());
             assertTrue(doesContain11BIT);
             assertTrue(doesContainECHO);
             assertTrue(doesContainMBANK);

@@ -15,7 +15,7 @@ class UserFrame {
     private AddInstrumentFrame addInstrumentFrame;
     private SellInstrumentFrame sellInstrumentFrame;
     private StatisticsFrame statisticsFrame;
-    private JFrame quots;
+    private QuotationsFrame quotationsFrame;
     private UserDto userDto;
     private JFrame userFrame;
     private JButton refreshButton;
@@ -63,13 +63,10 @@ class UserFrame {
         addInstrumentFrame = new AddInstrumentFrame(userFrame, userDto, false);
 
         sellInstrumentFrame = new SellInstrumentFrame(userFrame, userDto, false);
-        sellInstrumentFrame.openSellingWindow();
 
         statisticsFrame = new StatisticsFrame("Statistics", userDto.getId(), false);
-        //stats = statisticsFrame.createStatisticsFrame(userDto.getId(), false);
 
-        QuotationsFrame quotationsFrame = new QuotationsFrame();
-        quots = quotationsFrame.createQuotationsFrame(false);
+        quotationsFrame = new QuotationsFrame(false);
     }
 
     private void configureButtons() {
@@ -97,7 +94,7 @@ class UserFrame {
     class QuotationsButtonActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            quots.setVisible(true);
+            quotationsFrame.setVisible(true);
         }
     }
 
@@ -111,7 +108,7 @@ class UserFrame {
     class SellButtonActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            sellInstrumentFrame.setVisibility(true);
+            sellInstrumentFrame.setVisible(true);
         }
     }
 
@@ -135,8 +132,7 @@ class UserFrame {
     class LogOutButtonActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            LogInFrame logInFrame = new LogInFrame();
-            logInFrame.run();
+            new LogInFrame();
             LOGGER.info("User " + userDto.getLogin() + " logged out");
             userFrame.dispose();
         }

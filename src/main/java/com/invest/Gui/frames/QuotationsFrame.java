@@ -1,21 +1,26 @@
 package com.invest.Gui.frames;
 
 import com.invest.Gui.tables.QuotationsTable;
-import com.invest.Gui.tables.StatisticsTable;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class QuotationsFrame {
+class QuotationsFrame extends JFrame {
 
-    private JFrame quotationsFrame;
+    protected QuotationsFrame(boolean visibility) throws HeadlessException {
+        this.createQuotationsFrame(visibility);
+    }
 
-    public JFrame createQuotationsFrame(boolean visibility) {
-        quotationsFrame = new JFrame("Current quotations");
-        quotationsFrame.setSize(800, 600);
-        quotationsFrame.setLocation(300,200);
+    private QuotationsFrame getFrame() {
+        return this;
+    }
+
+    private void createQuotationsFrame(boolean visibility) {
+        this.setTitle("Current quotations");
+        this.setSize(800, 600);
+        this.setLocation(300,200);
 
         QuotationsTable quotationsTable = new QuotationsTable();
         JTable table = quotationsTable.showTable();
@@ -25,18 +30,16 @@ public class QuotationsFrame {
         JButton close = new JButton("Close");
         close.addActionListener(new CloseButtonActionListener());
 
-        quotationsFrame.getContentPane().add(scrollPane);
-        quotationsFrame.getContentPane().add(BorderLayout.SOUTH, close);
+        this.getContentPane().add(scrollPane);
+        this.getContentPane().add(BorderLayout.SOUTH, close);
 
-        quotationsFrame.setVisible(visibility);
-
-        return quotationsFrame;
+        this.setVisible(visibility);
     }
 
     class CloseButtonActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            quotationsFrame.dispose();
+            getFrame().dispose();
         }
     }
 

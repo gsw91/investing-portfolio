@@ -15,8 +15,14 @@ public class QuotationsUpdating {
 
     private static Logger LOGGER = Logger.getLogger(QuotationsUpdating.class);
 
+    private boolean updated = false;
+
     @Autowired
     private QuotationConnecting quotationConnecting;
+
+    public boolean isUpdated() {
+        return updated;
+    }
 
     @Scheduled(cron = "0 0/05 9-17 * * MON-FRI")
     public void updateQuotations () {
@@ -26,6 +32,7 @@ public class QuotationsUpdating {
         Long endTime = System.currentTimeMillis();
         if (map.size() > 0) {
             LOGGER.info("Quotations updated, size: " + SharesMap.marketPriceMap.size() + ", it took " + (endTime - startTime) + " ms");
+            updated = true;
         }
     }
 
