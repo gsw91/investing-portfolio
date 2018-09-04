@@ -1,8 +1,8 @@
 package com.invest.controller;
 
-import com.invest.domain.User;
 import com.invest.dtos.UserDto;
 import com.invest.exceptions.UserExistsException;
+import com.invest.mailing.EmailPreparationService;
 import com.invest.mappers.UserMapper;
 import com.invest.services.UserService;
 import org.apache.log4j.Logger;
@@ -24,15 +24,19 @@ public class UserController {
     @Autowired
     private UserMapper mapper;
 
+    @Autowired
+    private EmailPreparationService emailService;
+
     @RequestMapping(method = RequestMethod.POST, value = "create", consumes = APPLICATION_JSON_VALUE)
     public String createUser(@RequestBody UserDto userDto) {
         try {
             service.createUser(mapper.mapperToDomain(userDto));
-           return "User created";
         } catch (UserExistsException e) {
             LOGGER.warn(e.getMessage());
             return e.getMessage();
         }
+        emailService.sendInfoToAdmin();
+        return "User created";
     }
 
     @RequestMapping(method = RequestMethod.GET, params = { "name", "password" },  value = "login")

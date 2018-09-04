@@ -16,6 +16,12 @@ public class UserService {
     @Autowired
     private UserDao userDao;
 
+    public User getLastUser() {
+        long count = userDao.findAll().size();
+        return userDao.findAll().stream()
+                .skip(count-1).findFirst().get();
+    }
+
     public User createUser(User user) throws UserExistsException {
         boolean ifUsernameExists = findAllUsers().stream()
                 .anyMatch(t->t.getLogin().equals(user.getLogin()));

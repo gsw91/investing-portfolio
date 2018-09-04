@@ -32,6 +32,8 @@ dependencies {
     compile group: 'log4j', name: 'log4j', version: '1.2.17'
     compile group: 'org.jsoup', name: 'jsoup', version: '1.11.3'
     compile group: 'org.json', name: 'json', version: '20180130'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: '2.0.4.RELEASE'
+    compile('org.springframework.boot:spring-boot-starter-mail')
     runtime('mysql:mysql-connector-java')
 
     testCompile group: 'junit', name: 'junit', version: '4.12'
