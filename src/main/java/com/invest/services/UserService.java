@@ -111,4 +111,8 @@ public class UserService {
         return userDao.findAll();
     }
 
+    public long countUsers() {
+        return userDao.count();
+    }
+
 }

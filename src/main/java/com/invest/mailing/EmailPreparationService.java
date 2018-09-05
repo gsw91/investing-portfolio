@@ -2,7 +2,6 @@ package com.invest.mailing;
 
 import com.invest.config.AdministrationConfig;
 import com.invest.domain.Mail;
-import com.invest.dtos.UserDto;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
@@ -15,6 +14,9 @@ import org.springframework.stereotype.Service;
 public class EmailPreparationService {
 
     private static final Logger LOGGER = Logger.getLogger(EmailPreparationService.class);
+    private static final String PREPARATION = "Starting email preparation...";
+    private static final String MAIL_SEND = "Email has been sent";
+    private static final String MAIL_SENDING_ERROR = "Failed to process email sending: ";
 
     @Autowired
     private JavaMailSender javaMailSender;
@@ -25,24 +27,29 @@ public class EmailPreparationService {
     @Autowired
     private AdministrationConfig administrationConfig;
 
-    public void sendInfoToAdmin() {
-        LOGGER.info("Starting email preparation...");
-        Mail mail = new Mail(administrationConfig.getAdminMail(), "New user", "");
+    public void sendInfoToAdmin(final Mail mail) {
+        LOGGER.info(PREPARATION);
         try {
-            javaMailSender.send(createMimeMessageToAdmin(mail));
-            LOGGER.info("Email has been sent.");
+            javaMailSender.send(emailCreatorService.createMimeMessageToAdmin(mail));
+            LOGGER.info(MAIL_SEND);
         } catch (MailException e) {
-            LOGGER.error("Failed to process email sending: " + e.getMessage());
+            LOGGER.error(MAIL_SENDING_ERROR + e.getMessage());
         }
     }
 
-    private MimeMessagePreparator createMimeMessageToAdmin(final Mail mail) {
-        return mimeMessage -> {
-            MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
-            messageHelper.setTo(mail.getMailTo());
-            messageHelper.setSubject(mail.getSubject());
-            messageHelper.setText(emailCreatorService.buildMailToAdmin(), true);
-        };
+    public void createStatisticsMessageToAdmin() {
+        LOGGER.info(PREPARATION);
+        Mail mail = new Mail(administrationConfig.getAdminMail(), "Daily Statistics", "");
+        try {
+            javaMailSender.send(emailCreatorService.createMimeStatisticsMessageToAdmin(mail));
+            LOGGER.info(MAIL_SEND);
+        } catch (MailException e) {
+            LOGGER.error(MAIL_SENDING_ERROR + e.getMessage());
+        }
     }
+
+
+
+
 
 }

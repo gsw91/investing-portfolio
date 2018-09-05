@@ -1,5 +1,7 @@
 package com.invest.controller;
 
+import com.invest.config.AdministrationConfig;
+import com.invest.domain.Mail;
 import com.invest.dtos.UserDto;
 import com.invest.exceptions.UserExistsException;
 import com.invest.mailing.EmailPreparationService;
@@ -27,6 +29,9 @@ public class UserController {
     @Autowired
     private EmailPreparationService emailService;
 
+    @Autowired
+    private AdministrationConfig administrationConfig;
+
     @RequestMapping(method = RequestMethod.POST, value = "create", consumes = APPLICATION_JSON_VALUE)
     public String createUser(@RequestBody UserDto userDto) {
         try {
@@ -35,7 +40,8 @@ public class UserController {
             LOGGER.warn(e.getMessage());
             return e.getMessage();
         }
-        emailService.sendInfoToAdmin();
+        Mail mail = new Mail(administrationConfig.getAdminMail(), "New user", "");
+        emailService.sendInfoToAdmin(mail);
         return "User created";
     }
 

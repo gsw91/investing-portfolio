@@ -23,4 +23,8 @@ public class StatisticsService {
                 .collect(Collectors.toList());
     }
 
+    public long countStatistics() {
+        return statisticsDao.count();
+    }
+
 }

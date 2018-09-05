@@ -1,7 +1,9 @@
 package com.invest.controller;
 
+import com.invest.config.AdministrationConfig;
 import com.invest.domain.User;
 import com.invest.dtos.UserDto;
+import com.invest.mailing.EmailPreparationService;
 import com.invest.mappers.UserMapper;
 import com.invest.services.UserService;
 import org.json.JSONObject;
@@ -33,6 +35,12 @@ public class UserControllerTestSuite {
 
     @MockBean
     private UserMapper mapper;
+
+    @MockBean
+    private EmailPreparationService emailPreparationService;
+
+    @MockBean
+    private AdministrationConfig administrationConfig;
 
     @Test
     public void shouldFindUser() throws Exception {

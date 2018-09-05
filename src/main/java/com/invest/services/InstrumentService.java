@@ -29,4 +29,8 @@ public class InstrumentService {
         instrumentDao.deleteById(id);
     }
 
+    public long countInstruments() {
+        return instrumentDao.count();
+    }
+
 }
