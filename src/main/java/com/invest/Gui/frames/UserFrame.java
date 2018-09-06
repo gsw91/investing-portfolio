@@ -60,7 +60,7 @@ class UserFrame {
     }
 
     private void configureOtherFrames() {
-        addInstrumentFrame = new AddInstrumentFrame(userFrame, userDto, false);
+        addInstrumentFrame = new AddInstrumentFrame(userDto, false);
 
         sellInstrumentFrame = new SellInstrumentFrame(userFrame, userDto, false);
 
@@ -115,7 +115,7 @@ class UserFrame {
     class AddButtonActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            addInstrumentFrame.setVisibility(true);
+            addInstrumentFrame.setVisible(true);
         }
     }
 

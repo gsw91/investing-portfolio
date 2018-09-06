@@ -6,6 +6,8 @@ import com.invest.mappers.InstrumentMapper;
 import com.invest.repositories.InstrumentDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,9 +18,13 @@ public class InstrumentService {
     private InstrumentDao instrumentDao;
 
     public List<Instrument> allUserInstruments(Long userId) {
-        return instrumentDao.findAll().stream()
-                .filter(t -> t.getUser().getId().equals(userId))
-                .collect(Collectors.toList());
+        if (instrumentDao.findAll().size()!=0) {
+            return instrumentDao.findAll().stream()
+                    .filter(t -> t.getUser().getId().equals(userId))
+                    .collect(Collectors.toList());
+        } else {
+            return new ArrayList<>();
+        }
     }
 
     public Instrument addInstrument(Instrument instrument) {

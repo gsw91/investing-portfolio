@@ -141,7 +141,6 @@ public class LogInFrame extends JFrame {
                             list.add(nextArray[1]);
                         }
                     }
-
                     try {
                         UserDto userDto = new UserDto(Long.valueOf(list.get(0)), list.get(1), list.get(2), list.get(3));
                         UserFrame userFrame = new UserFrame(userDto);

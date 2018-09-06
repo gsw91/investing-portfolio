@@ -13,7 +13,7 @@ public class Mailing {
 
     @Scheduled(cron = "0 0 8 * * *")
     public void sendStatisticsEmailToAdmin () {
-        emailPreparationService.createStatisticsMessageToAdmin();
+        emailPreparationService.sendStatisticsMessageToAdmin();
     }
 
 }

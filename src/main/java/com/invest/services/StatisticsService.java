@@ -4,6 +4,8 @@ import com.invest.domain.Statistics;
 import com.invest.repositories.StatisticsDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,9 +20,13 @@ public class StatisticsService {
     }
 
     public List<Statistics> showAllOfUser(Long userId) {
-        return statisticsDao.findAll().stream()
-                .filter(t -> t.getUser().getId().longValue() == userId)
-                .collect(Collectors.toList());
+        if (statisticsDao.findAll().size()!=0) {
+            return statisticsDao.findAll().stream()
+                    .filter(t -> t.getUser().getId().longValue() == userId)
+                    .collect(Collectors.toList());
+        } else {
+            return new ArrayList<>();
+        }
     }
 
     public long countStatistics() {

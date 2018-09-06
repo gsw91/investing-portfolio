@@ -2,6 +2,7 @@ package com.invest.mailing;
 
 import com.invest.config.AdministrationConfig;
 import com.invest.domain.Mail;
+import com.invest.dtos.UserDto;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
@@ -37,7 +38,7 @@ public class EmailPreparationService {
         }
     }
 
-    public void createStatisticsMessageToAdmin() {
+    public void sendStatisticsMessageToAdmin() {
         LOGGER.info(PREPARATION);
         Mail mail = new Mail(administrationConfig.getAdminMail(), "Daily Statistics", "");
         try {
@@ -46,6 +47,18 @@ public class EmailPreparationService {
         } catch (MailException e) {
             LOGGER.error(MAIL_SENDING_ERROR + e.getMessage());
         }
+    }
+
+    public void sendWelcomeMail(final UserDto userDto) {
+        LOGGER.info(PREPARATION);
+        Mail mail = new Mail(userDto.getEmail(), "Welcome in Investment Portfolio", "");
+        try {
+            javaMailSender.send(emailCreatorService.createWelcomeMail(mail, userDto));
+            LOGGER.info(MAIL_SEND);
+        } catch (MailException e) {
+            LOGGER.error(MAIL_SENDING_ERROR + e.getMessage());
+        }
+
     }
 
 

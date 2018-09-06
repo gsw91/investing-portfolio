@@ -18,7 +18,6 @@ import java.time.format.DateTimeParseException;
 class AddInstrumentFrame extends JFrame {
 
     private final static Logger LOGGER = Logger.getLogger(AddInstrumentFrame.class);
-    private JFrame userFrame;
     private UserDto userDto;
     private Boolean visibility;
     private JTextField instrumentName;
@@ -26,8 +25,7 @@ class AddInstrumentFrame extends JFrame {
     private JTextField price;
     private JTextField bought;
 
-    protected AddInstrumentFrame(JFrame userFrame, UserDto userDto, Boolean visibility) {
-        this.userFrame = userFrame;
+    protected AddInstrumentFrame(UserDto userDto, Boolean visibility) {
         this.userDto = userDto;
         this.visibility = visibility;
         createAddingInstrumentFrame();
@@ -35,10 +33,6 @@ class AddInstrumentFrame extends JFrame {
 
     private AddInstrumentFrame getFrame() {
         return this;
-    }
-
-    protected void setVisibility(Boolean visibility) {
-        this.visibility = visibility;
     }
 
     private void createAddingInstrumentFrame() {
@@ -82,10 +76,10 @@ class AddInstrumentFrame extends JFrame {
 
                 addingInstrument(index, qty, buingPrice, date);
 
-                setVisibility(false);
+                setVisible(false);
                 UserFrame newUserFrame = new UserFrame(userDto);
                 newUserFrame.openUserFrame();
-                userFrame.dispose();
+                getFrame().dispose();
 
             } catch (DateTimeParseException dte) {
                 LOGGER.warn("Incorrect data time inserted");

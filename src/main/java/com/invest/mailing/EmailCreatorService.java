@@ -4,6 +4,7 @@ import com.invest.config.AdministrationConfig;
 import com.invest.domain.Instrument;
 import com.invest.domain.Mail;
 import com.invest.domain.User;
+import com.invest.dtos.UserDto;
 import com.invest.services.InstrumentService;
 import com.invest.services.StatisticsService;
 import com.invest.services.UserService;
@@ -16,6 +17,7 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Service
 public class EmailCreatorService {
@@ -55,6 +57,15 @@ public class EmailCreatorService {
         };
     }
 
+    public MimeMessagePreparator createWelcomeMail(final Mail mail, final UserDto userDto) {
+        return mimeMessage -> {
+            MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
+            messageHelper.setTo(mail.getMailTo());
+            messageHelper.setSubject(mail.getSubject());
+            messageHelper.setText(buildWelcomeMail(userDto), true);
+        };
+    }
+
     private String buildMailToAdmin() {
 
         User user = userService.getLastUser();
@@ -86,4 +97,27 @@ public class EmailCreatorService {
         return templateEngine.process("mail/admin_daily_summary.html", context);
     }
 
+    private String buildWelcomeMail(final UserDto userDto) {
+
+        boolean hourCondition = false;
+
+        LocalTime localTime = LocalTime.now();
+        System.out.println("current time " + localTime);
+        if (localTime.getHour()>0 && localTime.getHour()< 17) {
+            System.out.println("hour " + localTime.getHour());
+            hourCondition = true;
+            System.out.println("condition " + hourCondition);
+        }
+
+
+        Context context = new Context();
+        context.setVariable("user_login", userDto.getLogin());
+        context.setVariable("user_password", userDto.getPassword());
+        context.setVariable("user_email", userDto.getEmail());
+        context.setVariable("hour_condition", hourCondition);
+        context.setVariable("day", "day");
+        context.setVariable("evening", "evening");
+
+        return templateEngine.process("mail/welcome_mail.html", context);
+    }
 }

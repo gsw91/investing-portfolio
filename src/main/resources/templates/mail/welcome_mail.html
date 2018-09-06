@@ -4,7 +4,7 @@
 <head>
     <meta name="viewport" content="width=device-width">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Daily statistics</title>
+    <title>Welcome mail</title>
     <style>
 
         @media only screen and (max-width: 620px) {
@@ -97,21 +97,28 @@
                                 <tr>
                                     <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">
                                         <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">
-                                            Current statistics of Investment Portfolio Application:
+                                            Welcome <span th:text="${user_login}"></span>
+                                        </p>
+                                        <p>
+                                            You had registered in Investment Portfolio application. <br>
+                                            Your credentials:
                                         </p>
                                         <ul>
                                             <li style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">
-                                                Registered users: <span th:text="${users_quantity}"></span>
+                                                Login: <span th:text="${user_login}"></span>
                                             </li>
                                             <li style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">
-                                                All instruments: <span th:text="${instruments_quantity}"></span>
+                                                Password: <span th:text="${user_password}"></span>
                                             </li>
                                             <li style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">
-                                                All statistics: <span th:text="${statistics_quantity}"></span>
+                                                Email: <span th:text="${user_email}"></span>
                                             </li>
                                         </ul>
-                                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">
-                                            Current database status as of <span th:text="${the_day}"></span>
+                                        <p th:if="${hour_condition}" style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">
+                                            Have a nice <span th:text="${day}"> </span> <br> Investment Portfolio
+                                        </p>
+                                        <p th:unless="${hour_condition}" style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">
+                                            Have a nice <span th:text="${evening}"> </span> <br> Investment Portfolio
                                         </p>
 
                                     </td>
