@@ -3,6 +3,7 @@ bash.exe.stackdump
 .idea
 build
 out
+src/test/java/com/invest/mailing/Other.java
 
 # Compiled class file
 *.class
