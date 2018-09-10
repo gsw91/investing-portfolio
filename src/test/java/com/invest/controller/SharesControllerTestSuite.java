@@ -1,7 +1,9 @@
 package com.invest.controller;
 
+import com.invest.exceptions.SharesException;
 import com.invest.quotations.Share;
 import com.invest.services.SharesService;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import sun.security.provider.SHA;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -57,6 +60,24 @@ public class SharesControllerTestSuite {
         //when & then
         mockMvc.perform(get("/v1/share/all").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
+    }
+
+    @Test(expected = SharesException.class)
+    public void shouldThrownAnExceptionWhenFetchAllShares() throws SharesException {
+        //given
+        when(service.getAllShares()).thenThrow(new SharesException(SharesException.UPDATING_QUOTATIONS_FAILED));
+        //then & then
+        service.getAllShares();
+    }
+
+    @Test(expected = SharesException.class)
+    public void shouldThrownAnExceptionWhenFetchOneShare() throws SharesException {
+        //given
+        when(service.getShare("KREZUS")).thenThrow(new SharesException(SharesException.NO_SHARE_EXCEPTION));
+        //then & then
+        Share share = service.getShare("KREZUS");
+        //
+        Assert.assertNull(share);
     }
 
 }

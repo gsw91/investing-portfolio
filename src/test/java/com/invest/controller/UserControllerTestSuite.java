@@ -3,6 +3,7 @@ package com.invest.controller;
 import com.invest.config.AdministrationConfig;
 import com.invest.domain.User;
 import com.invest.dtos.UserDto;
+import com.invest.exceptions.UserExistsException;
 import com.invest.mailing.EmailPreparationService;
 import com.invest.mappers.UserMapper;
 import com.invest.services.UserService;

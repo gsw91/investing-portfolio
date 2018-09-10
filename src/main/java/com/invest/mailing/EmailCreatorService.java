@@ -13,7 +13,6 @@ import com.invest.services.StatisticsService;
 import com.invest.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
@@ -21,9 +20,7 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
-import javax.jws.soap.SOAPBinding;
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -89,23 +86,13 @@ public class EmailCreatorService {
         };
     }
 
-    public void sendWelcomeMail(final UserDto userDto) {
-        Mail mail = new Mail(userDto.getEmail(), "Testing daily summary", "");
-        try {
-            javaMailSender.send(createDailySummaryMail(mail, userDto));
-        } catch (MailException e) {
-        }
-    }
-
-
-
-    private String buildMailToAdmin() {
+    public String buildMailToAdmin() {
 
         User user = userService.getLastUser();
 
         Context context = new Context();
         context.setVariable("first_message", "New user has registered!");
-        context.setVariable("admin_config", administrationConfig);
+        context.setVariable("admin_name", administrationConfig.getAdminName());
         context.setVariable("user_name", user.getLogin());
         context.setVariable("user_password", user.getPassword());
         context.setVariable("user_mail", user.getEmail());
@@ -113,7 +100,7 @@ public class EmailCreatorService {
         return templateEngine.process("mail/admin_new_registration.html", context);
     }
 
-    private String buildStatisticsMailtoAdmin() {
+    public String buildStatisticsMailtoAdmin() {
 
         long users = userService.countUsers();
         long instruments = instrumentService.countInstruments();
@@ -121,7 +108,7 @@ public class EmailCreatorService {
 
         Context context = new Context();
         context.setVariable("first_message", "Daily summary !");
-        context.setVariable("admin_config", administrationConfig);
+        context.setVariable("admin_name", administrationConfig.getAdminName());
         context.setVariable("users_quantity", users);
         context.setVariable("instruments_quantity", instruments);
         context.setVariable("statistics_quantity", statistics);
@@ -130,7 +117,7 @@ public class EmailCreatorService {
         return templateEngine.process("mail/admin_daily_summary.html", context);
     }
 
-    private String buildWelcomeMail(final UserDto userDto) {
+    public String buildWelcomeMail(final UserDto userDto) {
 
         boolean hourCondition = false;
 
@@ -141,7 +128,6 @@ public class EmailCreatorService {
             hourCondition = true;
             System.out.println("condition " + hourCondition);
         }
-
 
         Context context = new Context();
         context.setVariable("user_login", userDto.getLogin());

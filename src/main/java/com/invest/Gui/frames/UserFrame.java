@@ -60,7 +60,7 @@ class UserFrame {
     }
 
     private void configureOtherFrames() {
-        addInstrumentFrame = new AddInstrumentFrame(userDto, false);
+        addInstrumentFrame = new AddInstrumentFrame(userFrame, userDto, false);
 
         sellInstrumentFrame = new SellInstrumentFrame(userFrame, userDto, false);
 

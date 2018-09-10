@@ -19,7 +19,7 @@ public class AdministrationConfigTestSuite {
         //given
         String name = "Grzegorz";
         //when
-        String givenName = administrationConfig.getAdmin();
+        String givenName = administrationConfig.getAdminName();
         //then
         Assert.assertEquals(name, givenName);
     }

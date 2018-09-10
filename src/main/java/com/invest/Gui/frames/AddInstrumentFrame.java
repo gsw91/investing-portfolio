@@ -20,12 +20,14 @@ class AddInstrumentFrame extends JFrame {
     private final static Logger LOGGER = Logger.getLogger(AddInstrumentFrame.class);
     private UserDto userDto;
     private Boolean visibility;
+    private JFrame userFrame;
     private JTextField instrumentName;
     private JTextField quantity;
     private JTextField price;
     private JTextField bought;
 
-    protected AddInstrumentFrame(UserDto userDto, Boolean visibility) {
+    protected AddInstrumentFrame(JFrame userFrame, UserDto userDto, Boolean visibility) {
+        this.userFrame = userFrame;
         this.userDto = userDto;
         this.visibility = visibility;
         createAddingInstrumentFrame();
@@ -79,7 +81,7 @@ class AddInstrumentFrame extends JFrame {
                 setVisible(false);
                 UserFrame newUserFrame = new UserFrame(userDto);
                 newUserFrame.openUserFrame();
-                getFrame().dispose();
+                userFrame.dispose();
 
             } catch (DateTimeParseException dte) {
                 LOGGER.warn("Incorrect data time inserted");

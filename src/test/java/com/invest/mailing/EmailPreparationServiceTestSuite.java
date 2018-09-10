@@ -1,7 +1,8 @@
 package com.invest.mailing;
 
+import com.invest.config.AdministrationConfig;
 import com.invest.domain.Mail;
-import com.invest.domain.Statistics;
+import com.invest.dtos.UserDto;
 import com.invest.services.InstrumentService;
 import com.invest.services.StatisticsService;
 import com.invest.services.UserService;
@@ -37,6 +38,9 @@ public class EmailPreparationServiceTestSuite {
     @Mock
     private StatisticsService statisticsService;
 
+    @Mock
+    private AdministrationConfig administrationConfig;
+
     @Test
     public void testSendMailToAdmin() {
         //given
@@ -53,18 +57,38 @@ public class EmailPreparationServiceTestSuite {
     @Test
     public void testSendStatisticsMailToAdmin() {
         //given
-        final Mail mail = new Mail("test@test.com", "Test", "Test message");
-
-//        when(statisticsService.countStatistics()).thenReturn(1L);
-//        when(userService.countUsers()).thenReturn(1L);
-//        when(instrumentService.countInstruments()).thenReturn(1L);
-
+        Mail mail = new Mail("test@test.com", "Test", "Test message");
         MimeMessagePreparator mimeMessage = emailCreatorService.createMimeStatisticsMessageToAdmin(mail);
-
-//        when(emailCreatorService.createMimeStatisticsMessageToAdmin(mail)).thenReturn(mimeMessage);
+        when(administrationConfig.getAdminMail()).thenReturn(mail.getMailTo());
         doNothing().when(javaMailSender).send(mimeMessage);
         //when
-        emailPreparationService.sendInfoToAdmin(mail);
+        emailPreparationService.sendStatisticsMessageToAdmin();
+        //then
+        verify(javaMailSender, times(1)).send(mimeMessage);
+    }
+
+    @Test
+    public void testSendWelcomeMail() {
+        //given
+        UserDto userDto = new UserDto(33L, "test", "test", "test@test.com");
+        Mail mail = new Mail("test@test.com", "Test", "Test message");
+        MimeMessagePreparator mimeMessage = emailCreatorService.createWelcomeMail(mail, userDto);
+        doNothing().when(javaMailSender).send(mimeMessage);
+        //when
+        emailPreparationService.sendWelcomeMail(userDto);
+        //then
+        verify(javaMailSender, times(1)).send(mimeMessage);
+    }
+
+    @Test
+    public void testSendSummaryMail() {
+        //given
+        UserDto userDto = new UserDto(33L, "test", "test", "test@test.com");
+        Mail mail = new Mail("test@test.com", "Test", "Test message");
+        MimeMessagePreparator mimeMessage = emailCreatorService.createDailySummaryMail(mail, userDto);
+        doNothing().when(javaMailSender).send(mimeMessage);
+        //when
+        emailPreparationService.sendSummaryMail(userDto);
         //then
         verify(javaMailSender, times(1)).send(mimeMessage);
     }

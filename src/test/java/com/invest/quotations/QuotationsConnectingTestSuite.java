@@ -30,7 +30,7 @@ public class QuotationsConnectingTestSuite {
         //then
         if(InternetConnection.isAvailable()) {
             Assert.assertTrue(InternetConnection.isAvailable());
-            Assert.assertEquals(356, shareMap.size());
+            Assert.assertTrue(300<shareMap.size());
         } else {
             Assert.assertFalse(InternetConnection.isAvailable());
             Assert.assertEquals(0, shareMap.size());

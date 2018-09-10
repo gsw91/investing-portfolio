@@ -17,18 +17,18 @@ public class UserService {
     private UserDao userDao;
 
     public User getLastUser() {
-        long count = userDao.findAll().size();
+        long count = countUsers();
         return userDao.findAll().stream()
                 .skip(count-1).findFirst().get();
     }
 
     public User createUser(User user) throws UserExistsException {
-        boolean ifUsernameExists = findAllUsers().stream()
+        boolean ifUsernameExists = getAllUsers().stream()
                 .anyMatch(t->t.getLogin().equals(user.getLogin()));
         if (ifUsernameExists) {
             throw new UserExistsException(UserExistsException.USERNAME_EXISTS);
         } else {
-            boolean ifEmailExists = findAllUsers().stream()
+            boolean ifEmailExists = getAllUsers().stream()
                     .anyMatch(t-> t.getEmail().equals(user.getEmail()));
             if (ifEmailExists) {
                 throw new UserExistsException(UserExistsException.EMAIL_FORBIDDEN);
@@ -36,6 +36,10 @@ public class UserService {
                 return userDao.save(user);
             }
         }
+    }
+
+    public List<User> getAllUsers() {
+        return userDao.findAll();
     }
 
     public User findUserById(Long userId) throws UserExistsException {
@@ -105,10 +109,6 @@ public class UserService {
             LOGGER.warn("Password updating failed");
             return false;
         }
-    }
-
-    private List<User> findAllUsers() {
-        return userDao.findAll();
     }
 
     public long countUsers() {

@@ -24,20 +24,20 @@ public class ShareMapTestSuite {
             //given
             Map<String, Share> shares = sharesMap.getMarketPriceMap();
 
-            //shares.forEach((t, k) -> System.out.println(k));
-
             boolean doesContain11BIT = shares.containsKey("11BIT");
             boolean doesContainECHO = shares.containsKey("ECHO");
             boolean doesContainMBANK = shares.containsKey("MBANK");
 
             //when & then
-            assertEquals(356, shares.size());
+            assertTrue(300 < shares.size());
             assertTrue(doesContain11BIT);
             assertTrue(doesContainECHO);
             assertTrue(doesContainMBANK);
         }
 
     }
+
+
 
 
 }

@@ -74,4 +74,14 @@ public class InstrumentServiceTestSuite {
         verify(instrumentDao, times(1)).deleteById(userId);
     }
 
+    @Test
+    public void testCountInstruments() {
+        //given
+        when(instrumentDao.count()).thenReturn(17L);
+        //when
+        long quantityOfInstruments = instrumentService.countInstruments();
+        //then
+        Assert.assertEquals(17L, quantityOfInstruments);
+    }
+
 }

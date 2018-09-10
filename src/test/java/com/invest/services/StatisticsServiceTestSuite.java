@@ -56,4 +56,14 @@ public class StatisticsServiceTestSuite {
         Assert.assertEquals(1L, gotStatistics.get(0).getId().longValue());
     }
 
+    @Test
+    public void testCountInstruments() {
+        //given
+        when(statisticsDao.count()).thenReturn(2L);
+        //when
+        long quantityOfInstruments = statisticsService.countStatistics();
+        //then
+        Assert.assertEquals(2L, quantityOfInstruments);
+    }
+
 }

@@ -12,7 +12,7 @@ public class AdministrationConfig {
     @Value("${admin.mail}")
     private String adminMail;
 
-    public String getAdmin() {
+    public String getAdminName() {
         return admin;
     }
 
