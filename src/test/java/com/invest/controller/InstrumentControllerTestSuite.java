@@ -8,7 +8,7 @@ import com.invest.dtos.InstrumentDto;
 import com.invest.dtos.StatisticsDto;
 import com.invest.mappers.InstrumentMapper;
 import com.invest.services.InstrumentService;
-import org.json.JSONObject;
+import net.minidev.json.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,6 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
