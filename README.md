@@ -1,31 +1,34 @@
-# Investment portfolio project
+# Investment Portfolio - REST Service
 
 
 About project :
 
-    - web application based on Spring framework to manage shares portfolio
+- REST service based on Spring framework and JPA to manage shares portfolio
 
-    - the application consists of two parts - an web application as a server and a client
+- used technologies:
 
-    - user can manage his shares portfolio:
+        - Spring
 
-            - do transactions like buying, selling
+        - JPA / hibernate
 
-            - watching statistics and current quotations
+        - apache log4j - logger
 
-    - used technologies:
+        - JSON - sending HTTP requests
 
-            - Spring
+        - JSoup - downloading current quotations to application
 
-            - JPA / hibernate
+        - Swing - client creation
 
-            - apache log4j - logger
+        - Thymeleaf - mailing service
 
-            - JSON - sending HTTP requests
+- the whole application consists of two parts - a web service and a client
 
-            - JSoup - downloading current quotations to application
+About client :
 
-            - Swing - client creation
+- see investment-portfolio-gui repository (GUI related to heroku)
 
-            - Thymeleaf - mailing service
+- user can manage his shares portfolio:
 
+        - do transactions like buying, selling
+
+        - watching statistics and current quotations
