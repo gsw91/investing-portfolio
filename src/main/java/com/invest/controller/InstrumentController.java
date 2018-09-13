@@ -46,7 +46,7 @@ public class InstrumentController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "showOne", params = {"userId", "index"})
-    public InstrumentDto showUserInstruments(@RequestParam("userId") Long userId, @RequestParam("index") String index) {
+    public InstrumentDto showUserInstrument(@RequestParam("userId") Long userId, @RequestParam("index") String index) {
         return instrumentMapper.mapperToDto((instrumentService.allUserInstruments(userId)).stream()
                 .filter(t->t.getShare().equals(index))
                 .findFirst()
