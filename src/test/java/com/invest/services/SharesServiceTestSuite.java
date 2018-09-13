@@ -1,5 +1,6 @@
 package com.invest.services;
 
+import com.invest.exceptions.SharesException;
 import com.invest.quotations.Share;
 import com.invest.quotations.SharesMap;
 import org.junit.Assert;
@@ -25,7 +26,7 @@ public class SharesServiceTestSuite {
     private SharesMap sharesMap;
 
     @Test
-    public void testGetShare() throws Exception{
+    public void testGetShare() throws SharesException{
         //given
         Share share1 = new Share("TEST", 0.01, LocalDateTime.of(2018, 9, 1, 10, 30),
                 LocalDateTime.of(2018, 9, 1, 10, 30));
@@ -46,8 +47,16 @@ public class SharesServiceTestSuite {
         Assert.assertEquals(receivedShare, share1);
     }
 
+    @Test(expected = SharesException.class)
+    public void testGetShareAndThrowException() throws SharesException{
+        //given
+        when(sharesMap.getMarketPriceMap()).thenThrow(new IllegalArgumentException());
+        //when&&then
+        sharesService.getShare("TEST4");
+    }
+
     @Test
-    public void testGetAllShares() throws Exception{
+    public void testGetAllShares() throws SharesException{
         //given
         Share share1 = new Share("TEST", 0.01, LocalDateTime.of(2018, 9, 1, 10, 30),
                 LocalDateTime.of(2018, 9, 1, 10, 30));
@@ -69,6 +78,16 @@ public class SharesServiceTestSuite {
         Assert.assertEquals(share1, receivedSharesMap.get("TEST"));
         Assert.assertEquals(share2, receivedSharesMap.get("TEST2"));
         Assert.assertEquals(share3, receivedSharesMap.get("TEST3"));
+    }
+
+    @Test(expected = SharesException.class)
+    public void testGetAllSharesAndThrowException() throws SharesException{
+        //given
+        when(sharesMap.getMarketPriceMap()).thenThrow(new IllegalArgumentException());
+        //when&&then
+        sharesService.getAllShares();
+
+
     }
 
 }

@@ -6,8 +6,8 @@ import com.invest.services.SharesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 @CrossOrigin("*")
 @RestController
@@ -27,11 +27,14 @@ public class SharesController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "all")
-    public Map<String, Share> getCurrentSharesPrices() {
+    public TreeMap<String, Share> getCurrentSharesPrices() {
         try {
-            return sharesService.getAllShares();
+            Map<String, Share> map = sharesService.getAllShares();
+            TreeMap<String, Share> treeMap = new TreeMap<>();
+            map.forEach(treeMap::put);
+            return treeMap;
         } catch (SharesException e) {
-            return new HashMap<String, Share>();
+            return new TreeMap<>();
         }
     }
 

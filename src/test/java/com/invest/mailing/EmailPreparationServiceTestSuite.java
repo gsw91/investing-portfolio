@@ -2,6 +2,7 @@ package com.invest.mailing;
 
 import com.invest.config.AdministrationConfig;
 import com.invest.domain.Mail;
+import com.invest.domain.User;
 import com.invest.dtos.UserDto;
 import com.invest.services.InstrumentService;
 import com.invest.services.StatisticsService;
@@ -44,7 +45,7 @@ public class EmailPreparationServiceTestSuite {
     @Test
     public void testSendMailToAdmin() {
         //given
-        final Mail mail = new Mail("test@test.com", "Test", "Test message");
+        Mail mail = new Mail("test@test.com", "Test", "Test message");
         MimeMessagePreparator mimeMessage = emailCreatorService.createMimeMessageToAdmin(mail);
         when(emailCreatorService.createMimeMessageToAdmin(mail)).thenReturn(mimeMessage);
         doNothing().when(javaMailSender).send(mimeMessage);
@@ -70,12 +71,12 @@ public class EmailPreparationServiceTestSuite {
     @Test
     public void testSendWelcomeMail() {
         //given
-        UserDto userDto = new UserDto(33L, "test", "test", "test@test.com");
+        User user = new User(33L, "test", "test", "test@test.com");
         Mail mail = new Mail("test@test.com", "Test", "Test message");
-        MimeMessagePreparator mimeMessage = emailCreatorService.createWelcomeMail(mail, userDto);
+        MimeMessagePreparator mimeMessage = emailCreatorService.createWelcomeMail(mail, user);
         doNothing().when(javaMailSender).send(mimeMessage);
         //when
-        emailPreparationService.sendWelcomeMail(userDto);
+        emailPreparationService.sendWelcomeMail(user);
         //then
         verify(javaMailSender, times(1)).send(mimeMessage);
     }
@@ -83,12 +84,12 @@ public class EmailPreparationServiceTestSuite {
     @Test
     public void testSendSummaryMail() {
         //given
-        UserDto userDto = new UserDto(33L, "test", "test", "test@test.com");
+        User user = new User(33L, "test", "test", "test@test.com");
         Mail mail = new Mail("test@test.com", "Test", "Test message");
-        MimeMessagePreparator mimeMessage = emailCreatorService.createDailySummaryMail(mail, userDto);
+        MimeMessagePreparator mimeMessage = emailCreatorService.createDailySummaryMail(mail, user);
         doNothing().when(javaMailSender).send(mimeMessage);
         //when
-        emailPreparationService.sendSummaryMail(userDto);
+        emailPreparationService.sendSummaryMail(user);
         //then
         verify(javaMailSender, times(1)).send(mimeMessage);
     }

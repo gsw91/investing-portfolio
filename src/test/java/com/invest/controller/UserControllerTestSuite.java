@@ -8,6 +8,7 @@ import com.invest.mailing.EmailPreparationService;
 import com.invest.mappers.UserMapper;
 import com.invest.services.UserService;
 import org.json.JSONObject;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,6 +82,5 @@ public class UserControllerTestSuite {
                 .content(jsonContent))
                 .andExpect(status().isOk());
     }
-
 
 }

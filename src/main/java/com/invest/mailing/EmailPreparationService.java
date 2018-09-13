@@ -2,6 +2,7 @@ package com.invest.mailing;
 
 import com.invest.config.AdministrationConfig;
 import com.invest.domain.Mail;
+import com.invest.domain.User;
 import com.invest.dtos.UserDto;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,22 +48,22 @@ public class EmailPreparationService {
         }
     }
 
-    public void sendWelcomeMail(final UserDto userDto) {
+    public void sendWelcomeMail(final User user) {
         LOGGER.info(PREPARATION + " welcome mail");
-        Mail mail = new Mail(userDto.getEmail(), "Welcome in Investment Portfolio", "");
+        Mail mail = new Mail(user.getEmail(), "Welcome in Investment Portfolio", "");
         try {
-            javaMailSender.send(emailCreatorService.createWelcomeMail(mail, userDto));
+            javaMailSender.send(emailCreatorService.createWelcomeMail(mail, user));
             LOGGER.info(MAIL_SEND);
         } catch (MailException e) {
             LOGGER.error(MAIL_SENDING_ERROR + e.getMessage());
         }
     }
 
-    public void sendSummaryMail(final UserDto userDto) {
+    public void sendSummaryMail(final User user) {
         LOGGER.info(PREPARATION + " summary mail");
-        Mail mail = new Mail(userDto.getEmail(), "Daily summary", "");
+        Mail mail = new Mail(user.getEmail(), "Daily summary", "");
         try {
-            javaMailSender.send(emailCreatorService.createDailySummaryMail(mail, userDto));
+            javaMailSender.send(emailCreatorService.createDailySummaryMail(mail, user));
             LOGGER.info(MAIL_SEND);
         } catch (MailException e) {
             LOGGER.error(MAIL_SENDING_ERROR + e.getMessage());

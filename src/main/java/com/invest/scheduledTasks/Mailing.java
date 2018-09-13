@@ -1,10 +1,7 @@
 package com.invest.scheduledTasks;
 
-import com.invest.config.AdministrationConfig;
-import com.invest.domain.Mail;
-import com.invest.dtos.UserDto;
+import com.invest.domain.User;
 import com.invest.mailing.EmailPreparationService;
-import com.invest.mappers.UserMapper;
 import com.invest.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -21,11 +18,6 @@ public class Mailing {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private UserMapper userMapper;
-
-
-
     @Scheduled(cron = "0 0 8 * * *")
     public void sendStatisticsEmailToAdmin () {
         emailPreparationService.sendStatisticsMessageToAdmin();
@@ -33,7 +25,7 @@ public class Mailing {
 
     @Scheduled(cron = "0 30 17 * * MON-FRI")
     public void sendSummaryEmailToUsers () {
-        List<UserDto> users = userMapper.mapperToListDto(userService.getAllUsers());
+        List<User> users = userService.getAllUsers();
 
         users.forEach(emailPreparationService::sendSummaryMail);
 

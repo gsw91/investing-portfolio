@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class EmailCreatorService {
+class EmailCreatorService {
 
     @Autowired
     private AdministrationConfig administrationConfig;
@@ -46,11 +46,7 @@ public class EmailCreatorService {
     @Qualifier("templateEngine")
     private TemplateEngine templateEngine;
 
-    @Autowired
-    private JavaMailSender javaMailSender;
-
-
-    public MimeMessagePreparator createMimeMessageToAdmin(final Mail mail) {
+    protected MimeMessagePreparator createMimeMessageToAdmin(final Mail mail) {
         return mimeMessage -> {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setTo(mail.getMailTo());
@@ -59,7 +55,7 @@ public class EmailCreatorService {
         };
     }
 
-    public MimeMessagePreparator createMimeStatisticsMessageToAdmin(final Mail mail) {
+    protected MimeMessagePreparator createMimeStatisticsMessageToAdmin(final Mail mail) {
         return mimeMessage -> {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setTo(mail.getMailTo());
@@ -68,25 +64,25 @@ public class EmailCreatorService {
         };
     }
 
-    public MimeMessagePreparator createWelcomeMail(final Mail mail, final UserDto userDto) {
+    protected MimeMessagePreparator createWelcomeMail(final Mail mail, final User user) {
         return mimeMessage -> {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setTo(mail.getMailTo());
             messageHelper.setSubject(mail.getSubject());
-            messageHelper.setText(buildWelcomeMail(userDto), true);
+            messageHelper.setText(buildWelcomeMail(user), true);
         };
     }
 
-    public MimeMessagePreparator createDailySummaryMail(final Mail mail, final UserDto userDto) {
+    protected MimeMessagePreparator createDailySummaryMail(final Mail mail, final User user) {
         return mimeMessage -> {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setTo(mail.getMailTo());
             messageHelper.setSubject(mail.getSubject());
-            messageHelper.setText(buildDailySummaryMail(userDto), true);
+            messageHelper.setText(buildDailySummaryMail(user), true);
         };
     }
 
-    public String buildMailToAdmin() {
+    private String buildMailToAdmin() {
 
         User user = userService.getLastUser();
 
@@ -100,7 +96,7 @@ public class EmailCreatorService {
         return templateEngine.process("mail/admin_new_registration.html", context);
     }
 
-    public String buildStatisticsMailtoAdmin() {
+    private String buildStatisticsMailtoAdmin() {
 
         long users = userService.countUsers();
         long instruments = instrumentService.countInstruments();
@@ -117,7 +113,7 @@ public class EmailCreatorService {
         return templateEngine.process("mail/admin_daily_summary.html", context);
     }
 
-    public String buildWelcomeMail(final UserDto userDto) {
+    private String buildWelcomeMail(final User user) {
 
         boolean hourCondition = false;
 
@@ -130,9 +126,9 @@ public class EmailCreatorService {
         }
 
         Context context = new Context();
-        context.setVariable("user_login", userDto.getLogin());
-        context.setVariable("user_password", userDto.getPassword());
-        context.setVariable("user_email", userDto.getEmail());
+        context.setVariable("user_login", user.getLogin());
+        context.setVariable("user_password", user.getPassword());
+        context.setVariable("user_email", user.getEmail());
         context.setVariable("hour_condition", hourCondition);
         context.setVariable("day", "day");
         context.setVariable("evening", "evening");
@@ -140,9 +136,9 @@ public class EmailCreatorService {
         return templateEngine.process("mail/welcome_mail.html", context);
     }
 
-    public String buildDailySummaryMail(final UserDto userDto) {
+    private String buildDailySummaryMail(final User user) {
 
-        List<Instrument> userInstruments = instrumentService.allUserInstruments(userDto.getId());
+        List<Instrument> userInstruments = instrumentService.allUserInstruments(user.getId());
         Map<String, Share> currentQuotations = SharesMap.marketPriceMap;
         List<UserSummaryMail> userData = new ArrayList<>();
         for (Instrument instrument: userInstruments) {
@@ -154,6 +150,7 @@ public class EmailCreatorService {
                     currentQuotations.get(instrument.getShare()).getPrice()
             ));
         }
+
         BigDecimal investedCapital = BigDecimal.ZERO;
         for(UserSummaryMail userSummaryMail: userData){
             investedCapital = investedCapital.add(BigDecimal.valueOf(userSummaryMail.getPurchasePrice() * userSummaryMail.getQuantity()));
@@ -170,7 +167,7 @@ public class EmailCreatorService {
         financialResult = financialResult.divide(BigDecimal.ONE, 2, 2);
 
         Context context = new Context();
-        context.setVariable("user_login", userDto.getLogin());
+        context.setVariable("user_login", user.getLogin());
         context.setVariable("invested_capital", investedCapital);
         context.setVariable("current_valuation", currentValuation);
         context.setVariable("financial_result", financialResult);

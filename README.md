@@ -21,6 +21,8 @@ About project :
 
         - Thymeleaf - mailing service
 
+        - Swagger - endpoints documentation
+
 - the whole application consists of two parts - a web service and a client
 
 About client :

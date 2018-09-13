@@ -54,6 +54,32 @@ public class UserServiceTestSuite {
         assertEquals(0, savedUser.getInstruments().size());
     }
 
+    @Test(expected = UserExistsException.class)
+    public void testCreateUserAndThrowExceptionOfName() throws UserExistsException {
+        //given
+        User user = new User("Mockito_user", "mockito", "mock@mockito.com");
+        List<User> users = new ArrayList<>();
+        users.add(user);
+
+        User userToSave = new User("Mockito_user", "mockito", "hello999@mockito.com");
+        when(userDao.findAll()).thenReturn(users);
+        //when&&then
+        userService.createUser(userToSave);
+    }
+
+    @Test(expected = UserExistsException.class)
+    public void testCreateUserAndThrowExceptionOfEmail() throws UserExistsException {
+        //given
+        User user = new User("Mockito_user", "mockito", "mock@mockito.com");
+        List<User> users = new ArrayList<>();
+        users.add(user);
+
+        User userToSave = new User("Hello999", "mockito", "mock@mockito.com");
+        when(userDao.findAll()).thenReturn(users);
+        //when&&then
+        userService.createUser(userToSave);
+    }
+
     @Test
     public void testGetAllUsers() {
         //given
@@ -85,6 +111,17 @@ public class UserServiceTestSuite {
         assertEquals(user, receivedUser);
     }
 
+    @Test(expected = UserExistsException.class)
+    public void testFindUserByIdAndThrowException() throws UserExistsException {
+        //given
+        Optional<User> userOptional = Optional.empty();
+        Long userId = 6L;
+        when(userDao.findById(userId)).thenReturn(userOptional);
+        //when&&then
+        userService.findUserById(userId);
+
+    }
+
     @Test
     public void testFindUserByName() throws UserExistsException {
         //given
@@ -97,6 +134,15 @@ public class UserServiceTestSuite {
         assertEquals("Mockito_user", readUser.getLogin());
         assertEquals("mockito", readUser.getPassword());
         assertEquals("mock@mockito.com", readUser.getEmail());
+    }
+
+    @Test(expected = UserExistsException.class)
+    public void testFindUserByNameAndThrowException() throws UserExistsException {
+        //given
+        String userName = "danny";
+        when(userDao.findAll()).thenReturn(new ArrayList<>());
+        //when&&then
+        userService.findUserByName(userName);
     }
 
     @Test
@@ -151,17 +197,6 @@ public class UserServiceTestSuite {
         boolean isUpdated = userService.changeUserEmail(userId, mail);
         //then
         assertTrue(isUpdated);
-    }
-
-    @Test(expected = UserExistsException.class)
-    public void testFindUserByIdAndThrowException() throws UserExistsException {
-        //given
-        Long userId = 6L;
-        when(userService.findUserById(userId)).thenThrow(new UserExistsException(UserExistsException.NO_SUCH_USER));
-        //when
-        User receivedUser = userService.findUserById(userId);
-        //then
-        assertNull(receivedUser);
     }
 
     @Test

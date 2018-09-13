@@ -42,7 +42,7 @@ public class UserController {
         }
         Mail mail = new Mail(administrationConfig.getAdminMail(), "New user", "");
         emailService.sendInfoToAdmin(mail);
-        emailService.sendWelcomeMail(userDto);
+        emailService.sendWelcomeMail(mapper.mapperToDomain(userDto));
         return "User created";
     }
 
