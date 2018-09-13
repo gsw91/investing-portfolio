@@ -24,7 +24,7 @@ public class QuotationsUpdating {
         return updated;
     }
 
-    @Scheduled(cron = "0 0/05 9-17 * * MON-FRI")
+    @Scheduled(cron = "0 0/05 * * * MON-FRI")
     public void updateQuotations () {
         Long startTime = System.currentTimeMillis();
         LOGGER.info("Start updating  map quotations ");
