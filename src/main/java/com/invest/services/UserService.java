@@ -63,12 +63,14 @@ public class UserService {
         }
     }
 
-    public void deleteUser(Long userId) {
+    public boolean deleteUser(Long userId) {
         if (userDao.existsById(userId)) {
             userDao.deleteById(userId);
             LOGGER.info("User deleted successfully");
+            return true;
         } else {
             LOGGER.warn("User deletion failed");
+            return false;
         }
     }
 

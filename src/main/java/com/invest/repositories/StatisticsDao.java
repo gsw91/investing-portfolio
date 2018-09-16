@@ -17,8 +17,8 @@ public interface StatisticsDao extends CrudRepository<Statistics, Long> {
     List<Statistics> findAll();
 
     @Override
-    default void deleteById(Long aLong) {
+    void deleteById(Long aLong);
 
-    }
-
+    @Override
+    void delete(Statistics entity);
 }

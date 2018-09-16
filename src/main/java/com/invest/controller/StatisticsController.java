@@ -24,4 +24,9 @@ public class StatisticsController {
         return mapper.mapperToListDto(service.showAllOfUser(userId));
     }
 
+    @RequestMapping(method = RequestMethod.DELETE, value = "reset", params = {"userId"})
+    public void resetUsersInstruments(@RequestParam("userId") Long userId) {
+        service.deleteAllUsersStatistics(userId);
+    }
+
 }

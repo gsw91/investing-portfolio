@@ -36,6 +36,7 @@ public class InstrumentServiceTestSuite {
                 LocalDate.of(2018, 6, 21)));
         userInsturments.add(new Instrument(29L, new User(userId), 4300L, "KGHM", 87.01,
                 LocalDate.of(2018, 7, 11)));
+        when(instrumentDao.count()).thenReturn(3L);
         when(instrumentDao.findAll()).thenReturn(userInsturments);
         //when
         List<Instrument> list = instrumentService.allUserInstruments(91L);
@@ -82,6 +83,70 @@ public class InstrumentServiceTestSuite {
         long quantityOfInstruments = instrumentService.countInstruments();
         //then
         Assert.assertEquals(17L, quantityOfInstruments);
+    }
+
+    @Test
+    public void testDeleteAllUsersInstrumentsCaseOne() {
+        //given
+        List<Instrument> list = new ArrayList<>();
+
+        Instrument instrumentOne = new Instrument(21L, new User(1L), 2100L, "PKNORLEN", 98.01,
+                LocalDate.of(2018, 7, 21));
+        Instrument instrumentTwo = new Instrument(26L, new User(2L), 1000L, "CDPROJEKT", 181.01,
+                LocalDate.of(2018, 6, 21));
+        Instrument instrumentThree = new Instrument(29L, new User(1L), 4300L, "KGHM", 87.01,
+                LocalDate.of(2018, 7, 11));
+
+        list.add(instrumentOne);
+        list.add(instrumentTwo);
+        list.add(instrumentThree);
+
+        when(instrumentDao.count()).thenReturn(3L);
+        when(instrumentDao.findAll()).thenReturn(list);
+
+        doAnswer((Answer) -> {
+            list.remove(instrumentTwo);
+            return null;
+        }).when(instrumentDao).delete(instrumentTwo);
+
+        //when
+        instrumentService.deleteAllUsersInstruments(2L);
+        //then
+        Assert.assertEquals(2, list.size());
+    }
+
+    @Test
+    public void testDeleteAllUsersInstrumentsCaseTwo() {
+        //given
+        List<Instrument> list = new ArrayList<>();
+
+        Instrument instrumentOne = new Instrument(21L, new User(1L), 2100L, "PKNORLEN", 98.01,
+                LocalDate.of(2018, 7, 21));
+        Instrument instrumentTwo = new Instrument(26L, new User(2L), 1000L, "CDPROJEKT", 181.01,
+                LocalDate.of(2018, 6, 21));
+        Instrument instrumentThree = new Instrument(29L, new User(1L), 4300L, "KGHM", 87.01,
+                LocalDate.of(2018, 7, 11));
+
+        list.add(instrumentOne);
+        list.add(instrumentTwo);
+        list.add(instrumentThree);
+
+        when(instrumentDao.count()).thenReturn(3L);
+        when(instrumentDao.findAll()).thenReturn(list);
+
+        doAnswer((Answer) -> {
+            list.remove(instrumentOne);
+            return null;
+        }).when(instrumentDao).delete(instrumentOne);
+
+        doAnswer((Answer) -> {
+            list.remove(instrumentThree);
+            return null;
+        }).when(instrumentDao).delete(instrumentThree);
+        //when
+        instrumentService.deleteAllUsersInstruments(1L);
+        //then
+        Assert.assertEquals(1, list.size());
     }
 
 }

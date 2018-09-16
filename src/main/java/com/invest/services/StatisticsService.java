@@ -20,7 +20,7 @@ public class StatisticsService {
     }
 
     public List<Statistics> showAllOfUser(Long userId) {
-        if (statisticsDao.findAll().size()!=0) {
+        if (statisticsDao.count()!=0) {
             return statisticsDao.findAll().stream()
                     .filter(t -> t.getUser().getId().longValue() == userId)
                     .collect(Collectors.toList());
@@ -31,6 +31,10 @@ public class StatisticsService {
 
     public long countStatistics() {
         return statisticsDao.count();
+    }
+
+    public void deleteAllUsersStatistics(Long userId) {
+        showAllOfUser(userId).forEach(statisticsDao::delete);
     }
 
 }

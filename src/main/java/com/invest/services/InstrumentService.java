@@ -18,7 +18,7 @@ public class InstrumentService {
     private InstrumentDao instrumentDao;
 
     public List<Instrument> allUserInstruments(Long userId) {
-        if (instrumentDao.findAll().size()!=0) {
+        if (instrumentDao.count()!=0) {
             return instrumentDao.findAll().stream()
                     .filter(t -> t.getUser().getId().equals(userId))
                     .collect(Collectors.toList());
@@ -37,6 +37,10 @@ public class InstrumentService {
 
     public long countInstruments() {
         return instrumentDao.count();
+    }
+
+    public void deleteAllUsersInstruments(Long userId) {
+        allUserInstruments(userId).forEach(instrumentDao::delete);
     }
 
 }

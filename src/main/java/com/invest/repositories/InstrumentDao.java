@@ -20,4 +20,8 @@ public interface InstrumentDao extends CrudRepository<Instrument, Long> {
     @Override
     void deleteById(Long aLong);
 
+    @Override
+    default void delete(Instrument instrument) {
+
+    }
 }

@@ -22,6 +22,7 @@ import java.util.List;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -67,7 +68,13 @@ public class StatisticsControllerTestSuite {
                 .andExpect(jsonPath("$[0].instrumentName", is("COGNOR")))
                 .andExpect(jsonPath("$[1].instrumentName", is("COGNOR")))
                 .andExpect(jsonPath("$[2].instrumentName", is("KREZUS")));
+    }
 
+    @Test
+    public void shouldResetUsersStatistics() throws Exception {
+        //given & when & then
+        mockMvc.perform(delete("/v1/stats/reset").param("userId", "1"))
+                .andExpect(status().isOk());
     }
 
 }

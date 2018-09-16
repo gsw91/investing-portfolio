@@ -59,4 +59,9 @@ public class UserController {
         return new UserDto();
     }
 
+    @RequestMapping(method = RequestMethod.DELETE, params = {"userId"}, value = "delete")
+    public boolean deleteUser(@RequestParam("userId") Long userId) {
+        return service.deleteUser(userId);
+    }
+
 }

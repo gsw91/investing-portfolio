@@ -13,6 +13,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -47,6 +49,8 @@ public class StatisticsServiceTestSuite {
                 BigDecimal.valueOf(23.91), LocalDate.of(2018, 7, 11), 1300L);
         statistics.add(statistics1);
         statistics.add(statistics2);
+
+        when(statisticsDao.count()).thenReturn(2L);
         when(statisticsDao.findAll()).thenReturn(statistics);
         //when
         List<Statistics> gotStatistics = statisticsService.showAllOfUser(11L);
@@ -64,6 +68,61 @@ public class StatisticsServiceTestSuite {
         long quantityOfInstruments = statisticsService.countStatistics();
         //then
         Assert.assertEquals(2L, quantityOfInstruments);
+    }
+
+     @Test
+    public void testDeleteAllUsersStatisticsCaseOne() {
+         //given
+         List<Statistics> list = new ArrayList<>();
+         Statistics statistics1 = new Statistics(1L, new User(11L), "PKNORLEN", BigDecimal.valueOf(22.01), LocalDate.of(2018, 5, 4),
+                 BigDecimal.valueOf(23.91), LocalDate.of(2018, 7, 11), 1300L);
+         Statistics statistics2 = new Statistics(11L, new User(12L), "PKNORLEN", BigDecimal.valueOf(22.01), LocalDate.of(2018, 5, 4),
+                 BigDecimal.valueOf(23.91), LocalDate.of(2018, 7, 11), 1300L);
+         list.add(statistics1);
+         list.add(statistics2);
+
+         when(statisticsDao.count()).thenReturn(2L);
+         when(statisticsDao.findAll()).thenReturn(list);
+
+         doAnswer((Answer) -> {
+             list.remove(statistics2);
+             return null;
+         }).when(statisticsDao).delete(statistics2);
+         //when
+         statisticsService.deleteAllUsersStatistics(12L);
+         //then
+         Assert.assertEquals(1, list.size());
+     }
+
+    @Test
+    public void testDeleteAllUsersInstrumentsCaseTwo() {
+        //given
+        List<Statistics> list = new ArrayList<>();
+        Statistics statistics1 = new Statistics(1L, new User(11L), "PKNORLEN", BigDecimal.valueOf(22.01), LocalDate.of(2018, 5, 4),
+                BigDecimal.valueOf(23.91), LocalDate.of(2018, 7, 11), 1300L);
+        Statistics statistics2 = new Statistics(11L, new User(12L), "PKNORLEN", BigDecimal.valueOf(22.01), LocalDate.of(2018, 5, 4),
+                BigDecimal.valueOf(23.91), LocalDate.of(2018, 7, 11), 1300L);
+
+        list.add(statistics1);
+        list.add(statistics2);
+
+        when(statisticsDao.count()).thenReturn(2L);
+        when(statisticsDao.findAll()).thenReturn(list);
+
+        doAnswer((Answer) -> {
+            list.remove(statistics1);
+            return null;
+        }).when(statisticsDao).delete(statistics1);
+
+        doAnswer((Answer) -> {
+            list.remove(statistics2);
+            return null;
+        }).when(statisticsDao).delete(statistics2);
+        //when
+        statisticsService.deleteAllUsersStatistics(11L);
+        statisticsService.deleteAllUsersStatistics(12L);
+        //then
+        Assert.assertEquals(0, list.size());
     }
 
 }
