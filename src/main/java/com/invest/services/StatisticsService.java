@@ -33,8 +33,15 @@ public class StatisticsService {
         return statisticsDao.count();
     }
 
-    public void deleteAllUsersStatistics(Long userId) {
-        showAllOfUser(userId).forEach(statisticsDao::delete);
+    public boolean deleteAllUsersStatistics(Long userId) {
+        List<Statistics> userStatistics = statisticsDao.findAll().stream()
+                .filter(t->t.getUser().getId().equals(userId))
+                .collect(Collectors.toList());
+
+        for (Statistics statistics: userStatistics) {
+            statisticsDao.deleteById(statistics.getId());
+        }
+        return statisticsDao.findAll().stream().noneMatch(t->t.getUser().getId().equals(userId));
     }
 
 }

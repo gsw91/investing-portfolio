@@ -66,8 +66,8 @@ public class InstrumentController {
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "reset", params = {"userId"})
-    public void resetUsersInstruments(@RequestParam("userId") Long userId) {
-        instrumentService.deleteAllUsersInstruments(userId);
+    public boolean resetUsersInstruments(@RequestParam("userId") Long userId) {
+        return instrumentService.deleteAllUsersInstruments(userId);
     }
 
 }

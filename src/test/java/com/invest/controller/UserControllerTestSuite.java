@@ -19,9 +19,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.is;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -45,7 +49,7 @@ public class UserControllerTestSuite {
     private AdministrationConfig administrationConfig;
 
     @Test
-    public void shouldFindUser() throws Exception {
+    public void testLogUser() throws Exception {
         //given
         User user = new User(1023L, "grzegorz", "123123", "d@d.com");
         UserDto userDto = new UserDto(1023L, "grzegorz", "123123", "d@d.com");
@@ -62,7 +66,7 @@ public class UserControllerTestSuite {
     }
 
     @Test
-    public void shouldCreateUser() throws Exception {
+    public void testCreateUser() throws Exception {
         //given
         User user = new User(1023L, "grzegorz", "123123", "d@d.com");
         UserDto userDto = new UserDto(1023L, "grzegorz", "123123", "d@d.com");
@@ -81,6 +85,23 @@ public class UserControllerTestSuite {
                 .characterEncoding("UTF-8")
                 .content(jsonContent))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testDeleteUser() throws Exception {
+        //given
+        User user = new User(21L, "grze", "wo21", "test@test.com");
+
+        when(service.findUserById(21L)).thenReturn(user);
+        doNothing().when(emailPreparationService).sendInfoAccountDeleted(user);
+        when(service.deleteUser(user.getId())).thenReturn(true);
+        //when & then
+        mockMvc.perform(delete("/v1/user/delete")
+                .param("userId", "21")
+                .characterEncoding("UTF-8")
+                .contentType("application/json"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("true"));
     }
 
 }

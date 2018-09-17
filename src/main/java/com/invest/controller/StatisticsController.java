@@ -25,8 +25,8 @@ public class StatisticsController {
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "reset", params = {"userId"})
-    public void resetUsersInstruments(@RequestParam("userId") Long userId) {
-        service.deleteAllUsersStatistics(userId);
+    public boolean resetUsersInstruments(@RequestParam("userId") Long userId) {
+        return service.deleteAllUsersStatistics(userId);
     }
 
 }

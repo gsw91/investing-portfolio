@@ -2,6 +2,7 @@ package com.invest.controller;
 
 import com.invest.config.AdministrationConfig;
 import com.invest.domain.Mail;
+import com.invest.domain.User;
 import com.invest.dtos.UserDto;
 import com.invest.exceptions.UserExistsException;
 import com.invest.mailing.EmailPreparationService;
@@ -40,8 +41,7 @@ public class UserController {
             LOGGER.warn(e.getMessage());
             return e.getMessage();
         }
-        Mail mail = new Mail(administrationConfig.getAdminMail(), "New user", "");
-        emailService.sendInfoToAdmin(mail);
+        emailService.sendInfoToAdmin();
         emailService.sendWelcomeMail(mapper.mapperToDomain(userDto));
         return "User created";
     }
@@ -61,7 +61,14 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.DELETE, params = {"userId"}, value = "delete")
     public boolean deleteUser(@RequestParam("userId") Long userId) {
-        return service.deleteUser(userId);
+        try {
+            User user = service.findUserById(userId);
+            emailService.sendInfoAccountDeleted(user);
+            return service.deleteUser(userId);
+        } catch (UserExistsException e) {
+            LOGGER.warn(UserExistsException.NO_SUCH_USER);
+            return false;
+        }
     }
 
 }

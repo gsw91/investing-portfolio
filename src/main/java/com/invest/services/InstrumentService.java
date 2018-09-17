@@ -39,8 +39,13 @@ public class InstrumentService {
         return instrumentDao.count();
     }
 
-    public void deleteAllUsersInstruments(Long userId) {
-        allUserInstruments(userId).forEach(instrumentDao::delete);
+    public boolean deleteAllUsersInstruments(Long userId) {
+        List<Instrument> userInstruments = allUserInstruments(userId);
+
+        for (Instrument instrument: userInstruments) {
+            instrumentDao.deleteById(instrument.getId());
+        }
+        return instrumentDao.findAll().stream().noneMatch(t->t.getUser().getId().equals(userId));
     }
 
 }

@@ -27,8 +27,20 @@ public class EmailPreparationService {
     @Autowired
     private EmailCreatorService emailCreatorService;
 
-    public void sendInfoToAdmin(final Mail mail) {
+    public void sendInfoAccountDeleted(final User user) {
+        LOGGER.info(PREPARATION + " account deleted");
+        Mail mail = new Mail(user.getEmail(), "Account deleted", "");
+        try {
+            javaMailSender.send(emailCreatorService.createMessageAccountDeleted(mail, user));
+            LOGGER.info(MAIL_SEND);
+        } catch (MailException e) {
+            LOGGER.error(MAIL_SENDING_ERROR + e.getMessage());
+        }
+    }
+
+    public void sendInfoToAdmin() {
         LOGGER.info(PREPARATION + " to admin");
+        Mail mail = new Mail(administrationConfig.getAdminMail(), "New user", "");
         try {
             javaMailSender.send(emailCreatorService.createMimeMessageToAdmin(mail));
             LOGGER.info(MAIL_SEND);

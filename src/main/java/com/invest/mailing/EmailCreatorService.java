@@ -46,6 +46,15 @@ class EmailCreatorService {
     @Qualifier("templateEngine")
     private TemplateEngine templateEngine;
 
+    protected MimeMessagePreparator createMessageAccountDeleted(final Mail mail, final User user) {
+        return mimeMessage -> {
+            MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
+            messageHelper.setTo(mail.getMailTo());
+            messageHelper.setSubject(mail.getSubject());
+            messageHelper.setText(buildDeleteMail(user), true);
+        };
+    }
+
     protected MimeMessagePreparator createMimeMessageToAdmin(final Mail mail) {
         return mimeMessage -> {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
@@ -80,6 +89,14 @@ class EmailCreatorService {
             messageHelper.setSubject(mail.getSubject());
             messageHelper.setText(buildDailySummaryMail(user), true);
         };
+    }
+
+    private String buildDeleteMail(final User user) {
+        Context context = new Context();
+        context.setVariable("first_message", "Account removed!");
+        context.setVariable("user_name", user.getLogin());
+
+        return templateEngine.process("mail/deleting_account.html", context);
     }
 
     private String buildMailToAdmin() {
@@ -118,11 +135,8 @@ class EmailCreatorService {
         boolean hourCondition = false;
 
         LocalTime localTime = LocalTime.now();
-        System.out.println("current time " + localTime);
-        if (localTime.getHour()>0 && localTime.getHour()< 17) {
-            System.out.println("hour " + localTime.getHour());
+        if (localTime.getHour()>0 && localTime.getHour()< 19) {
             hourCondition = true;
-            System.out.println("condition " + hourCondition);
         }
 
         Context context = new Context();

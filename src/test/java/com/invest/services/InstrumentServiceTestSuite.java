@@ -107,11 +107,12 @@ public class InstrumentServiceTestSuite {
         doAnswer((Answer) -> {
             list.remove(instrumentTwo);
             return null;
-        }).when(instrumentDao).delete(instrumentTwo);
+        }).when(instrumentDao).deleteById(instrumentTwo.getId());
 
         //when
-        instrumentService.deleteAllUsersInstruments(2L);
+        boolean result = instrumentService.deleteAllUsersInstruments(2L);
         //then
+        Assert.assertTrue(result);
         Assert.assertEquals(2, list.size());
     }
 
@@ -137,16 +138,39 @@ public class InstrumentServiceTestSuite {
         doAnswer((Answer) -> {
             list.remove(instrumentOne);
             return null;
-        }).when(instrumentDao).delete(instrumentOne);
+        }).when(instrumentDao).deleteById(instrumentOne.getId());
 
         doAnswer((Answer) -> {
             list.remove(instrumentThree);
             return null;
-        }).when(instrumentDao).delete(instrumentThree);
+        }).when(instrumentDao).deleteById(instrumentThree.getId());
         //when
-        instrumentService.deleteAllUsersInstruments(1L);
+        boolean result = instrumentService.deleteAllUsersInstruments(1L);
         //then
+        Assert.assertTrue(result);
         Assert.assertEquals(1, list.size());
+    }
+
+    @Test
+    public void testDeleteAllUsersInstrumentsCaseThree() {
+        //given
+        List<Instrument> list = new ArrayList<>();
+
+        Instrument instrumentOne = new Instrument(21L, new User(1L), 2100L, "PKNORLEN", 98.01,
+                LocalDate.of(2018, 7, 21));
+        Instrument instrumentTwo = new Instrument(26L, new User(2L), 1000L, "CDPROJEKT", 181.01,
+                LocalDate.of(2018, 6, 21));
+
+        list.add(instrumentOne);
+        list.add(instrumentTwo);
+
+        when(instrumentDao.count()).thenReturn(2L);
+        when(instrumentDao.findAll()).thenReturn(list);
+        //when
+        boolean result = instrumentService.deleteAllUsersInstruments(1L);
+        //then
+        Assert.assertFalse(result);
+        Assert.assertEquals(2, list.size());
     }
 
 }

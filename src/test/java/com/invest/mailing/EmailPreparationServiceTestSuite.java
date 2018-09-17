@@ -43,14 +43,27 @@ public class EmailPreparationServiceTestSuite {
     private AdministrationConfig administrationConfig;
 
     @Test
+    public void testSendInfoAccountDeleted() {
+        //given
+        User user = new User(1L, "test", "test", "test@test.com");
+        Mail mail = new Mail("test@test.com", "Test", "Test message");
+        MimeMessagePreparator mimeMessage = emailCreatorService.createMessageAccountDeleted(mail, user);
+        doNothing().when(javaMailSender).send(mimeMessage);
+        //when
+        emailPreparationService.sendInfoAccountDeleted(user);
+        //then
+        verify(javaMailSender, times(1)).send(mimeMessage);
+
+    }
+
+    @Test
     public void testSendMailToAdmin() {
         //given
         Mail mail = new Mail("test@test.com", "Test", "Test message");
         MimeMessagePreparator mimeMessage = emailCreatorService.createMimeMessageToAdmin(mail);
-        when(emailCreatorService.createMimeMessageToAdmin(mail)).thenReturn(mimeMessage);
         doNothing().when(javaMailSender).send(mimeMessage);
         //when
-        emailPreparationService.sendInfoToAdmin(mail);
+        emailPreparationService.sendInfoToAdmin();
         //then
         verify(javaMailSender, times(1)).send(mimeMessage);
     }
