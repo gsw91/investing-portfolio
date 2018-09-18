@@ -33,6 +33,16 @@ public class UserController {
     @Autowired
     private AdministrationConfig administrationConfig;
 
+    @RequestMapping(method = RequestMethod.GET, value = "checkMail", params = {"mail"})
+    public boolean checkIfEmailExists(@RequestParam("mail") String mail) {
+        User user = service.findUserByEmail(mail);
+        if(user.getId()!=null) {
+            emailService.sendReminderDataAccess(user);
+            return true;
+        }
+        return false;
+    }
+
     @RequestMapping(method = RequestMethod.POST, value = "create", consumes = APPLICATION_JSON_VALUE)
     public String createUser(@RequestBody UserDto userDto) {
         try {

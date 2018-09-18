@@ -46,6 +46,15 @@ class EmailCreatorService {
     @Qualifier("templateEngine")
     private TemplateEngine templateEngine;
 
+    protected MimeMessagePreparator createMessageDataReminder(final Mail mail, final User user) {
+        return mimeMessage -> {
+            MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
+            messageHelper.setTo(mail.getMailTo());
+            messageHelper.setSubject(mail.getSubject());
+            messageHelper.setText(buildReminderMail(user), true);
+        };
+    }
+
     protected MimeMessagePreparator createMessageAccountDeleted(final Mail mail, final User user) {
         return mimeMessage -> {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
@@ -89,6 +98,15 @@ class EmailCreatorService {
             messageHelper.setSubject(mail.getSubject());
             messageHelper.setText(buildDailySummaryMail(user), true);
         };
+    }
+
+    private String buildReminderMail(final User user) {
+        Context context = new Context();
+        context.setVariable("first_message", "Your data of access!");
+        context.setVariable("user_login", user.getLogin());
+        context.setVariable("user_password", user.getPassword());
+
+        return templateEngine.process("mail/remind_data_access_to_user.html", context);
     }
 
     private String buildDeleteMail(final User user) {

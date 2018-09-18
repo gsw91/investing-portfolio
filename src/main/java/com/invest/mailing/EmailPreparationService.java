@@ -27,6 +27,17 @@ public class EmailPreparationService {
     @Autowired
     private EmailCreatorService emailCreatorService;
 
+    public void sendReminderDataAccess(final User user) {
+        LOGGER.info(PREPARATION + " reminder for user: " + user.getLogin());
+        Mail mail = new Mail(user.getEmail(), "Reminder of your data of access", "");
+        try {
+            javaMailSender.send(emailCreatorService.createMessageDataReminder(mail, user));
+            LOGGER.info(MAIL_SEND);
+        } catch (MailException e) {
+            LOGGER.error(MAIL_SENDING_ERROR + e.getMessage());
+        }
+    }
+
     public void sendInfoAccountDeleted(final User user) {
         LOGGER.info(PREPARATION + " account deleted");
         Mail mail = new Mail(user.getEmail(), "Account deleted", "");

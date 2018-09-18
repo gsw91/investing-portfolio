@@ -63,6 +63,19 @@ public class UserService {
         }
     }
 
+    public User findUserByEmail (String mail) {
+        List<User> usersList = userDao.findAll();
+        Optional<User> optionalUser = usersList.stream()
+                .filter(t->t.getEmail().equals(mail))
+                .findFirst();
+
+        if (optionalUser.isPresent()) {
+            return optionalUser.get();
+        } else {
+            return new User();
+        }
+    }
+
     public boolean deleteUser(Long userId) {
         if (userDao.existsById(userId)) {
             userDao.deleteById(userId);
