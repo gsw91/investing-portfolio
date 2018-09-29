@@ -4,6 +4,7 @@ import com.invest.domain.Instrument;
 import com.invest.domain.User;
 import com.invest.dtos.InstrumentDto;
 import com.invest.dtos.StatisticsDto;
+import com.invest.exceptions.SharesException;
 import com.invest.mappers.InstrumentMapper;
 import com.invest.services.InstrumentService;
 import org.junit.Assert;
@@ -91,7 +92,7 @@ public class InstrumentOperationsTestSuite {
     }
 
     @Test
-    public void testSellAndPrepareStatisticsSellLessShares() {
+    public void testSellAndPrepareStatisticsSellLessShares() throws SharesException {
         //given
         long userId = 12;
         List<Instrument> list = new ArrayList<>();

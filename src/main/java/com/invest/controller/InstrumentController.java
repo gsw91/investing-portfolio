@@ -2,10 +2,10 @@ package com.invest.controller;
 
 import com.invest.controller.operations.InstrumentOperations;
 import com.invest.controller.operations.StatisticsCreation;
-import com.invest.controller.operations.StatisticsOperations;
 import com.invest.domain.Instrument;
 import com.invest.dtos.InstrumentDto;
 import com.invest.dtos.StatisticsDto;
+import com.invest.exceptions.SharesException;
 import com.invest.mappers.InstrumentMapper;
 import com.invest.services.InstrumentService;
 import org.apache.log4j.Logger;
@@ -37,7 +37,11 @@ public class InstrumentController {
 
     @RequestMapping(method = RequestMethod.POST, value = "add", consumes = APPLICATION_JSON_VALUE)
     public InstrumentDto addInstrument(@RequestBody InstrumentDto instrumentDto) {
-        return instrumentMapper.mapperToDto(instrumentService.addInstrument(instrumentMapper.mapperToDomain(instrumentDto)));
+        try {
+            return instrumentMapper.mapperToDto(instrumentService.addInstrument(instrumentMapper.mapperToDomain(instrumentDto)));
+        } catch (SharesException se) {
+            return new InstrumentDto();
+        }
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "show", params = {"userId"})

@@ -2,6 +2,7 @@ package com.invest.services;
 
 import com.invest.domain.Instrument;
 import com.invest.domain.User;
+import com.invest.exceptions.SharesException;
 import com.invest.repositories.InstrumentDao;
 import org.junit.Assert;
 import org.junit.Test;
@@ -48,7 +49,7 @@ public class InstrumentServiceTestSuite {
     }
 
     @Test
-    public void testAddInstrument() {
+    public void testAddInstrument() throws SharesException {
         //given
         Instrument instrument = new Instrument(21L, new User(61L), 2100L, "PKNORLEN", 98.01,
                 LocalDate.of(2018, 7, 21));

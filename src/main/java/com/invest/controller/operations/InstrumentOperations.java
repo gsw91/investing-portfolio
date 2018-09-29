@@ -2,6 +2,7 @@ package com.invest.controller.operations;
 
 import com.invest.dtos.InstrumentDto;
 import com.invest.dtos.StatisticsDto;
+import com.invest.exceptions.SharesException;
 import com.invest.mappers.InstrumentMapper;
 import com.invest.services.InstrumentService;
 import org.apache.log4j.Logger;
@@ -74,7 +75,11 @@ public class InstrumentOperations {
                         Long id = instrumentDto.getId();
                         instrumentDto.setQuantity(currentQty);
                         instrumentService.sellInstrument(id);
-                        instrumentService.addInstrument(instrumentMapper.mapperToDomain(instrumentDto));
+                        try {
+                            instrumentService.addInstrument(instrumentMapper.mapperToDomain(instrumentDto));
+                        } catch (SharesException se) {
+                            //do nothing
+                        }
                         quantity = 0L;
                     }
                     i++;
