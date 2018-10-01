@@ -19,23 +19,30 @@ public class UserService {
     public User getLastUser() {
         long count = countUsers();
         return userDao.findAll().stream()
-                .skip(count-1).findFirst().get();
+                .skip(count - 1).findFirst().get();
     }
 
     public User createUser(User user) throws UserExistsException {
-        boolean ifUsernameExists = getAllUsers().stream()
-                .anyMatch(t->t.getLogin().equals(user.getLogin()));
+        boolean ifUsernameExists = checkIfUsernameExists(user);
+        boolean ifEmailExists = checkIfEmailExists(user);
+        boolean loginLength = checkLoginLength(user);
+        boolean passwordLength = checkPasswordLength(user);
+        boolean emailLength = checkEmailLength(user);
+
         if (ifUsernameExists) {
             throw new UserExistsException(UserExistsException.USERNAME_EXISTS);
+        } else if (ifEmailExists) {
+            throw new UserExistsException(UserExistsException.EMAIL_FORBIDDEN);
+        } else if (!loginLength) {
+            throw new UserExistsException(UserExistsException.LOGIN_SIGN_UP);
+        } else if (!passwordLength) {
+            throw new UserExistsException(UserExistsException.PASSWORD_SIGN_UP);
+        } else if (!emailLength) {
+            throw new UserExistsException(UserExistsException.EMAIL_SIGN_UP);
         } else {
-            boolean ifEmailExists = getAllUsers().stream()
-                    .anyMatch(t-> t.getEmail().equals(user.getEmail()));
-            if (ifEmailExists) {
-                throw new UserExistsException(UserExistsException.EMAIL_FORBIDDEN);
-            } else {
-                return userDao.save(user);
-            }
+            return userDao.save(user);
         }
+
     }
 
     public List<User> getAllUsers() {
@@ -128,6 +135,40 @@ public class UserService {
 
     public long countUsers() {
         return userDao.count();
+    }
+
+    private boolean checkIfUsernameExists(User user) {
+        return getAllUsers().stream()
+                .anyMatch(t -> t.getLogin().equals(user.getLogin()));
+    }
+
+    private boolean checkIfEmailExists(User user) {
+        return getAllUsers().stream()
+                .anyMatch(t -> t.getEmail().equals(user.getEmail()));
+    }
+
+    private boolean checkLoginLength(User user) {
+        if (user.getLogin().length()>3) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private boolean checkPasswordLength(User user) {
+        if (user.getPassword().length()>3) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private boolean checkEmailLength(User user) {
+        if (user.getEmail().length()>0 && user.getEmail().contains("@") && user.getEmail().contains(".")) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }
