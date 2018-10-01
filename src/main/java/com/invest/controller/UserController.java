@@ -1,7 +1,6 @@
 package com.invest.controller;
 
 import com.invest.config.AdministrationConfig;
-import com.invest.domain.Mail;
 import com.invest.domain.User;
 import com.invest.dtos.UserDto;
 import com.invest.exceptions.UserExistsException;
@@ -79,6 +78,21 @@ public class UserController {
             LOGGER.warn(UserExistsException.NO_SUCH_USER);
             return false;
         }
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, params = {"userId", "mail"}, value = "update/mail")
+    public boolean updateEmail(@RequestParam("userId") Long userId, @RequestParam("mail") String email) {
+        return service.changeUserEmail(userId, email);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, params = {"userId", "login"}, value = "update/login")
+    public boolean updateLogin(@RequestParam("userId") Long userId, @RequestParam("login") String login) {
+        return service.updateUserLogin(userId, login);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, params = {"userId", "password"}, value = "update/password")
+    public boolean updatePassword(@RequestParam("userId") Long userId, @RequestParam("password") String password) {
+        return service.changeUserPassword(userId, password);
     }
 
 }
