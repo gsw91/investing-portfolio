@@ -15,7 +15,7 @@ public class Connector {
 
     private final static Logger LOGGER = Logger.getLogger(Connector.class);
 
-    @Scheduled(cron = "0 */10 * * * *")
+    //@Scheduled(cron = "0 */10 * * * *")
     public void sendRequest() {
         try {
             maintainConnector();
