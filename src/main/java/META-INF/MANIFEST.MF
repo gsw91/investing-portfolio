@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Class-Path: C:\Programming Investment Portfolio\investing-app\out\arti
+ facts\investing_app_main_jar
+Main-Class: com.invest.SpringRunner
+
